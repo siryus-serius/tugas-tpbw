@@ -1,6 +1,6 @@
 {
-  "terakhir_diperbarui": "2026-10-27T15:10:49.840Z",
-  "mesin_eksekusi": "GitHub Actions Automated Cron Runner",
+  "terakhir_diperbarui": "2026-10-27T15:32:23.065Z",
+  "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "gempa_bmkg": {
     "Tanggal": "27 Okt 2026",
     "Jam": "21:43:13 WIB",
@@ -19,32 +19,32 @@
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 15:06:21 GMT"
+      "terakhir_diperbarui": "Tue, 27 Oct 2026 15:26:19 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 15:08:16 GMT"
+      "terakhir_diperbarui": "Tue, 27 Oct 2026 15:27:21 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 14:52:15 GMT"
+      "terakhir_diperbarui": "Tue, 27 Oct 2026 15:22:16 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 21.1,
-      "kelembapan_persen": 92,
+      "suhu_c": 21,
+      "kelembapan_persen": 91,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 22.4,
+      "suhu_c": 22.3,
       "kelembapan_persen": 93,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -52,7 +52,7 @@
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 18.1,
+      "suhu_c": 17.9,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -60,7 +60,7 @@
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 16.2,
+      "suhu_c": 16,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -68,7 +68,7 @@
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 15.5,
+      "suhu_c": 15.4,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -76,8 +76,8 @@
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 19.2,
-      "kelembapan_persen": 99,
+      "suhu_c": 19,
+      "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },

@@ -1,8 +1,21 @@
 {
-  "name": "tpbw-api-fetcher",
+  "name": "jabar-landslide-ews",
   "version": "1.0.0",
-  "private": true,
+  "description": "Sistem Informasi Geografis & Peringatan Dini Longsor Jawa Barat (WebGIS EWS 2021-2026)",
+  "type": "module",
   "scripts": {
-    "fetch": "node scripts/fetch-apis.js"
-  }
+    "fetch": "node scripts/fetch-apis.js",
+    "fetch-apis": "node scripts/fetch-apis.js",
+    "fetch-data": "node scripts/github_machine_fetcher.js"
+  },
+  "keywords": [
+    "webgis",
+    "landslide",
+    "ews",
+    "bmkg",
+    "himawari-9",
+    "west-java"
+  ],
+  "author": "TPBW Geospatial Team",
+  "license": "MIT"
 }
