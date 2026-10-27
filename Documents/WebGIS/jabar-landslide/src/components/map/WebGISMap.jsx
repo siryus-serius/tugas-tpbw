@@ -32,17 +32,17 @@ const earthquakeIcon = new L.DivIcon({
 });
 
 // Custom Icon untuk Gempa Merusak Historis BNPB
-const createHistoricalQuakeIcon = (mag) => {
+const createHistoricalQuakeIcon = (mag, isHighlighted = false) => {
   return new L.DivIcon({
     className: 'custom-historical-quake-marker',
     html: `
-      <div style="display: flex; align-items: center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 2px solid #f43f5e; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px 14px rgba(244, 63, 94, 0.6); white-space: nowrap; cursor: pointer;">
-        <span style="width: 8px; height: 8px; border-radius: 50%; background: #f43f5e; box-shadow: 0 0 6px #f43f5e;"></span>
+      <div style="display: flex; align-items: center; gap: 4px; background: ${isHighlighted ? 'rgba(225, 29, 72, 0.95)' : 'rgba(15, 23, 42, 0.95)'}; border: 2px solid ${isHighlighted ? '#fbbf24' : '#f43f5e'}; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px ${isHighlighted ? '20px rgba(251, 191, 36, 0.9)' : '14px rgba(244, 63, 94, 0.6)'}; white-space: nowrap; cursor: pointer; ${isHighlighted ? 'transform: scale(1.15); animation: pulse 1.5s infinite;' : ''}">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: ${isHighlighted ? '#fbbf24' : '#f43f5e'}; box-shadow: 0 0 8px ${isHighlighted ? '#fbbf24' : '#f43f5e'};"></span>
         <span style="color: #ffffff; font-size: 11px; font-weight: 800; font-family: sans-serif;">M ${mag}</span>
       </div>
     `,
-    iconSize: [75, 26],
-    iconAnchor: [37, 13],
+    iconSize: isHighlighted ? [85, 30] : [75, 26],
+    iconAnchor: isHighlighted ? [42, 15] : [37, 13],
   });
 };
 
@@ -137,40 +137,84 @@ export default function WebGISMap({ initialLayer }) {
 
   // Waktu Real-world Hari Ini
   const now = new Date();
-  const todayDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const currentRealYear = now.getFullYear();
+  const currentRealMonth = now.getMonth() + 1; // 1-12
+  const currentRealDay = now.getDate();
   const currentRealHour = now.getHours();
+  const todayDateStr = `${currentRealYear}-${String(currentRealMonth).padStart(2, '0')}-${String(currentRealDay).padStart(2, '0')}`;
 
-  // State Kalender & Fitur Maju/Mundur Waktu 24 Jam
+  // State Filter Mode Simulasi: 'hari' (24 Jam) | 'bulan' (Harian dlm Bulan) | 'tahun' (2021-2026)
+  const [simMode, setSimMode] = useState('hari');
+  // State Kecepatan Putar (Playback Speed): 0.5x, 1x, 2x, 4x
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+
+  // State Kalender & Fitur Maju/Mundur Waktu
   const [selectedDate, setSelectedDate] = useState(todayDateStr);
   const [selectedHour, setSelectedHour] = useState(currentRealHour);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTimeline, setShowTimeline] = useState(true);
 
-  // Periksa apakah tanggal yang dipilih adalah Hari Ini (Live)
+  // Parsing Tanggal Terpilih
+  const [selYearStr, selMonthStr, selDayStr] = (selectedDate || todayDateStr).split('-');
+  const selectedYearNum = parseInt(selYearStr, 10) || currentRealYear;
+  const selectedMonthNum = parseInt(selMonthStr, 10) || currentRealMonth;
+  const selectedDayNum = parseInt(selDayStr, 10) || currentRealDay;
+
+  // Batas Kalender & Jam Realtime
   const isToday = selectedDate === todayDateStr;
-  // Jika hari ini, batas maksimal jam mengikuti jam saat ini (currentRealHour). Jika hari lampau, batasnya 23 (24 jam penuh).
+  const isCurrentMonth = selectedYearNum === currentRealYear && selectedMonthNum === currentRealMonth;
+  const daysInSelectedMonth = new Date(selectedYearNum, selectedMonthNum, 0).getDate();
+  const maxAvailableDay = isCurrentMonth ? Math.min(daysInSelectedMonth, currentRealDay) : daysInSelectedMonth;
   const maxAvailableHour = isToday ? currentRealHour : 23;
 
-  // Tahun yang diekstrak dari tanggal (misal "2024", "2023", dst.)
-  const dateYear = selectedDate.split('-')[0];
-  const isLive = isToday && selectedHour === currentRealHour;
-  const selectedYear = isLive ? 'terkini' : (['2021', '2022', '2023', '2024', '2025'].includes(dateYear) ? dateYear : '2025');
+  // Status Live & Tahun Citra Satelit Terpilih
+  const isLive = (simMode === 'hari' && isToday && selectedHour === currentRealHour) ||
+                 (simMode === 'bulan' && isToday) ||
+                 (simMode === 'tahun' && selectedYearNum === 2026);
 
-  // Looping Auto-Play Timeline (Maju per 1.2 detik per jam)
+  const selectedYear = (selectedYearNum === 2026 || isLive) ? 'terkini' : String(selectedYearNum);
+  const dateYear = String(selectedYearNum);
+
+  // Looping Auto-Play Timeline (Dengan Kecepatan Playback Speed Dinamis & Multi-Mode)
   useEffect(() => {
     let interval;
     if (isPlaying) {
+      const speedDelays = {
+        0.5: 2000,
+        1: 1000,
+        2: 500,
+        4: 250,
+      };
+      const delay = speedDelays[playbackSpeed] || 1000;
+
       interval = setInterval(() => {
-        setSelectedHour((prev) => {
-          if (prev >= maxAvailableHour) {
-            return 0; // Ulangi dari jam 00:00
-          }
-          return prev + 1;
-        });
-      }, 1200);
+        if (simMode === 'hari') {
+          setSelectedHour((prev) => (prev >= maxAvailableHour ? 0 : prev + 1));
+        } else if (simMode === 'bulan') {
+          setSelectedDate((prevDate) => {
+            const [yS, mS, dS] = (prevDate || todayDateStr).split('-');
+            const y = parseInt(yS, 10);
+            const m = parseInt(mS, 10);
+            const d = parseInt(dS, 10);
+            const totalDays = new Date(y, m, 0).getDate();
+            const isCurrM = y === currentRealYear && m === currentRealMonth;
+            const maxD = isCurrM ? Math.min(totalDays, currentRealDay) : totalDays;
+            const nextD = d >= maxD ? 1 : d + 1;
+            return `${y}-${String(m).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`;
+          });
+        } else if (simMode === 'tahun') {
+          setSelectedDate((prevDate) => {
+            const [yS, mS, dS] = (prevDate || todayDateStr).split('-');
+            const y = parseInt(yS, 10);
+            const nextY = y >= 2026 ? 2021 : y + 1;
+            if (nextY === 2026) return todayDateStr;
+            return `${nextY}-${mS}-${dS}`;
+          });
+        }
+      }, delay);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, maxAvailableHour]);
+  }, [isPlaying, simMode, playbackSpeed, maxAvailableHour, maxAvailableDay, currentRealYear, currentRealMonth, currentRealDay, todayDateStr]);
 
   // Jaga agar selectedHour tidak melampaui maxAvailableHour
   useEffect(() => {
@@ -178,6 +222,13 @@ export default function WebGISMap({ initialLayer }) {
       setSelectedHour(maxAvailableHour);
     }
   }, [maxAvailableHour, selectedHour]);
+
+  // Jaga agar selectedDayNum tidak melampaui maxAvailableDay
+  useEffect(() => {
+    if (selectedDayNum > maxAvailableDay) {
+      setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(maxAvailableDay).padStart(2, '0')}`);
+    }
+  }, [maxAvailableDay, selectedDayNum, selectedMonthNum, selectedYearNum]);
 
   const handleDateChange = (newDateStr) => {
     setSelectedDate(newDateStr);
@@ -189,22 +240,54 @@ export default function WebGISMap({ initialLayer }) {
     }
   };
 
+  // Navigasi Langkah Mundur Sesuai Mode
+  const canStepBack = simMode === 'hari' ? selectedHour > 0 :
+                      simMode === 'bulan' ? selectedDayNum > 1 :
+                      selectedYearNum > 2021;
+
   const handleStepBack = () => {
-    setSelectedHour((prev) => Math.max(0, prev - 1));
+    if (simMode === 'hari') {
+      setSelectedHour((prev) => Math.max(0, prev - 1));
+    } else if (simMode === 'bulan') {
+      const prevD = Math.max(1, selectedDayNum - 1);
+      setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(prevD).padStart(2, '0')}`);
+    } else if (simMode === 'tahun') {
+      const prevY = Math.max(2021, selectedYearNum - 1);
+      if (prevY === 2026) setSelectedDate(todayDateStr);
+      else setSelectedDate(`${prevY}-${selMonthStr}-${selDayStr}`);
+    }
   };
 
+  // Navigasi Langkah Maju Sesuai Mode
+  const canStepForward = simMode === 'hari' ? selectedHour < maxAvailableHour :
+                         simMode === 'bulan' ? selectedDayNum < maxAvailableDay :
+                         selectedYearNum < 2026;
+
   const handleStepForward = () => {
-    setSelectedHour((prev) => Math.min(maxAvailableHour, prev + 1));
+    if (simMode === 'hari') {
+      setSelectedHour((prev) => Math.min(maxAvailableHour, prev + 1));
+    } else if (simMode === 'bulan') {
+      const nextD = Math.min(maxAvailableDay, selectedDayNum + 1);
+      setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`);
+    } else if (simMode === 'tahun') {
+      const nextY = Math.min(2026, selectedYearNum + 1);
+      if (nextY === 2026) setSelectedDate(todayDateStr);
+      else setSelectedDate(`${nextY}-${selMonthStr}-${selDayStr}`);
+    }
+  };
+
+  const getIndonesianMonthName = (monthIndex) => {
+    const months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return months[monthIndex - 1] || '';
   };
 
   const formatIndonesianDateFull = (dateStr) => {
     if (!dateStr) return '';
     const [y, m, d] = dateStr.split('-');
-    const months = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
-    return `${parseInt(d, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
+    return `${parseInt(d, 10)} ${getIndonesianMonthName(parseInt(m, 10))} ${y}`;
   };
 
   // Layer Visibility
@@ -555,23 +638,32 @@ export default function WebGISMap({ initialLayer }) {
         ))}
 
         {/* 9. Marker Gempa Merusak Historis (Faktual BNPB) */}
-        {showHistoricalQuakes && seismicData?.historicalDisasters?.map((event) => (
-          <Marker
-            key={event.id}
-            position={event.koordinat}
-            icon={createHistoricalQuakeIcon(event.magnitudo)}
-            eventHandlers={{
-              click: () => setSelectedDisasterDetail(event)
-            }}
-          >
-            <Tooltip direction="top" offset={[0, -10]}>
-              <div className="font-sans text-xs">
-                <span className="font-bold text-rose-600 block">{event.nama} (M {event.magnitudo})</span>
-                <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
-              </div>
-            </Tooltip>
-          </Marker>
-        ))}
+        {showHistoricalQuakes && seismicData?.historicalDisasters?.map((event) => {
+          const eventYear = event.tanggal?.match(/\b(202\d)\b/)?.[1];
+          const isMatchingYear = simMode === 'tahun' && eventYear === String(selectedYearNum);
+          return (
+            <Marker
+              key={event.id}
+              position={event.koordinat}
+              icon={createHistoricalQuakeIcon(event.magnitudo, isMatchingYear)}
+              eventHandlers={{
+                click: () => setSelectedDisasterDetail(event)
+              }}
+            >
+              <Tooltip direction="top" offset={[0, -10]} permanent={isMatchingYear}>
+                <div className="font-sans text-xs">
+                  <span className="font-bold text-rose-600 block">{event.nama} (M {event.magnitudo})</span>
+                  {isMatchingYear && (
+                    <span className="text-[10px] bg-rose-500/20 text-rose-300 px-1 py-0.5 rounded font-bold block mt-0.5">
+                      ⚡ Gempa Besar Periode {eventYear}
+                    </span>
+                  )}
+                  <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
+                </div>
+              </Tooltip>
+            </Marker>
+          );
+        })}
 
         {/* 10. Marker Gempa Bumi Terkini (BMKG Real-time) */}
         {showGempa && gempaData && (
@@ -705,13 +797,27 @@ export default function WebGISMap({ initialLayer }) {
             <div className="flex items-center gap-2">
               <Calendar className="w-3.5 h-3.5 text-emerald-400" />
               <span className="text-xs font-semibold text-zinc-200 whitespace-nowrap">
-                {formatIndonesianDateFull(selectedDate)} &bull; <b className="text-emerald-400 font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b>
+                {simMode === 'hari' && (
+                  <span>{formatIndonesianDateFull(selectedDate)} &bull; <b className="text-emerald-400 font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b></span>
+                )}
+                {simMode === 'bulan' && (
+                  <span>Simulasi Bulanan: <b className="text-emerald-400 font-bold">{formatIndonesianDateFull(selectedDate)}</b></span>
+                )}
+                {simMode === 'tahun' && (
+                  <span>Simulasi Multi-Tahun: <b className="text-emerald-400 font-bold">Tahun {selectedYearNum}</b></span>
+                )}
               </span>
+              {playbackSpeed > 1 && (
+                <span className="px-1.5 py-0.5 rounded-md bg-sky-400/20 text-sky-300 font-mono text-[10px] font-bold border border-sky-400/30">
+                  {playbackSpeed}x
+                </span>
+              )}
             </div>
             <button
               onClick={() => {
                 handleDateChange(todayDateStr);
                 setSelectedHour(currentRealHour);
+                setSimMode('hari');
                 setShowHimawari(true);
                 setShowGempa(true);
               }}
@@ -773,7 +879,7 @@ export default function WebGISMap({ initialLayer }) {
             <div className="flex items-center justify-between mb-1">
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Kalender Pengamatan</span>
+                <span>Simulasi Waktu & Kalender</span>
               </span>
               {isLive ? (
                 <span className="flex items-center gap-1 text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30 animate-pulse">
@@ -786,10 +892,87 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Input Kalender Tanggal (Bisa Pilih Tanggal, Bulan, Tahun) */}
+            {/* Filter Mode Simulasi: Hari, Bulanan, Tahunan */}
             <div className="space-y-1">
+              <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-400 block">
+                Filter Mode Simulasi:
+              </span>
+              <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => { setSimMode('hari'); setIsPlaying(false); }}
+                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    simMode === 'hari'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Clock className="w-3 h-3" />
+                  <span>24 Jam</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setSimMode('bulan'); setIsPlaying(false); }}
+                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    simMode === 'bulan'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Calendar className="w-3 h-3" />
+                  <span>Bulanan</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setSimMode('tahun'); setIsPlaying(false); }}
+                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    simMode === 'tahun'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span>Tahunan</span>
+                </button>
+              </div>
+              <div className="text-[10px] text-zinc-400 leading-tight pt-0.5">
+                {simMode === 'hari' && '⚡ Simulasi diurnal jam per jam (00:00 - 23:00) & awan radar Himawari-9.'}
+                {simMode === 'bulan' && `📅 Simulasi progres harian bulan ${getIndonesianMonthName(selectedMonthNum)} ${selectedYearNum}.`}
+                {simMode === 'tahun' && '🛰️ Komparasi citra Sentinel-2 & bencana gempa tahunan (2021 – 2026).'}
+              </div>
+            </div>
+
+            {/* Pengatur Kecepatan Simulasi (Percepat Playback Speed) */}
+            <div className="space-y-1 pt-1 border-t border-white/5">
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] font-semibold uppercase tracking-wider text-sky-400 flex items-center gap-1">
+                  <FastForward className="w-3 h-3 text-sky-400" />
+                  <span>Kecepatan Putar (Speed):</span>
+                </span>
+                <span className="text-[10px] font-mono text-emerald-400 font-bold">{playbackSpeed}x</span>
+              </div>
+              <div className="grid grid-cols-4 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                {[0.5, 1, 2, 4].map((spd) => (
+                  <button
+                    key={spd}
+                    type="button"
+                    onClick={() => setPlaybackSpeed(spd)}
+                    className={`py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center ${
+                      playbackSpeed === spd
+                        ? 'bg-sky-400 text-zinc-950 font-bold shadow-md shadow-sky-400/20'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {spd}x
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Input Kalender Tanggal (Bisa Pilih Tanggal, Bulan, Tahun) */}
+            <div className="space-y-1 pt-1 border-t border-white/5">
               <label className="text-[10px] text-zinc-400 block font-medium">
-                Pilih Tanggal (2021 – 2026):
+                Pilih Tanggal Kalender (2021 – 2026):
               </label>
               <input
                 type="date"
@@ -842,23 +1025,26 @@ export default function WebGISMap({ initialLayer }) {
               </button>
             </div>
 
-            {/* Pintas Tahun Cepat (2021-2025) */}
+            {/* Pintas Tahun Cepat (2021-2026) */}
             <div>
               <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
                 Lompat ke Tahun:
               </span>
-              <div className="grid grid-cols-5 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
-                {['2021', '2022', '2023', '2024', '2025'].map((yr) => (
+              <div className="grid grid-cols-6 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                {['2021', '2022', '2023', '2024', '2025', '2026'].map((yr) => (
                   <button
                     key={yr}
-                    onClick={() => handleDateChange(`${yr}-06-15`)}
-                    className={`py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                      dateYear === yr
+                    onClick={() => {
+                      if (yr === '2026') handleDateChange(todayDateStr);
+                      else handleDateChange(`${yr}-06-15`);
+                    }}
+                    className={`py-1 text-[11px] font-semibold rounded-lg transition-all cursor-pointer ${
+                      String(selectedYearNum) === yr
                         ? 'bg-emerald-400 text-zinc-950 shadow-md shadow-emerald-400/20 font-bold'
                         : 'text-zinc-400 hover:text-white hover:bg-white/10'
                     }`}
                   >
-                    {yr}
+                    {yr === '2026' ? 'Live' : yr}
                   </button>
                 ))}
               </div>
@@ -875,9 +1061,15 @@ export default function WebGISMap({ initialLayer }) {
                 <b className="text-emerald-400 font-mono font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b>
               </div>
               <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-white/5">
-                <span>Mode Data:</span>
+                <span>Mode Simulasi:</span>
+                <span className="text-emerald-300 font-semibold uppercase">
+                  {simMode === 'hari' ? '24 Jam' : simMode === 'bulan' ? 'Bulanan' : 'Tahunan'} ({playbackSpeed}x)
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-zinc-400">
+                <span>Status Data:</span>
                 <span className={isLive ? 'text-rose-400 font-bold' : 'text-zinc-300'}>
-                  {isLive ? '🔴 Real-Time Live Satelit' : `📅 Satelit Historis (${dateYear})`}
+                  {isLive ? '🔴 Real-Time Live' : `📅 Satelit Historis (${dateYear})`}
                 </span>
               </div>
             </div>
@@ -1210,80 +1402,170 @@ export default function WebGISMap({ initialLayer }) {
         </div>
       </aside>
 
-      {/* 13. Floating 24-Hour Timeline Bar at Bottom of Screen (Dasar Layar) */}
+      {/* 13. Floating Multi-Mode Timeline Bar at Bottom of Screen (Dasar Layar) */}
       {showTimeline && (
         <div 
-          className={`absolute bottom-5 left-1/2 -translate-x-1/2 z-[900] w-[95vw] sm:w-[90vw] md:max-w-2xl lg:max-w-3xl transition-all duration-300 ${
+          className={`absolute bottom-4 left-1/2 -translate-x-1/2 z-[900] w-[96vw] sm:w-[92vw] md:max-w-3xl lg:max-w-4xl transition-all duration-300 ${
             isSidebarOpen ? 'lg:left-[calc(50%+140px)]' : 'lg:left-1/2'
           }`}
         >
-          <div className="glass-panel-elevated rounded-2xl border border-white/15 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl text-white space-y-2">
-            {/* Top Bar: Play/Pause Controls, Step Buttons, and Time Badge */}
+          <div className="glass-panel-elevated rounded-2xl border border-white/15 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl text-white space-y-2.5">
+            {/* Top Bar: Playback Controls, Speed Selector, Simulation Mode, and Status Badges */}
             <div className="flex items-center justify-between gap-2 flex-wrap">
-              {/* Left Controls: Step Back, Play/Pause, Step Forward */}
-              <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+              {/* Left Controls: Step Back, Play/Pause, Step Forward & Speed Multipliers */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                  <button
+                    type="button"
+                    onClick={handleStepBack}
+                    disabled={!canStepBack}
+                    className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+                    title={simMode === 'hari' ? "Mundur 1 Jam" : simMode === 'bulan' ? "Mundur 1 Hari" : "Mundur 1 Tahun"}
+                  >
+                    <SkipBack className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="px-3 py-1 rounded-lg bg-emerald-400 hover:bg-emerald-300 active:scale-95 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-400/20 transition-all cursor-pointer"
+                    title={isPlaying ? "Jeda Simulasi" : "Putar Simulasi Otomatis"}
+                  >
+                    {isPlaying ? (
+                      <>
+                        <Pause className="w-3.5 h-3.5 fill-current" />
+                        <span>Jeda</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <span>Putar</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleStepForward}
+                    disabled={!canStepForward}
+                    className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+                    title={simMode === 'hari' ? "Maju 1 Jam" : simMode === 'bulan' ? "Maju 1 Hari" : "Maju 1 Tahun"}
+                  >
+                    <SkipForward className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Inline Speed Selector Pill (Fitur Percepat) */}
+                <div className="flex items-center bg-white/5 p-0.5 rounded-xl border border-white/10 text-[10px] font-bold">
+                  <span className="px-1.5 text-zinc-400 flex items-center gap-1" title="Pilihan Kecepatan Simulasi">
+                    <FastForward className="w-3 h-3 text-sky-400" />
+                    <span className="hidden sm:inline">Speed:</span>
+                  </span>
+                  {[0.5, 1, 2, 4].map((spd) => (
+                    <button
+                      key={spd}
+                      type="button"
+                      onClick={() => setPlaybackSpeed(spd)}
+                      className={`px-1.5 sm:px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
+                        playbackSpeed === spd
+                          ? 'bg-sky-400 text-zinc-950 font-black shadow-sm shadow-sky-400/30'
+                          : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      {spd}x
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mode Simulasi Switcher: 24 Jam / Bulanan / Tahunan */}
+              <div className="flex items-center bg-white/5 p-0.5 sm:p-1 rounded-xl border border-white/10 text-xs">
                 <button
                   type="button"
-                  onClick={handleStepBack}
-                  disabled={selectedHour <= 0}
-                  className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
-                  title="Mundur 1 Jam"
+                  onClick={() => {
+                    setSimMode('hari');
+                    setIsPlaying(false);
+                  }}
+                  className={`px-2 sm:px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer flex items-center gap-1 text-[11px] ${
+                    simMode === 'hari'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                  title="Simulasi Jam (Rentang 24 Jam)"
                 >
-                  <SkipBack className="w-3.5 h-3.5" />
+                  <Clock className="w-3 h-3" />
+                  <span>24 Jam</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="px-3 py-1 rounded-lg bg-emerald-400 hover:bg-emerald-300 active:scale-95 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-400/20 transition-all cursor-pointer"
-                  title={isPlaying ? "Jeda Simulasi" : "Putar Maju Jam Otomatis"}
+                  onClick={() => {
+                    setSimMode('bulan');
+                    setIsPlaying(false);
+                  }}
+                  className={`px-2 sm:px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer flex items-center gap-1 text-[11px] ${
+                    simMode === 'bulan'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                  title="Simulasi Harian dalam Sebulan"
                 >
-                  {isPlaying ? (
-                    <>
-                      <Pause className="w-3.5 h-3.5 fill-current" />
-                      <span>Jeda</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3.5 h-3.5 fill-current" />
-                      <span>Putar</span>
-                    </>
-                  )}
+                  <Calendar className="w-3 h-3" />
+                  <span>Bulanan</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={handleStepForward}
-                  disabled={selectedHour >= maxAvailableHour}
-                  className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
-                  title="Maju 1 Jam"
+                  onClick={() => {
+                    setSimMode('tahun');
+                    setIsPlaying(false);
+                  }}
+                  className={`px-2 sm:px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer flex items-center gap-1 text-[11px] ${
+                    simMode === 'tahun'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                  title="Simulasi Tahunan (2021 – 2026)"
                 >
-                  <SkipForward className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3 h-3" />
+                  <span>Tahunan</span>
                 </button>
               </div>
 
-              {/* Center Info: Selected Date & Hour Badge */}
+              {/* Time Badge & Live Status */}
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.06] border border-white/10 text-xs shadow-inner">
-                  <Clock className="w-3.5 h-3.5 text-sky-400" />
-                  <span className="font-mono font-bold text-sm text-white tracking-wider">
-                    {String(selectedHour).padStart(2, '0')}:00
-                  </span>
-                  <span className="text-[10px] text-zinc-400">WIB</span>
+                  {simMode === 'hari' && (
+                    <>
+                      <Clock className="w-3.5 h-3.5 text-sky-400" />
+                      <span className="font-mono font-bold text-sm text-white tracking-wider">
+                        {String(selectedHour).padStart(2, '0')}:00
+                      </span>
+                      <span className="text-[10px] text-zinc-400">WIB</span>
+                    </>
+                  )}
+                  {simMode === 'bulan' && (
+                    <>
+                      <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="font-semibold text-xs text-white">
+                        {selectedDayNum} {getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}
+                      </span>
+                    </>
+                  )}
+                  {simMode === 'tahun' && (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                      <span className="font-bold text-sm text-white">
+                        {selectedYearNum === 2026 ? '2026 (Live)' : `Tahun ${selectedYearNum}`}
+                      </span>
+                    </>
+                  )}
                 </div>
 
-                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/[0.04] border border-white/5 text-[11px] text-zinc-300">
-                  <Calendar className="w-3 h-3 text-emerald-400" />
-                  <span>{formatIndonesianDateFull(selectedDate)}</span>
-                </div>
-              </div>
-
-              {/* Right Status Badge */}
-              <div className="flex items-center gap-2">
                 {isLive ? (
                   <span className="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] font-bold flex items-center gap-1.5 animate-pulse shadow-sm shadow-rose-500/20 whitespace-nowrap">
                     <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-                    <span>LIVE SAAT INI ({currentRealHour}:00)</span>
+                    <span>LIVE</span>
                   </span>
                 ) : (
                   <button
@@ -1303,75 +1585,157 @@ export default function WebGISMap({ initialLayer }) {
               </div>
             </div>
 
-            {/* Slider Bar: 00:00 to maxAvailableHour */}
+            {/* Dynamic Slider Bar based on simMode */}
             <div className="space-y-1">
               <div className="relative flex items-center">
-                <input
-                  type="range"
-                  min={0}
-                  max={maxAvailableHour}
-                  step={1}
-                  value={selectedHour}
-                  onChange={(e) => {
-                    setSelectedHour(parseInt(e.target.value, 10));
-                    setIsPlaying(false);
-                  }}
-                  className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
-                />
+                {/* 1. Mode Hari (00:00 s.d. maxAvailableHour) */}
+                {simMode === 'hari' && (
+                  <input
+                    type="range"
+                    min={0}
+                    max={maxAvailableHour}
+                    step={1}
+                    value={selectedHour}
+                    onChange={(e) => {
+                      setSelectedHour(parseInt(e.target.value, 10));
+                      setIsPlaying(false);
+                    }}
+                    className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
+                  />
+                )}
+
+                {/* 2. Mode Bulan (1 s.d. maxAvailableDay) */}
+                {simMode === 'bulan' && (
+                  <input
+                    type="range"
+                    min={1}
+                    max={maxAvailableDay}
+                    step={1}
+                    value={selectedDayNum}
+                    onChange={(e) => {
+                      const dVal = parseInt(e.target.value, 10);
+                      setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(dVal).padStart(2, '0')}`);
+                      setIsPlaying(false);
+                    }}
+                    className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
+                  />
+                )}
+
+                {/* 3. Mode Tahun (2021 s.d. 2026) */}
+                {simMode === 'tahun' && (
+                  <input
+                    type="range"
+                    min={2021}
+                    max={2026}
+                    step={1}
+                    value={selectedYearNum}
+                    onChange={(e) => {
+                      const yVal = parseInt(e.target.value, 10);
+                      if (yVal === 2026) handleDateChange(todayDateStr);
+                      else handleDateChange(`${yVal}-06-15`);
+                      setIsPlaying(false);
+                    }}
+                    className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
+                  />
+                )}
               </div>
 
-              {/* Hour Ticks Along Bottom of Track */}
-              <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(0)} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 0 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  00:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(Math.min(4, maxAvailableHour))} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 4 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  04:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(Math.min(8, maxAvailableHour))} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 8 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  08:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(Math.min(12, maxAvailableHour))} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 12 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  12:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(Math.min(16, maxAvailableHour))} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 16 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  16:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(Math.min(20, maxAvailableHour))} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === 20 ? 'text-emerald-400 font-bold' : ''}`}
-                >
-                  20:00
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setSelectedHour(maxAvailableHour)} 
-                  className={`hover:text-white cursor-pointer ${selectedHour === maxAvailableHour ? (isToday ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold') : ''}`}
-                >
-                  {isToday ? `Maks (${String(currentRealHour).padStart(2, '0')}:00)` : '23:00'}
-                </button>
-              </div>
+              {/* Ticks Along Bottom of Track */}
+              {simMode === 'hari' && (
+                <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(0)} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 0 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    00:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(Math.min(4, maxAvailableHour))} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 4 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    04:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(Math.min(8, maxAvailableHour))} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 8 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    08:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(Math.min(12, maxAvailableHour))} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 12 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    12:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(Math.min(16, maxAvailableHour))} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 16 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    16:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(Math.min(20, maxAvailableHour))} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === 20 ? 'text-emerald-400 font-bold' : ''}`}
+                  >
+                    20:00
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setSelectedHour(maxAvailableHour)} 
+                    className={`hover:text-white cursor-pointer ${selectedHour === maxAvailableHour ? (isToday ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold') : ''}`}
+                  >
+                    {isToday ? `Maks (${String(currentRealHour).padStart(2, '0')}:00)` : '23:00'}
+                  </button>
+                </div>
+              )}
+
+              {simMode === 'bulan' && (
+                <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
+                  {[1, 5, 10, 15, 20, 25, maxAvailableDay].map((d) => (
+                    <button
+                      key={`tick-day-${d}`}
+                      type="button"
+                      onClick={() => {
+                        const targetD = Math.min(d, maxAvailableDay);
+                        setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(targetD).padStart(2, '0')}`);
+                      }}
+                      className={`hover:text-white cursor-pointer ${
+                        selectedDayNum === d ? 'text-emerald-400 font-bold' : ''
+                      }`}
+                    >
+                      {d === maxAvailableDay && isCurrentMonth ? `Tgl ${d} (Hari Ini)` : `Tgl ${d}`}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {simMode === 'tahun' && (
+                <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
+                  {[2021, 2022, 2023, 2024, 2025, 2026].map((yr) => (
+                    <button
+                      key={`tick-year-${yr}`}
+                      type="button"
+                      onClick={() => {
+                        if (yr === 2026) handleDateChange(todayDateStr);
+                        else handleDateChange(`${yr}-06-15`);
+                      }}
+                      className={`hover:text-white cursor-pointer ${
+                        selectedYearNum === yr
+                          ? yr === 2026 ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'
+                          : ''
+                      }`}
+                    >
+                      {yr === 2026 ? '2026 (Live)' : yr}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
