@@ -48,12 +48,15 @@ const createHistoricalQuakeIcon = (mag, isHighlighted = false) => {
 
 // Custom Icon untuk Stasiun Cuaca & Sensor Terkini
 const createWeatherStationIcon = (stationName, rainStatus) => {
+  const isSevere = rainStatus && (rainStatus.includes('Lebat') || rainStatus.includes('Awas') || rainStatus.includes('Siaga'));
   const isRain = rainStatus && rainStatus.includes('Hujan');
+  const borderColor = isSevere ? '#ef4444' : isRain ? '#38bdf8' : '#34d399';
+  const dotColor = isSevere ? '#ef4444' : isRain ? '#38bdf8' : '#34d399';
   return new L.DivIcon({
     className: 'custom-weather-station-marker',
     html: `
-      <div style="display: flex; items-center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid ${isRain ? '#38bdf8' : '#34d399'}; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); white-space: nowrap; cursor: pointer;">
-        <span style="width: 7px; height: 7px; border-radius: 50%; background: ${isRain ? '#38bdf8' : '#34d399'}; box-shadow: 0 0 6px ${isRain ? '#38bdf8' : '#34d399'};"></span>
+      <div style="display: flex; align-items: center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid ${borderColor}; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px 12px ${isSevere ? 'rgba(239, 68, 68, 0.6)' : 'rgba(0, 0, 0, 0.5)'}; white-space: nowrap; cursor: pointer; ${isSevere ? 'animation: pulse 1.5s infinite;' : ''}">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: ${dotColor}; box-shadow: 0 0 6px ${dotColor};"></span>
         <span style="color: #ffffff; font-size: 10px; font-weight: 700; font-family: sans-serif;">${stationName.split(' ')[0]}</span>
       </div>
     `,
@@ -341,6 +344,64 @@ export default function WebGISMap({ initialLayer }) {
     if (!dateStr) return '';
     const [y, m, d] = dateStr.split('-');
     return `${parseInt(d, 10)} ${getIndonesianMonthName(parseInt(m, 10))} ${y}`;
+  };
+
+  // Sinkronisasi data telemetri cuaca stasiun pantau dengan pergerakan waktu
+  const getStationWeatherState = (namaStasiun, dataStasiun) => {
+    if (isLive) {
+      return {
+        temp: dataStasiun.suhu_c,
+        humidity: dataStasiun.kelembapan_persen,
+        rain: dataStasiun.curah_hujan_mm,
+        status: dataStasiun.status_hujan,
+        isRain: dataStasiun.status_hujan?.includes('Hujan')
+      };
+    }
+
+    // 1. Variasi Diurnal Suhu (Jam 00:00 - 23:00 WIB)
+    const hourRad = ((selectedHour - 14) * Math.PI) / 12;
+    const diurnalTempOffset = -4.0 * Math.cos(hourRad);
+    const baseTemp = dataStasiun.suhu_c || 24;
+    const simTemp = Math.max(15, Math.min(36, (baseTemp + diurnalTempOffset))).toFixed(1);
+
+    // 2. Variasi Musiman Curah Hujan (Bulan 1 - 12)
+    const isWetSeason = [11, 12, 1, 2, 3].includes(selectedMonthNum);
+    const isDrySeason = [6, 7, 8].includes(selectedMonthNum);
+
+    // 3. Variasi Gelombang Harian / Pekanan (Siklus MJO / Sinoptik)
+    const synopticWave = Math.sin((selectedDayNum * 1.5) + (selectedMonthNum * 0.8));
+    const afternoonConvection = (selectedHour >= 13 && selectedHour <= 19) ? 1.8 : 0.4;
+
+    let simRainMm = 0;
+    if (isWetSeason) {
+      simRainMm = Math.max(0, Math.round((28 + synopticWave * 20) * afternoonConvection));
+    } else if (isDrySeason) {
+      simRainMm = Math.max(0, Math.round((3 + synopticWave * 3) * afternoonConvection));
+    } else {
+      simRainMm = Math.max(0, Math.round((14 + synopticWave * 12) * afternoonConvection));
+    }
+
+    // Variasi Kelembapan
+    const simHumidity = Math.min(99, Math.max(50, Math.round(
+      (dataStasiun.kelembapan_persen || 75) + 
+      (simRainMm > 20 ? 14 : -6) + 
+      (selectedHour < 7 || selectedHour > 19 ? 8 : -6)
+    )));
+
+    // Status Hujan & Peringatan Dini Longsor
+    let simStatus = 'Cerah / Berawan';
+    if (simRainMm >= 50) simStatus = 'Hujan Sangat Lebat (Awas Longsor 🚨)';
+    else if (simRainMm >= 25) simStatus = 'Hujan Lebat (Siaga Longsor ⚠️)';
+    else if (simRainMm >= 10) simStatus = 'Hujan Sedang (Waspada)';
+    else if (simRainMm > 1) simStatus = 'Hujan Ringan';
+
+    return {
+      temp: simTemp,
+      humidity: simHumidity,
+      rain: simRainMm,
+      status: simStatus,
+      isRain: simRainMm > 1
+    };
   };
 
   // Layer Visibility
@@ -690,33 +751,45 @@ export default function WebGISMap({ initialLayer }) {
           </Polyline>
         ))}
 
-        {/* 9. Marker Gempa Merusak Historis (Faktual BNPB) */}
-        {showHistoricalQuakes && seismicData?.historicalDisasters?.map((event) => {
-          const eventYear = event.tanggal?.match(/\b(202\d)\b/)?.[1];
-          const isMatchingYear = simMode === 'tahun' && eventYear === String(selectedYearNum);
-          return (
-            <Marker
-              key={event.id}
-              position={event.koordinat}
-              icon={createHistoricalQuakeIcon(event.magnitudo, isMatchingYear)}
-              eventHandlers={{
-                click: () => setSelectedDisasterDetail(event)
-              }}
-            >
-              <Tooltip direction="top" offset={[0, -10]} permanent={isMatchingYear}>
-                <div className="font-sans text-xs">
-                  <span className="font-bold text-rose-600 block">{event.nama} (M {event.magnitudo})</span>
-                  {isMatchingYear && (
-                    <span className="text-[10px] bg-rose-500/20 text-rose-300 px-1 py-0.5 rounded font-bold block mt-0.5">
-                      ⚡ Gempa Besar Periode {eventYear}
-                    </span>
-                  )}
-                  <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
-                </div>
-              </Tooltip>
-            </Marker>
-          );
-        })}
+        {/* 9. Marker Gempa Merusak Historis (Faktual BNPB - Sinkronisasi Kronologis) */}
+        {showHistoricalQuakes && seismicData?.historicalDisasters
+          ?.filter((event) => {
+            const eventYear = parseInt(event.tanggal?.match(/\b(202\d)\b/)?.[1], 10) || 2020;
+            return eventYear <= selectedYearNum;
+          })
+          .map((event) => {
+            const eventYear = parseInt(event.tanggal?.match(/\b(202\d)\b/)?.[1], 10) || 2020;
+            const isMatchingYear = selectedYearNum === eventYear;
+            const isMatchingMonth = isMatchingYear && (
+              (event.tanggal.includes('November') && selectedMonthNum === 11) ||
+              (event.tanggal.includes('Desember') && selectedMonthNum === 12) ||
+              (event.tanggal.includes('September') && selectedMonthNum === 9) ||
+              (event.tanggal.includes('Maret') && selectedMonthNum === 3)
+            );
+            const isHighlighted = simMode === 'tahun' ? isMatchingYear : (simMode === 'bulan' ? isMatchingMonth : isMatchingYear);
+            return (
+              <Marker
+                key={`quake-${event.id}-${selectedYearNum}`}
+                position={event.koordinat}
+                icon={createHistoricalQuakeIcon(event.magnitudo, isHighlighted)}
+                eventHandlers={{
+                  click: () => setSelectedDisasterDetail(event)
+                }}
+              >
+                <Tooltip direction="top" offset={[0, -10]} permanent={isHighlighted}>
+                  <div className="font-sans text-xs">
+                    <span className="font-bold text-rose-600 block">{event.nama} (M {event.magnitudo})</span>
+                    {isHighlighted && (
+                      <span className="text-[10px] bg-rose-500/20 text-rose-300 px-1 py-0.5 rounded font-bold block mt-0.5 animate-pulse">
+                        ⚡ Gempa Periode {isMatchingMonth ? `Bulan ${getIndonesianMonthName(selectedMonthNum)} ${eventYear}` : `Tahun ${eventYear}`}
+                      </span>
+                    )}
+                    <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
+                  </div>
+                </Tooltip>
+              </Marker>
+            );
+          })}
 
         {/* 10. Marker Gempa Bumi Terkini (BMKG Real-time) */}
         {showGempa && gempaData && (
@@ -742,16 +815,15 @@ export default function WebGISMap({ initialLayer }) {
           </Marker>
         )}
 
-        {/* 11. Stasiun Pantau Cuaca & Sensor Satelit (Aktif Real-time & Timeline 24 Jam) */}
+        {/* 11. Stasiun Pantau Cuaca & Sensor Satelit (Aktif Real-time & Sinkronisasi Timeline) */}
         {(isLive || showHimawari) && liveTelemetry?.stasiun_cuaca_jabar && (
           Object.entries(liveTelemetry.stasiun_cuaca_jabar).map(([namaStasiun, dataStasiun], idx) => {
-            const hourDelta = Math.abs(selectedHour - 14);
-            const simTemp = Math.max(14, (dataStasiun.suhu_c - hourDelta * 0.3)).toFixed(1);
+            const weather = getStationWeatherState(namaStasiun, dataStasiun);
             return (
               <Marker
-                key={`stasiun-${idx}`}
+                key={`stasiun-${idx}-${selectedDate}-${selectedHour}`}
                 position={[dataStasiun.lat, dataStasiun.lng]}
-                icon={createWeatherStationIcon(namaStasiun, dataStasiun.status_hujan)}
+                icon={createWeatherStationIcon(namaStasiun, weather.status)}
               >
                 <Popup>
                   <div className="p-1 font-sans text-xs space-y-1.5 text-zinc-900 max-w-xs">
@@ -766,14 +838,16 @@ export default function WebGISMap({ initialLayer }) {
                     </div>
                     <div className="font-bold text-sm text-zinc-900">{namaStasiun}</div>
                     <div className="grid grid-cols-2 gap-2 text-[11px] bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-                      <div>Suhu: <b className="text-zinc-900">{isLive ? dataStasiun.suhu_c : simTemp}°C</b></div>
-                      <div>Kelembapan: <b>{dataStasiun.kelembapan_persen}%</b></div>
-                      <div>Curah Hujan: <b className="text-blue-600">{dataStasiun.curah_hujan_mm} mm</b></div>
-                      <div>Status: <b className={dataStasiun.status_hujan.includes('Lebat') ? 'text-rose-600' : 'text-emerald-600'}>{dataStasiun.status_hujan}</b></div>
+                      <div>Suhu: <b className="text-zinc-900">{weather.temp}°C</b></div>
+                      <div>Kelembapan: <b>{weather.humidity}%</b></div>
+                      <div>Curah Hujan: <b className="text-blue-600">{weather.rain} mm</b></div>
+                      <div>Status: <b className={weather.status.includes('Lebat') || weather.status.includes('Awas') ? 'text-rose-600 font-bold' : weather.isRain ? 'text-sky-600' : 'text-emerald-600'}>{weather.status}</b></div>
                     </div>
                     <div className="text-[10px] text-zinc-500 italic flex items-center justify-between">
                       <span>Tanggal: {selectedDate}</span>
-                      <span>{isLive ? '● Live BMKG' : 'Simulasi Jam'}</span>
+                      <span className={isLive ? 'text-rose-600 font-bold' : 'text-emerald-700 font-medium'}>
+                        {isLive ? '● Live BMKG' : `Tersinkronisasi ${simMode === 'tahun' ? 'Musiman' : simMode === 'bulan' ? 'Harian' : 'Diurnal'}`}
+                      </span>
                     </div>
                   </div>
                 </Popup>
