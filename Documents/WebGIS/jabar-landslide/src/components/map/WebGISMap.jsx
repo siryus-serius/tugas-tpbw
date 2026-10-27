@@ -6,7 +6,8 @@ import {
   Layers, Mountain, Satellite, Radio, CloudRain, MapPin, 
   Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles,
   PanelLeftClose, PanelLeftOpen, Activity, AlertTriangle, ShieldAlert,
-  Flame, Home, Users, Building2, Info, X, RefreshCw
+  Flame, Home, Users, Building2, Info, X, RefreshCw,
+  Calendar, Clock, Play, Pause, SkipBack, SkipForward, RotateCcw, History, FastForward
 } from 'lucide-react';
 
 // Fix Leaflet Default Marker Icon
@@ -134,8 +135,77 @@ export default function WebGISMap({ initialLayer }) {
   const zoomLevel = 8;
   const [geoData, setGeoData] = useState(null);
 
-  // Filter Tahun
-  const [selectedYear, setSelectedYear] = useState('2023');
+  // Waktu Real-world Hari Ini
+  const now = new Date();
+  const todayDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const currentRealHour = now.getHours();
+
+  // State Kalender & Fitur Maju/Mundur Waktu 24 Jam
+  const [selectedDate, setSelectedDate] = useState(todayDateStr);
+  const [selectedHour, setSelectedHour] = useState(currentRealHour);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showTimeline, setShowTimeline] = useState(true);
+
+  // Periksa apakah tanggal yang dipilih adalah Hari Ini (Live)
+  const isToday = selectedDate === todayDateStr;
+  // Jika hari ini, batas maksimal jam mengikuti jam saat ini (currentRealHour). Jika hari lampau, batasnya 23 (24 jam penuh).
+  const maxAvailableHour = isToday ? currentRealHour : 23;
+
+  // Tahun yang diekstrak dari tanggal (misal "2024", "2023", dst.)
+  const dateYear = selectedDate.split('-')[0];
+  const isLive = isToday && selectedHour === currentRealHour;
+  const selectedYear = isLive ? 'terkini' : (['2021', '2022', '2023', '2024', '2025'].includes(dateYear) ? dateYear : '2025');
+
+  // Looping Auto-Play Timeline (Maju per 1.2 detik per jam)
+  useEffect(() => {
+    let interval;
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setSelectedHour((prev) => {
+          if (prev >= maxAvailableHour) {
+            return 0; // Ulangi dari jam 00:00
+          }
+          return prev + 1;
+        });
+      }, 1200);
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, maxAvailableHour]);
+
+  // Jaga agar selectedHour tidak melampaui maxAvailableHour
+  useEffect(() => {
+    if (selectedHour > maxAvailableHour) {
+      setSelectedHour(maxAvailableHour);
+    }
+  }, [maxAvailableHour, selectedHour]);
+
+  const handleDateChange = (newDateStr) => {
+    setSelectedDate(newDateStr);
+    setIsPlaying(false);
+    const newIsToday = newDateStr === todayDateStr;
+    const newMaxHour = newIsToday ? currentRealHour : 23;
+    if (selectedHour > newMaxHour) {
+      setSelectedHour(newMaxHour);
+    }
+  };
+
+  const handleStepBack = () => {
+    setSelectedHour((prev) => Math.max(0, prev - 1));
+  };
+
+  const handleStepForward = () => {
+    setSelectedHour((prev) => Math.min(maxAvailableHour, prev + 1));
+  };
+
+  const formatIndonesianDateFull = (dateStr) => {
+    if (!dateStr) return '';
+    const [y, m, d] = dateStr.split('-');
+    const months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return `${parseInt(d, 10)} ${months[parseInt(m, 10) - 1]} ${y}`;
+  };
 
   // Layer Visibility
   const [baseMap, setBaseMap] = useState('osm'); // 'osm' | 'satellite'
@@ -232,10 +302,14 @@ export default function WebGISMap({ initialLayer }) {
   // Handle Initial Layer / Mode dari luar (Navbar/Hero)
   useEffect(() => {
     if (initialLayer === 'terkini') {
-      setSelectedYear('terkini');
+      setSelectedDate(todayDateStr);
+      setSelectedHour(currentRealHour);
       setShowHimawari(true);
       setShowGempa(true);
       setShowSentinel2(true);
+    } else if (['2021', '2022', '2023', '2024', '2025'].includes(initialLayer)) {
+      setSelectedDate(`${initialLayer}-06-15`);
+      setSelectedHour(12);
     } else if (initialLayer === 'slope') {
       setShowSlope(true);
     } else if (initialLayer === 'soil') {
@@ -523,34 +597,44 @@ export default function WebGISMap({ initialLayer }) {
           </Marker>
         )}
 
-        {/* 11. Stasiun Pantau Cuaca & Sensor Satelit Terkini (Aktif pada Mode Terkini) */}
-        {selectedYear === 'terkini' && liveTelemetry?.stasiun_cuaca_jabar && (
-          Object.entries(liveTelemetry.stasiun_cuaca_jabar).map(([namaStasiun, dataStasiun], idx) => (
-            <Marker
-              key={`stasiun-${idx}`}
-              position={[dataStasiun.lat, dataStasiun.lng]}
-              icon={createWeatherStationIcon(namaStasiun, dataStasiun.status_hujan)}
-            >
-              <Popup>
-                <div className="p-1 font-sans text-xs space-y-1.5 text-zinc-900 max-w-xs">
-                  <div className="flex items-center gap-1.5 text-emerald-600 font-bold">
-                    <CloudRain className="w-4 h-4" />
-                    <span>STASIUN SENSOR TERKINI</span>
+        {/* 11. Stasiun Pantau Cuaca & Sensor Satelit (Aktif Real-time & Timeline 24 Jam) */}
+        {(isLive || showHimawari) && liveTelemetry?.stasiun_cuaca_jabar && (
+          Object.entries(liveTelemetry.stasiun_cuaca_jabar).map(([namaStasiun, dataStasiun], idx) => {
+            const hourDelta = Math.abs(selectedHour - 14);
+            const simTemp = Math.max(14, (dataStasiun.suhu_c - hourDelta * 0.3)).toFixed(1);
+            return (
+              <Marker
+                key={`stasiun-${idx}`}
+                position={[dataStasiun.lat, dataStasiun.lng]}
+                icon={createWeatherStationIcon(namaStasiun, dataStasiun.status_hujan)}
+              >
+                <Popup>
+                  <div className="p-1 font-sans text-xs space-y-1.5 text-zinc-900 max-w-xs">
+                    <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+                      <div className="flex items-center gap-1.5 text-emerald-600 font-bold">
+                        <CloudRain className="w-4 h-4" />
+                        <span>SENSOR CUACA JABAR</span>
+                      </div>
+                      <span className="font-mono text-[10px] bg-zinc-100 px-1.5 py-0.5 rounded text-zinc-700 font-bold">
+                        {String(selectedHour).padStart(2, '0')}:00 WIB
+                      </span>
+                    </div>
+                    <div className="font-bold text-sm text-zinc-900">{namaStasiun}</div>
+                    <div className="grid grid-cols-2 gap-2 text-[11px] bg-zinc-50 p-2 rounded-xl border border-zinc-200">
+                      <div>Suhu: <b className="text-zinc-900">{isLive ? dataStasiun.suhu_c : simTemp}°C</b></div>
+                      <div>Kelembapan: <b>{dataStasiun.kelembapan_persen}%</b></div>
+                      <div>Curah Hujan: <b className="text-blue-600">{dataStasiun.curah_hujan_mm} mm</b></div>
+                      <div>Status: <b className={dataStasiun.status_hujan.includes('Lebat') ? 'text-rose-600' : 'text-emerald-600'}>{dataStasiun.status_hujan}</b></div>
+                    </div>
+                    <div className="text-[10px] text-zinc-500 italic flex items-center justify-between">
+                      <span>Tanggal: {selectedDate}</span>
+                      <span>{isLive ? '● Live BMKG' : 'Simulasi Jam'}</span>
+                    </div>
                   </div>
-                  <div className="font-bold text-sm text-zinc-900">{namaStasiun}</div>
-                  <div className="grid grid-cols-2 gap-2 text-[11px] bg-zinc-50 p-2 rounded-xl border border-zinc-200">
-                    <div>Suhu Udara: <b className="text-zinc-900">{dataStasiun.suhu_c}°C</b></div>
-                    <div>Kelembapan: <b>{dataStasiun.kelembapan_persen}%</b></div>
-                    <div>Curah Hujan: <b className="text-blue-600">{dataStasiun.curah_hujan_mm} mm</b></div>
-                    <div>Status: <b className={dataStasiun.status_hujan.includes('Lebat') ? 'text-rose-600' : 'text-emerald-600'}>{dataStasiun.status_hujan}</b></div>
-                  </div>
-                  <div className="text-[10px] text-zinc-500 italic">
-                    Sumber: Open-Meteo & Radar Satelit Live
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))
+                </Popup>
+              </Marker>
+            );
+          })
         )}
 
         {/* 12. Marker GPS Posisi Pengguna */}
@@ -587,7 +671,7 @@ export default function WebGISMap({ initialLayer }) {
 
       {/* Floating Center Mode HUD (Terkini / Historis Switcher) */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[900] max-w-[92vw] flex items-center gap-2.5 px-4 py-2 rounded-2xl glass-panel-elevated border border-white/10 shadow-2xl backdrop-blur-xl animate-fade-in-up">
-        {selectedYear === 'terkini' ? (
+        {isLive ? (
           <>
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
@@ -604,7 +688,7 @@ export default function WebGISMap({ initialLayer }) {
               <span>&bull;</span>
               <span className="text-sky-300">Himawari-9 ({HIMAWARI_PRODUCTS[himawariProduct].shortName})</span>
               <span>&bull;</span>
-              <span className="text-zinc-400">Esri Imagery</span>
+              <span className="text-zinc-400">{String(selectedHour).padStart(2, '0')}:00 WIB</span>
             </div>
             <button
               onClick={handleRefreshLive}
@@ -615,31 +699,26 @@ export default function WebGISMap({ initialLayer }) {
               <RefreshCw className={`w-3 h-3 text-rose-400 ${isRefreshing ? 'animate-spin' : ''}`} />
               <span className="hidden sm:inline">Refresh</span>
             </button>
-            <button
-              onClick={() => setSelectedYear('2025')}
-              className="ml-0.5 px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/15 text-zinc-300 text-[10px] transition-colors cursor-pointer border border-white/10 whitespace-nowrap"
-            >
-              Ke Historis
-            </button>
           </>
         ) : (
           <>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <Calendar className="w-3.5 h-3.5 text-emerald-400" />
               <span className="text-xs font-semibold text-zinc-200 whitespace-nowrap">
-                Arsip Historis: <b className="text-emerald-400 font-bold">{selectedYear}</b>
+                {formatIndonesianDateFull(selectedDate)} &bull; <b className="text-emerald-400 font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b>
               </span>
             </div>
             <button
               onClick={() => {
-                setSelectedYear('terkini');
+                handleDateChange(todayDateStr);
+                setSelectedHour(currentRealHour);
                 setShowHimawari(true);
                 setShowGempa(true);
               }}
               className="ml-2 px-2.5 py-1 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white text-[10px] font-bold shadow-md shadow-rose-600/30 flex items-center gap-1.5 cursor-pointer transition-all border border-rose-400/30 whitespace-nowrap"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-              <span>Beralih ke Peta Terkini</span>
+              <span>Kembali ke Waktu Live</span>
             </button>
           </>
         )}
@@ -689,57 +768,118 @@ export default function WebGISMap({ initialLayer }) {
 
         {/* Scrollable Panel Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-left">
-          {/* 1. Pemilih Waktu / Mode Pengamatan */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                Mode Waktu Pengamatan
+          {/* 1. Pemilih Kalender & Waktu Pengamatan (Tanggal, Bulan, Tahun) */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Kalender Pengamatan</span>
               </span>
-              {selectedYear === 'terkini' && (
+              {isLive ? (
                 <span className="flex items-center gap-1 text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30 animate-pulse">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span> LIVE AKTIF
+                </span>
+              ) : (
+                <span className="text-[9px] font-semibold text-zinc-400 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
+                  ARSIP HISTORIS
                 </span>
               )}
             </div>
 
-            {/* Tombol Utama: Terkini (Live) */}
-            <button
-              onClick={() => {
-                setSelectedYear('terkini');
-                setShowHimawari(true);
-                setShowGempa(true);
-              }}
-              className={`w-full mb-3 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
-                selectedYear === 'terkini'
-                  ? 'bg-gradient-to-r from-rose-600 to-rose-500 text-white border-rose-400 shadow-lg shadow-rose-600/30'
-                  : 'bg-white/5 hover:bg-white/10 text-zinc-300 border-white/10'
-              }`}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-              </span>
-              <span>Peta Terkini (Live Real-Time)</span>
-            </button>
+            {/* Input Kalender Tanggal (Bisa Pilih Tanggal, Bulan, Tahun) */}
+            <div className="space-y-1">
+              <label className="text-[10px] text-zinc-400 block font-medium">
+                Pilih Tanggal (2021 – 2026):
+              </label>
+              <input
+                type="date"
+                value={selectedDate}
+                min="2021-01-01"
+                max={todayDateStr}
+                onChange={(e) => handleDateChange(e.target.value)}
+                className="w-full bg-white/[0.06] hover:bg-white/[0.1] focus:bg-zinc-900 border border-white/15 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs text-white font-medium outline-none transition-all cursor-pointer shadow-inner [color-scheme:dark]"
+              />
+            </div>
 
-            {/* Sub-label Arsip Historis */}
-            <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
-              Arsip Satelit Historis
-            </span>
-            <div className="grid grid-cols-5 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
-              {['2021', '2022', '2023', '2024', '2025'].map((yr) => (
-                <button
-                  key={yr}
-                  onClick={() => setSelectedYear(yr)}
-                  className={`py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
-                    selectedYear === yr
-                      ? 'bg-emerald-400 text-zinc-950 shadow-md shadow-emerald-400/20'
-                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  {yr}
-                </button>
-              ))}
+            {/* Tombol Opsi Cepat: Live vs Kemarin */}
+            <div className="grid grid-cols-2 gap-1.5 pt-0.5">
+              <button
+                type="button"
+                onClick={() => {
+                  handleDateChange(todayDateStr);
+                  setSelectedHour(currentRealHour);
+                  setShowHimawari(true);
+                  setShowGempa(true);
+                }}
+                className={`py-1.5 px-2 rounded-xl text-[10px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer border ${
+                  isLive
+                    ? 'bg-gradient-to-r from-rose-600 to-rose-500 text-white border-rose-400 shadow-md shadow-rose-600/30'
+                    : 'bg-white/5 hover:bg-white/10 text-zinc-300 border-white/10'
+                }`}
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500"></span>
+                </span>
+                <span>Hari Ini (Live)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const d = new Date(now);
+                  d.setDate(d.getDate() - 1);
+                  handleDateChange(d.toISOString().split('T')[0]);
+                }}
+                className={`py-1.5 px-2 rounded-xl text-[10px] font-medium transition-all cursor-pointer border flex items-center justify-center gap-1 ${
+                  selectedDate === new Date(Date.now() - 86400000).toISOString().split('T')[0]
+                    ? 'bg-emerald-400 text-zinc-950 font-bold border-emerald-300'
+                    : 'bg-white/5 hover:bg-white/10 text-zinc-300 border-white/10'
+                }`}
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Kemarin</span>
+              </button>
+            </div>
+
+            {/* Pintas Tahun Cepat (2021-2025) */}
+            <div>
+              <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
+                Lompat ke Tahun:
+              </span>
+              <div className="grid grid-cols-5 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+                {['2021', '2022', '2023', '2024', '2025'].map((yr) => (
+                  <button
+                    key={yr}
+                    onClick={() => handleDateChange(`${yr}-06-15`)}
+                    className={`py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                      dateYear === yr
+                        ? 'bg-emerald-400 text-zinc-950 shadow-md shadow-emerald-400/20 font-bold'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {yr}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Informasi Waktu & Tanggal Aktif Terpilih */}
+            <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 text-[11px] text-zinc-300 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400 text-[10px]">Tanggal:</span>
+                <b className="text-white font-semibold">{formatIndonesianDateFull(selectedDate)}</b>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-400 text-[10px]">Jam Pengamatan:</span>
+                <b className="text-emerald-400 font-mono font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b>
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-white/5">
+                <span>Mode Data:</span>
+                <span className={isLive ? 'text-rose-400 font-bold' : 'text-zinc-300'}>
+                  {isLive ? '🔴 Real-Time Live Satelit' : `📅 Satelit Historis (${dateYear})`}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -1070,8 +1210,175 @@ export default function WebGISMap({ initialLayer }) {
         </div>
       </aside>
 
-      {/* Floating Bottom-Right Legend */}
-      <div className="absolute bottom-6 right-6 z-[900] p-4 rounded-2xl glass-panel-elevated border border-white/10 text-left max-w-xs text-xs shadow-2xl hidden sm:block">
+      {/* 13. Floating 24-Hour Timeline Bar at Bottom of Screen (Dasar Layar) */}
+      {showTimeline && (
+        <div 
+          className={`absolute bottom-5 left-1/2 -translate-x-1/2 z-[900] w-[95vw] sm:w-[90vw] md:max-w-2xl lg:max-w-3xl transition-all duration-300 ${
+            isSidebarOpen ? 'lg:left-[calc(50%+140px)]' : 'lg:left-1/2'
+          }`}
+        >
+          <div className="glass-panel-elevated rounded-2xl border border-white/15 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl text-white space-y-2">
+            {/* Top Bar: Play/Pause Controls, Step Buttons, and Time Badge */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              {/* Left Controls: Step Back, Play/Pause, Step Forward */}
+              <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                <button
+                  type="button"
+                  onClick={handleStepBack}
+                  disabled={selectedHour <= 0}
+                  className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+                  title="Mundur 1 Jam"
+                >
+                  <SkipBack className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="px-3 py-1 rounded-lg bg-emerald-400 hover:bg-emerald-300 active:scale-95 text-zinc-950 font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-400/20 transition-all cursor-pointer"
+                  title={isPlaying ? "Jeda Simulasi" : "Putar Maju Jam Otomatis"}
+                >
+                  {isPlaying ? (
+                    <>
+                      <Pause className="w-3.5 h-3.5 fill-current" />
+                      <span>Jeda</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>Putar</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleStepForward}
+                  disabled={selectedHour >= maxAvailableHour}
+                  className="p-1.5 rounded-lg hover:bg-white/15 text-zinc-300 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all cursor-pointer"
+                  title="Maju 1 Jam"
+                >
+                  <SkipForward className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Center Info: Selected Date & Hour Badge */}
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.06] border border-white/10 text-xs shadow-inner">
+                  <Clock className="w-3.5 h-3.5 text-sky-400" />
+                  <span className="font-mono font-bold text-sm text-white tracking-wider">
+                    {String(selectedHour).padStart(2, '0')}:00
+                  </span>
+                  <span className="text-[10px] text-zinc-400">WIB</span>
+                </div>
+
+                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/[0.04] border border-white/5 text-[11px] text-zinc-300">
+                  <Calendar className="w-3 h-3 text-emerald-400" />
+                  <span>{formatIndonesianDateFull(selectedDate)}</span>
+                </div>
+              </div>
+
+              {/* Right Status Badge */}
+              <div className="flex items-center gap-2">
+                {isLive ? (
+                  <span className="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] font-bold flex items-center gap-1.5 animate-pulse shadow-sm shadow-rose-500/20 whitespace-nowrap">
+                    <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                    <span>LIVE SAAT INI ({currentRealHour}:00)</span>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleDateChange(todayDateStr);
+                      setSelectedHour(currentRealHour);
+                      setShowHimawari(true);
+                      setShowGempa(true);
+                    }}
+                    className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/15 text-zinc-300 hover:text-white border border-white/10 text-[10px] font-medium transition-colors cursor-pointer flex items-center gap-1 whitespace-nowrap"
+                  >
+                    <RotateCcw className="w-2.5 h-2.5 text-emerald-400" />
+                    <span>Ke Waktu Live</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Slider Bar: 00:00 to maxAvailableHour */}
+            <div className="space-y-1">
+              <div className="relative flex items-center">
+                <input
+                  type="range"
+                  min={0}
+                  max={maxAvailableHour}
+                  step={1}
+                  value={selectedHour}
+                  onChange={(e) => {
+                    setSelectedHour(parseInt(e.target.value, 10));
+                    setIsPlaying(false);
+                  }}
+                  className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
+                />
+              </div>
+
+              {/* Hour Ticks Along Bottom of Track */}
+              <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(0)} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 0 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  00:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(Math.min(4, maxAvailableHour))} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 4 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  04:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(Math.min(8, maxAvailableHour))} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 8 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  08:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(Math.min(12, maxAvailableHour))} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 12 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  12:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(Math.min(16, maxAvailableHour))} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 16 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  16:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(Math.min(20, maxAvailableHour))} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === 20 ? 'text-emerald-400 font-bold' : ''}`}
+                >
+                  20:00
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedHour(maxAvailableHour)} 
+                  className={`hover:text-white cursor-pointer ${selectedHour === maxAvailableHour ? (isToday ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold') : ''}`}
+                >
+                  {isToday ? `Maks (${String(currentRealHour).padStart(2, '0')}:00)` : '23:00'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Bottom-Right Legend (Dinaikkan agar tidak tumpang tindih dengan timeline) */}
+      <div className="absolute bottom-28 right-6 z-[890] p-4 rounded-2xl glass-panel-elevated border border-white/10 text-left max-w-xs text-xs shadow-2xl hidden xl:block">
         <div className="font-semibold text-white mb-2 flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
           <span>Legenda Seismik & Satelit Jabar</span>
