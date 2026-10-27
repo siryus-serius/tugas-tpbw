@@ -150,6 +150,23 @@ function initTables(db) {
       value TEXT,
       updated_at TEXT
     );
+
+    -- 8. Tabel Direktori Fasilitas Darurat (BPBD, SAR, Puskesmas Terdekat)
+    CREATE TABLE IF NOT EXISTS emergency_facilities (
+      id TEXT PRIMARY KEY,
+      type TEXT NOT NULL,
+      category_name TEXT,
+      name TEXT NOT NULL,
+      address TEXT,
+      lat REAL NOT NULL,
+      lng REAL NOT NULL,
+      phone TEXT,
+      phone_alt TEXT,
+      hours TEXT,
+      services TEXT,
+      google_query TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_facilities_type ON emergency_facilities (type);
   `);
 }
 
@@ -233,6 +250,42 @@ function seedInitialData(db) {
         console.log(`[+] Database seeded: ${count} data klasifikasi tanah dimasukkan ke SQLite.`);
       } catch (err) {
         console.warn('[-] Gagal seed soil_classifications:', err.message);
+      }
+    }
+  }
+
+  // 3. Cek & Seed Emergency Facilities (BPBD, SAR, Puskesmas)
+  const facCount = db.prepare('SELECT COUNT(*) as count FROM emergency_facilities').get().count;
+  if (facCount === 0) {
+    const facJsonPath = path.join(WEBGIS_PUBLIC_DATA_DIR, 'jabar-emergency-facilities.json');
+    if (fs.existsSync(facJsonPath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(facJsonPath, 'utf-8'));
+        const facilities = raw.facilities || [];
+        const insertFacStmt = db.prepare(`
+          INSERT OR REPLACE INTO emergency_facilities 
+          (id, type, category_name, name, address, lat, lng, phone, phone_alt, hours, services, google_query)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `);
+        for (const f of facilities) {
+          insertFacStmt.run(
+            f.id,
+            f.type,
+            f.categoryName || '',
+            f.name,
+            f.address || '',
+            f.lat,
+            f.lng,
+            f.phone || '',
+            f.phoneAlt || '',
+            f.hours || '',
+            Array.isArray(f.services) ? f.services.join(', ') : '',
+            f.googlePlaceQuery || ''
+          );
+        }
+        console.log(`[+] Database seeded: ${facilities.length} fasilitas darurat (BPBD, SAR, Puskesmas) dimasukkan ke SQLite.`);
+      } catch (err) {
+        console.warn('[-] Gagal seed emergency_facilities:', err.message);
       }
     }
   }
@@ -373,6 +426,7 @@ export function exportDatabaseSnapshots(db) {
   const totalLandslides = db.prepare('SELECT COUNT(*) as total FROM landslide_events').get().total;
   const totalCitizenReports = db.prepare('SELECT COUNT(*) as total FROM citizen_reports').get().total;
   const totalSoil = db.prepare('SELECT COUNT(*) as total FROM soil_classifications').get().total;
+  const totalFacilities = db.prepare('SELECT COUNT(*) as total FROM emergency_facilities').get().total;
 
   // 2. Ambil 20 Log Telemetri Terakhir
   const recentTelemetry = db.prepare(`
@@ -412,7 +466,8 @@ export function exportDatabaseSnapshots(db) {
       total_gempa_tercatat: totalEarthquakes,
       total_kejadian_longsor_historis: totalLandslides,
       total_laporan_masyarakat: totalCitizenReports,
-      total_wilayah_klasifikasi_tanah: totalSoil
+      total_wilayah_klasifikasi_tanah: totalSoil,
+      total_fasilitas_darurat: totalFacilities
     },
     telemetri_terkini: recentTelemetry,
     gempa_terkini: recentEarthquakes,

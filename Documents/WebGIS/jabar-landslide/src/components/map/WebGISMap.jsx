@@ -7,8 +7,16 @@ import {
   Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles,
   PanelLeftClose, PanelLeftOpen, Activity, AlertTriangle, ShieldAlert,
   Flame, Home, Users, Building2, Info, X, RefreshCw,
-  Calendar, Clock, Play, Pause, SkipBack, SkipForward, RotateCcw, History, FastForward
+  Calendar, Clock, Play, Pause, SkipBack, SkipForward, RotateCcw, History, FastForward,
+  Hospital, HeartPulse, Compass, ExternalLink, Route, PhoneCall, Building
 } from 'lucide-react';
+import { 
+  calculateDistanceKm, 
+  estimateDrivingMinutes, 
+  getGoogleMapsNavigationUrl, 
+  getGoogleMapsSearchUrl, 
+  findNearestFacilities 
+} from '../../services/emergencyService';
 
 // Fix Leaflet Default Marker Icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -62,6 +70,35 @@ const createWeatherStationIcon = (stationName, rainStatus) => {
     `,
     iconSize: [85, 24],
     iconAnchor: [42, 12],
+  });
+};
+
+// Custom Icon untuk Fasilitas Darurat (BPBD, SAR, Puskesmas / RS Rujukan)
+const createEmergencyFacilityIcon = (type, name) => {
+  let borderColor = '#10b981';
+  let iconEmoji = '🏥';
+  let shortLabel = name.includes('RSUD') ? 'RSUD' : 'Pusk';
+
+  if (type === 'bpbd') {
+    borderColor = '#f59e0b';
+    iconEmoji = '🏢';
+    shortLabel = 'BPBD';
+  } else if (type === 'sar') {
+    borderColor = '#0ea5e9';
+    iconEmoji = '🚨';
+    shortLabel = 'SAR';
+  }
+
+  return new L.DivIcon({
+    className: 'custom-emergency-marker',
+    html: `
+      <div style="display: flex; align-items: center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid ${borderColor}; padding: 2.5px 7px; border-radius: 9999px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); white-space: nowrap; cursor: pointer; transition: transform 0.2s;">
+        <span style="font-size: 11px;">${iconEmoji}</span>
+        <span style="color: #ffffff; font-size: 10px; font-weight: 700; font-family: sans-serif;">${shortLabel}</span>
+      </div>
+    `,
+    iconSize: [75, 24],
+    iconAnchor: [37, 12],
   });
 };
 
@@ -419,6 +456,10 @@ export default function WebGISMap({ initialLayer }) {
   const [showFaults, setShowFaults] = useState(true);
   const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
   const [showSoilLayer, setShowSoilLayer] = useState(false);
+  const [showEmergencyLayer, setShowEmergencyLayer] = useState(true);
+  const [emergencyTypeFilter, setEmergencyTypeFilter] = useState('all'); // 'all' | 'bpbd' | 'sar' | 'puskesmas'
+  const [emergencyFacilities, setEmergencyFacilities] = useState([]);
+  const [showNearestPanel, setShowNearestPanel] = useState(false);
 
   // Opacity states
   const [slopeOpacity, setSlopeOpacity] = useState(0.85);
@@ -494,6 +535,14 @@ export default function WebGISMap({ initialLayer }) {
       .then(res => res.json())
       .then(data => setLiveTelemetry(data))
       .catch(err => console.warn('Belum ada data live telemetry:', err));
+  }, []);
+
+  // 7. Ambil Data Fasilitas Darurat (BPBD, SAR, Puskesmas / Faskes Terdekat)
+  useEffect(() => {
+    fetch('/data/jabar-emergency-facilities.json')
+      .then(res => res.json())
+      .then(data => setEmergencyFacilities(data.facilities || []))
+      .catch(err => console.warn('Gagal memuat direktori fasilitas darurat:', err));
   }, []);
 
   // Handle Initial Layer / Mode dari luar (Navbar/Hero)
@@ -856,7 +905,106 @@ export default function WebGISMap({ initialLayer }) {
           })
         )}
 
-        {/* 12. Marker GPS Posisi Pengguna */}
+        {/* 12. Marker Fasilitas Darurat (BPBD, SAR, Puskesmas Terdekat - Integrasi Google Maps API) */}
+        {showEmergencyLayer && emergencyFacilities
+          .filter(f => emergencyTypeFilter === 'all' || f.type === emergencyTypeFilter)
+          .map(facility => {
+            const userDist = userLocation ? calculateDistanceKm(userLocation.lat, userLocation.lng, facility.lat, facility.lng) : null;
+            const drivingMins = userDist ? estimateDrivingMinutes(userDist) : null;
+            const gmapsNavUrl = getGoogleMapsNavigationUrl(
+              facility.lat, 
+              facility.lng, 
+              userLocation?.lat, 
+              userLocation?.lng
+            );
+            const gmapsSearchUrl = getGoogleMapsSearchUrl(facility.name, facility.address);
+
+            return (
+              <Marker
+                key={`facility-${facility.id}`}
+                position={[facility.lat, facility.lng]}
+                icon={createEmergencyFacilityIcon(facility.type, facility.name)}
+              >
+                <Popup>
+                  <div className="p-1 font-sans text-xs space-y-2 text-zinc-900 max-w-xs">
+                    <div className="flex items-center justify-between border-b border-zinc-200 pb-1">
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        facility.type === 'bpbd' ? 'bg-amber-100 text-amber-800' :
+                        facility.type === 'sar' ? 'bg-sky-100 text-sky-800' :
+                        'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        {facility.categoryName}
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                        ● {facility.hours}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="font-bold text-sm text-zinc-900 leading-snug">{facility.name}</div>
+                      <div className="text-[11px] text-zinc-600 mt-0.5 flex items-start gap-1">
+                        <span>📍</span>
+                        <span>{facility.address}</span>
+                      </div>
+                    </div>
+
+                    {userDist && (
+                      <div className="p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] text-amber-700 block">Jarak dari Posisi Anda:</span>
+                          <span className="font-bold text-xs">{userDist} km ({drivingMins} mnt via Ambulans/Rescue)</span>
+                        </div>
+                        <span className="text-lg">🚑</span>
+                      </div>
+                    )}
+
+                    <div className="space-y-1 text-[11px] bg-zinc-50 p-2 rounded-xl border border-zinc-200">
+                      <div className="flex items-center justify-between">
+                        <span className="text-zinc-500">Nomor Darurat:</span>
+                        <a href={`tel:${facility.phone}`} className="font-bold text-rose-600 hover:underline">
+                          📞 {facility.phone}
+                        </a>
+                      </div>
+                      <div className="pt-1 text-[10px] text-zinc-600">
+                        <span className="font-semibold block text-zinc-700">Layanan Siaga:</span>
+                        <div className="flex flex-wrap gap-1 mt-0.5">
+                          {facility.services?.map((svc, i) => (
+                            <span key={i} className="px-1.5 py-0.5 bg-white border border-zinc-200 rounded text-[9px] text-zinc-700">
+                              {svc}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Google Maps Actions */}
+                    <div className="pt-1 flex flex-col gap-1.5">
+                      <a
+                        href={gmapsNavUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-colors text-center"
+                      >
+                        <Route className="w-3.5 h-3.5" />
+                        <span>Rute Navigasi Google Maps</span>
+                      </a>
+                      <a
+                        href={gmapsSearchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-[11px] transition-colors text-center"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>Lihat di Google Maps</span>
+                      </a>
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
+
+        {/* 13. Marker GPS Posisi Pengguna */}
         {userLocation && (
           <Marker position={[userLocation.lat, userLocation.lng]}>
             <Popup>
@@ -870,7 +1018,7 @@ export default function WebGISMap({ initialLayer }) {
         )}
       </MapContainer>
 
-      {/* Floating GPS Locate Button (Top Right) */}
+      {/* Floating GPS Locate & Emergency Facilities Buttons (Top Right) */}
       <div className="absolute top-4 right-4 z-[900] flex flex-col gap-2">
         <button
           onClick={handleLocateMe}
@@ -879,6 +1027,14 @@ export default function WebGISMap({ initialLayer }) {
           title="Deteksi Lokasi GPS Saya"
         >
           <Navigation className={`w-5 h-5 text-emerald-400 group-hover:rotate-45 transition-transform ${isLocating ? 'animate-spin' : ''}`} />
+        </button>
+
+        <button
+          onClick={() => setShowNearestPanel(true)}
+          className="p-3 rounded-full bg-amber-950/80 hover:bg-amber-900/80 text-white border border-amber-500/40 backdrop-blur-md shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center cursor-pointer group"
+          title="Cari Posko SAR, BPBD & Puskesmas Terdekat (Google Maps API)"
+        >
+          <Hospital className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
         </button>
       </div>
 
@@ -1511,21 +1667,58 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Klasifikasi Jenis Tanah (27 Kab/Kota) */}
-            <div className="p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <div>
-                  <span className="text-xs font-semibold text-white block">Zona Klasifikasi Tanah</span>
-                  <span className="text-[10px] text-zinc-400">Andosol, Latosol, Aluvial, Grumusol</span>
+            {/* Posko Darurat & Fasilitas Medis (BPBD, SAR, Puskesmas - Google Maps API) */}
+            <div className="p-3 rounded-2xl bg-amber-950/20 border border-amber-500/30 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400"></span>
+                  <div>
+                    <span className="text-xs font-semibold text-white block">Posko & Faskes Siaga</span>
+                    <span className="text-[10px] text-amber-300 font-mono">Google Maps Navigation API</span>
+                  </div>
                 </div>
+                <input
+                  type="checkbox"
+                  checked={showEmergencyLayer}
+                  onChange={(e) => setShowEmergencyLayer(e.target.checked)}
+                  className="accent-amber-400 w-4 h-4 cursor-pointer"
+                />
               </div>
-              <input
-                type="checkbox"
-                checked={showSoilLayer}
-                onChange={(e) => setShowSoilLayer(e.target.checked)}
-                className="accent-emerald-400 w-4 h-4 cursor-pointer"
-              />
+
+              {showEmergencyLayer && (
+                <div className="space-y-2 pt-1 border-t border-white/5">
+                  <div className="grid grid-cols-4 gap-1 text-[10px]">
+                    {[
+                      { id: 'all', label: 'Semua' },
+                      { id: 'bpbd', label: '🏢 BPBD' },
+                      { id: 'sar', label: '🚨 SAR' },
+                      { id: 'puskesmas', label: '🏥 Faskes' }
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setEmergencyTypeFilter(tab.id)}
+                        className={`py-1 rounded-lg text-center font-medium transition-all cursor-pointer ${
+                          emergencyTypeFilter === tab.id
+                            ? 'bg-amber-400 text-zinc-950 font-bold shadow-sm'
+                            : 'bg-white/5 text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowNearestPanel(true)}
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-emerald-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/30 text-amber-300 text-[11px] font-semibold transition-all cursor-pointer"
+                  >
+                    <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
+                    <span>Cari Faskes Terdekat dari Lokasi</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Batas 27 Kab/Kota */}
@@ -1998,8 +2191,12 @@ export default function WebGISMap({ initialLayer }) {
             <span>Hillshade: Morfologi Lereng 3D</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded bg-sky-400"></span>
-            <span>Himawari-9: Awan Konvektif & Hujan (BMKG)</span>
+            <span className="w-3 h-3 rounded bg-amber-400"></span>
+            <span>🏢 BPBD & 🚨 Posko SAR Basarnas</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded bg-emerald-400"></span>
+            <span>🏥 Puskesmas & RS Rujukan Bencana</span>
           </div>
         </div>
       </div>
@@ -2106,6 +2303,58 @@ export default function WebGISMap({ initialLayer }) {
               </div>
             </div>
 
+            {/* Fasilitas Darurat & Rujukan Terdekat dari Titik Bencana Ini (Google Maps API) */}
+            <div className="mb-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-1.5">
+                <Hospital className="w-3.5 h-3.5" /> Posko BPBD, SAR, & Puskesmas Terdekat dari Titik Ini:
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2">
+                {findNearestFacilities(
+                  selectedDisasterDetail.koordinat[0], 
+                  selectedDisasterDetail.koordinat[1], 
+                  emergencyFacilities, 
+                  3
+                ).map((f) => (
+                  <div key={f.id} className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 text-xs flex flex-col justify-between space-y-2">
+                    <div>
+                      <div className="flex items-center justify-between text-[10px] mb-1">
+                        <span className={`px-1.5 py-0.5 rounded font-bold ${
+                          f.type === 'bpbd' ? 'bg-amber-500/20 text-amber-300' :
+                          f.type === 'sar' ? 'bg-sky-500/20 text-sky-300' :
+                          'bg-emerald-500/20 text-emerald-300'
+                        }`}>
+                          {f.categoryName.split('/')[0]}
+                        </span>
+                        <span className="font-mono text-emerald-400 font-bold">{f.distanceKm} km</span>
+                      </div>
+                      <div className="font-bold text-white text-xs leading-tight">{f.name}</div>
+                      <div className="text-[10px] text-zinc-400 mt-1">
+                        ⏱️ Est. {f.drivingTimeMinutes} menit via Ambulans
+                      </div>
+                    </div>
+                    <div className="space-y-1 pt-1 border-t border-white/5">
+                      <a
+                        href={f.googleMapsNavUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-sm transition-colors text-center"
+                      >
+                        <Route className="w-3 h-3" />
+                        <span>Rute Google Maps</span>
+                      </a>
+                      <a
+                        href={`tel:${f.phone}`}
+                        className="w-full flex items-center justify-center gap-1 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white text-[10px] transition-colors text-center"
+                      >
+                        <PhoneCall className="w-3 h-3 text-rose-400" />
+                        <span>{f.phone}</span>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Korelasi Tanah Longsor */}
             <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 mb-4">
               <strong className="block mb-1 flex items-center gap-1.5 text-amber-300 font-bold">
@@ -2124,6 +2373,113 @@ export default function WebGISMap({ initialLayer }) {
               >
                 Tutup Rincian
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Cari Faskes & Posko Terdekat (Google Maps API) */}
+      {showNearestPanel && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in-up text-left">
+          <div className="w-full max-w-3xl max-h-[90vh] flex flex-col rounded-3xl glass-panel-elevated border border-white/15 p-5 sm:p-7 shadow-2xl text-white overflow-hidden">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+                  <Hospital className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+                    <Compass className="w-3.5 h-3.5" />
+                    <span>JARAK & NAVIGASI SPASIAL TERDEKAT</span>
+                  </div>
+                  <h3 className="text-xl font-bold tracking-tight text-white">
+                    Faskes, Posko SAR, & Kantor BPBD Terdekat
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowNearestPanel(false)}
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-zinc-300 hover:text-white transition-colors cursor-pointer text-lg font-bold"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+              {/* Origin Selector Card */}
+              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                  <div className="text-xs">
+                    <span className="text-zinc-400 block">Titik Acuan Perhitungan Jarak:</span>
+                    <b className="text-white">
+                      {userLocation 
+                        ? `📍 GPS Anda (${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)})` 
+                        : '📍 Titik Default (Cianjur / Cugenang: -6.82, 107.10)'}
+                    </b>
+                  </div>
+                  {!userLocation && (
+                    <button
+                      type="button"
+                      onClick={handleLocateMe}
+                      disabled={isLocating}
+                      className="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Navigation className="w-3.5 h-3.5" />
+                      <span>{isLocating ? 'Mendeteksi GPS...' : 'Aktifkan GPS Saya'}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Nearest Facilities List */}
+              <div className="space-y-3">
+                {findNearestFacilities(
+                  userLocation?.lat || -6.82, 
+                  userLocation?.lng || 107.10, 
+                  emergencyFacilities, 
+                  6,
+                  emergencyTypeFilter
+                ).map((f) => (
+                  <div key={f.id} className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                          f.type === 'bpbd' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                          f.type === 'sar' ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30' :
+                          'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                        }`}>
+                          {f.categoryName}
+                        </span>
+                        <span className="text-[10px] text-zinc-500 font-mono">● {f.hours}</span>
+                      </div>
+                      <div className="text-sm font-bold text-white">{f.name}</div>
+                      <div className="text-xs text-zinc-400">{f.address}</div>
+                      <div className="text-xs font-bold text-amber-400 pt-0.5">
+                        📏 Jarak: {f.distanceKm} km &bull; ⏱️ Estimasi {f.drivingTimeMinutes} menit perjalanan
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                      <a
+                        href={f.googleMapsNavUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition-colors"
+                      >
+                        <Route className="w-3.5 h-3.5" />
+                        <span>Rute Navigasi Google Maps</span>
+                      </a>
+                      <a
+                        href={`tel:${f.phone}`}
+                        className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-rose-400 hover:text-white transition-colors"
+                        title="Telepon Posko"
+                      >
+                        <PhoneCall className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

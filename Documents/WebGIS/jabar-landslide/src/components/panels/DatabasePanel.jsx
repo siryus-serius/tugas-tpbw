@@ -151,8 +151,8 @@ export default function DatabasePanel({ onClose }) {
                 </div>
               </div>
 
-              {/* 5 Stats Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {/* 6 Stats Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 <div className="p-4 rounded-2xl glass-card border border-white/10">
                   <div className="text-[11px] text-zinc-400 mb-1">Telemetri Sensor</div>
                   <div className="text-2xl font-black text-emerald-400 tracking-tight">
@@ -185,7 +185,15 @@ export default function DatabasePanel({ onClose }) {
                   <div className="text-[10px] text-zinc-500 mt-1">Kab & Kota Se-Jabar</div>
                 </div>
 
-                <div className="p-4 rounded-2xl glass-card border border-white/10 col-span-2 sm:col-span-1">
+                <div className="p-4 rounded-2xl glass-card border border-amber-500/30 bg-amber-500/5">
+                  <div className="text-[11px] text-amber-300 font-semibold mb-1">Posko & Faskes</div>
+                  <div className="text-2xl font-black text-amber-400 tracking-tight">
+                    {dbData?.statistik?.total_fasilitas_darurat ?? 22}
+                  </div>
+                  <div className="text-[10px] text-amber-400/70 mt-1">BPBD, SAR, Puskesmas</div>
+                </div>
+
+                <div className="p-4 rounded-2xl glass-card border border-white/10">
                   <div className="text-[11px] text-zinc-400 mb-1">Laporan Warga</div>
                   <div className="text-2xl font-black text-purple-400 tracking-tight">
                     {citizenReports.length}
