@@ -100,6 +100,7 @@ export default function WebGISMap({ initialLayer }) {
   const [showGempa, setShowGempa] = useState(true);
   const [showFaults, setShowFaults] = useState(true);
   const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
+  const [showSoilLayer, setShowSoilLayer] = useState(false);
 
   // Opacity states
   const [slopeOpacity, setSlopeOpacity] = useState(0.85);
@@ -114,8 +115,9 @@ export default function WebGISMap({ initialLayer }) {
   // Live Gempa BMKG Terkini
   const [gempaData, setGempaData] = useState(null);
 
-  // Data Faktual BNPB & PuSGeN
+  // Data Faktual BNPB, PuSGeN, & Tanah
   const [seismicData, setSeismicData] = useState(null);
+  const [soilData, setSoilData] = useState(null);
   const [selectedDisasterDetail, setSelectedDisasterDetail] = useState(null);
 
   // GPS Locate Me state
@@ -176,6 +178,14 @@ export default function WebGISMap({ initialLayer }) {
       .catch(err => console.error('Gagal mengambil data seismik BNPB:', err));
   }, []);
 
+  // 5. Ambil Data Klasifikasi Jenis Tanah (27 Kab/Kota)
+  useEffect(() => {
+    fetch('/data/jabar-soil-classification.json')
+      .then(res => res.json())
+      .then(data => setSoilData(data))
+      .catch(err => console.error('Gagal mengambil data jenis tanah:', err));
+  }, []);
+
   // Handle Locate Me (GPS)
   const handleLocateMe = () => {
     setIsLocating(true);
@@ -202,25 +212,70 @@ export default function WebGISMap({ initialLayer }) {
     );
   };
 
-  const geoJsonStyle = {
-    color: '#38bdf8',
-    weight: 1.8,
-    opacity: 0.9,
-    fillColor: '#0284c7',
-    fillOpacity: 0.05
+  const getFeatureStyle = (feature) => {
+    if (!showSoilLayer || !soilData?.wilayah) {
+      return {
+        color: '#38bdf8',
+        weight: 1.8,
+        opacity: 0.9,
+        fillColor: '#0284c7',
+        fillOpacity: 0.05
+      };
+    }
+    const name = feature.properties?.shapeName || feature.properties?.NAME_2 || '';
+    const soilInfo = Object.entries(soilData.wilayah).find(([k]) => 
+      k.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(k.toLowerCase().replace('kabupaten ', '').replace('kota ', ''))
+    )?.[1];
+
+    if (!soilInfo) return { color: '#64748b', weight: 1.5, opacity: 0.8, fillColor: '#334155', fillOpacity: 0.2 };
+
+    let fillColor = '#0284c7';
+    if (soilInfo.tingkat_rawan_tanah?.includes('Sangat Kritis')) fillColor = '#ef4444';
+    else if (soilInfo.tingkat_rawan_tanah?.includes('Tinggi')) fillColor = '#f97316';
+    else if (soilInfo.tingkat_rawan_tanah?.includes('Sedang')) fillColor = '#eab308';
+    else if (soilInfo.tingkat_rawan_tanah?.includes('Rendah')) fillColor = '#06b6d4';
+
+    return {
+      color: '#ffffff',
+      weight: 2,
+      opacity: 0.9,
+      fillColor: fillColor,
+      fillOpacity: 0.38
+    };
   };
 
   const onEachFeature = (feature, layer) => {
     const name = feature.properties?.shapeName || feature.properties?.NAME_2 || 'Wilayah Jawa Barat';
+    
+    // Cari data klasifikasi tanah yang sesuai
+    const soilInfo = soilData?.wilayah ? Object.entries(soilData.wilayah).find(([k]) => 
+      k.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(k.toLowerCase().replace('kabupaten ', '').replace('kota ', ''))
+    )?.[1] : null;
+
     layer.bindPopup(`
-      <div style="font-family: inherit; line-height: 1.4; padding: 4px;">
+      <div style="font-family: inherit; line-height: 1.4; padding: 4px; max-width: 260px;">
         <strong style="color: #38bdf8; font-size: 0.95rem; display: block; margin-bottom: 2px;">
           ${name}
         </strong>
-        <span style="font-size: 0.75rem; color: #94a3b8; display: block;">
+        <span style="font-size: 0.72rem; color: #94a3b8; display: block;">
           Provinsi Jawa Barat &bull; ADM2
         </span>
-        <div style="margin-top: 8px; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; color: #cbd5e1;">
+        
+        ${soilInfo ? `
+          <div style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; font-size: 0.75rem;">
+            <div style="color: #34d399; font-weight: 700; margin-bottom: 2px;">🌱 Klasifikasi Tanah:</div>
+            <div style="color: #ffffff; font-weight: 600;">${soilInfo.tanah_dominan.join(', ')}</div>
+            <div style="color: #94a3b8; font-size: 0.7rem; margin-top: 3px;">Zona: ${soilInfo.zona_fisiografi}</div>
+            <div style="margin-top: 4px; padding: 3px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); font-size: 0.7rem;">
+              Kerawanan: <b style="color: #fca5a5;">${soilInfo.tingkat_rawan_tanah}</b>
+            </div>
+            <div style="color: #64748b; font-size: 0.68rem; margin-top: 4px; font-style: italic;">
+              ${soilInfo.status}
+            </div>
+          </div>
+        ` : ''}
+
+        <div style="margin-top: 6px; font-size: 0.72rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 4px; color: #cbd5e1;">
           Tahun Pengamatan Satelit: <b>${selectedYear}</b>
         </div>
       </div>
@@ -298,12 +353,12 @@ export default function WebGISMap({ initialLayer }) {
           />
         )}
 
-        {/* 7. Layer Batas Administrasi 27 Kab/Kota */}
+        {/* 7. Layer Batas Administrasi & Klasifikasi Tanah 27 Kab/Kota */}
         {showBoundary && geoData && (
           <GeoJSON
-            key="jabar-boundary-geojson"
+            key={`jabar-boundary-${showSoilLayer ? 'soil' : 'plain'}`}
             data={geoData}
-            style={geoJsonStyle}
+            style={getFeatureStyle}
             onEachFeature={onEachFeature}
           />
         )}
@@ -747,6 +802,23 @@ export default function WebGISMap({ initialLayer }) {
                   <span className="font-mono">{Math.round(sarOpacity * 100)}%</span>
                 </div>
               )}
+            </div>
+
+            {/* Klasifikasi Jenis Tanah (27 Kab/Kota) */}
+            <div className="p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <div>
+                  <span className="text-xs font-semibold text-white block">Zona Klasifikasi Tanah</span>
+                  <span className="text-[10px] text-zinc-400">Andosol, Latosol, Aluvial, Grumusol</span>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={showSoilLayer}
+                onChange={(e) => setShowSoilLayer(e.target.checked)}
+                className="accent-emerald-400 w-4 h-4 cursor-pointer"
+              />
             </div>
 
             {/* Batas 27 Kab/Kota */}

@@ -1,0 +1,233 @@
+{
+  "judul": "Klasifikasi Jenis Tanah di Jawa Barat (27 Kabupaten & Kota)",
+  "tanggal_penyusunan": "27 Oktober 2026",
+  "korelasi_bencana": "Sistem Informasi Geografis & Peringatan Dini Longsor Jawa Barat",
+  "padanan_taksonomi_usda": {
+    "Aluvial": { "usda": "Entisols / Inceptisols", "karakteristik": "Tanah muda endapan sungai di dataran rendah dan hilir.", "kepekaan_longsor": "Rendah (Lebih rawan genangan air / banjir)" },
+    "Andosol": { "usda": "Andisols", "karakteristik": "Tanah vulkanik gembur kaya bahan organik di lereng gunung tinggi.", "kepekaan_longsor": "Tinggi saat lereng curam dan jenuh air" },
+    "Latosol": { "usda": "Inceptisols / Ultisols / Oxisols", "karakteristik": "Tanah merah-cokelat pelapukan lanjut, sangat luas di Jabar.", "kepekaan_longsor": "Sedang hingga Tinggi" },
+    "Podsolik": { "usda": "Ultisols", "karakteristik": "Masam, miskin hara, hasil pencucian intensif di perbukitan.", "kepekaan_longsor": "Tinggi (peka erosi lembar dan longsor gelincir)" },
+    "Grumusol": { "usda": "Vertisols", "karakteristik": "Liat tinggi montmorilonit, mengembang saat basah dan retak saat kering.", "kepekaan_longsor": "Sangat Labil (memicu rayapan tanah / creep)" },
+    "Regosol": { "usda": "Entisols", "karakteristik": "Tanah muda bertekstur pasir/material vulkanik lepas.", "kepekaan_longsor": "Tinggi (mudah tererosi dan meluncur)" },
+    "Mediteran": { "usda": "Alfisols", "karakteristik": "Berkembang pada batuan kapur atau sedimen karst.", "kepekaan_longsor": "Sedang" },
+    "Litosol": { "usda": "Entisols (Lithic)", "karakteristik": "Solum sangat dangkal di atas batuan dasar kokoh.", "kepekaan_longsor": "Tinggi untuk guguran batu (rockfall)" }
+  },
+  "wilayah": {
+    "Kabupaten Bogor": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Andosol", "Podsolik", "Regosol"],
+      "status": "Ada sumber (Studi IPB & Agriment 2024)",
+      "zona_fisiografi": "Dataran Tinggi & Perbukitan Vulkanik",
+      "tingkat_rawan_tanah": "Tinggi (Kecamatan Sukamantri, Dramaga, Jasinga)",
+      "catatan": "Andosol Sukamantri, Latosol Dramaga, Podsolik Merah Kuning (Hapludult) Jasinga, dan Regosol Sindangbarang."
+    },
+    "Kabupaten Sukabumi": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol Cokelat", "Latosol Cokelat Kemerahan", "Tanah Labil"],
+      "status": "Ada sumber (Subardja / Kementan)",
+      "zona_fisiografi": "Pegunungan Selatan & Perbukitan Masam",
+      "tingkat_rawan_tanah": "Sangat Tinggi (Zona Sesar Cimandiri)",
+      "catatan": "Tanah masam dari batuan vulkanik, setara Humic Dystrudepts dan Typic Hapludults, peka gerakan tanah."
+    },
+    "Kabupaten Cianjur": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Andosol", "Latosol", "Grumusol", "Tanah Labil"],
+      "status": "Ada sumber sebagian (Kementan & Badan Geologi)",
+      "zona_fisiografi": "Lereng Gunung Gede & Perbukitan Terjal Selatan",
+      "tingkat_rawan_tanah": "Sangat Kritis (Zona Cugenang & Pagelaran)",
+      "catatan": "Breksi dan lahar vulkanik di lereng Gede; Grumusol Cihea dan tanah lempung labil di Pagelaran Selatan."
+    },
+    "Kabupaten Bandung": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial", "Latosol", "Andosol"],
+      "status": "Sebagian (Kajian Unpad)",
+      "zona_fisiografi": "Cekungan Danau Purba & Dataran Tinggi Selatan",
+      "tingkat_rawan_tanah": "Tinggi di Selatan (Kertasari, Pangalengan)",
+      "catatan": "Aluvial dan Latosol di Solokan Jeruk; Andosol tebal di dataran tinggi pegunungan teh selatan."
+    },
+    "Kabupaten Bandung Barat": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Andosol", "Latosol", "Podsolik"],
+      "status": "Indikatif pola geologi",
+      "zona_fisiografi": "Kompleks Vulkanik Tangkuban Parahu & Padalarang",
+      "tingkat_rawan_tanah": "Sangat Tinggi (Zona Sesar Lembang)",
+      "catatan": "Dataran tinggi vulkanik Lembang, Cisarua, dan perbukitan kapur/sedimen Padalarang."
+    },
+    "Kabupaten Garut": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial", "Andosol", "Litosol", "Mediteran", "Podsolik"],
+      "status": "Ada sumber (Studi ITB & JTS USK)",
+      "zona_fisiografi": "Pegunungan Vulkanik Kompleks & Lembah Terjal",
+      "tingkat_rawan_tanah": "Sangat Kritis (Frekuensi Longsor Tertinggi di Jabar)",
+      "catatan": "Studi ITB mencatat asosiasi Andosol Cisaruni, Litosol, dan tanah peka erosi di lereng curam Garut."
+    },
+    "Kabupaten Tasikmalaya": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Andosol", "Regosol", "Aluvial"],
+      "status": "Indikatif pola geologi Galunggung",
+      "zona_fisiografi": "Perbukitan dan Lereng Gunung Galunggung",
+      "tingkat_rawan_tanah": "Tinggi",
+      "catatan": "Didominasi perbukitan dan endapan piroklastik vulkanik Galunggung."
+    },
+    "Kabupaten Pangandaran": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Podsolik", "Mediteran", "Regosol Pantai"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Perbukitan Sedimen Karst & Pesisir Selatan",
+      "tingkat_rawan_tanah": "Sedang hingga Tinggi di lereng perbukitan",
+      "catatan": "Kombinasi batuan sedimen berliat di perbukitan dan dataran pantai berpasir."
+    },
+    "Kabupaten Ciamis": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Podsolik", "Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Perbukitan Gelombang & Lembah Sungai",
+      "tingkat_rawan_tanah": "Sedang",
+      "catatan": "Perbukitan tanah pelapukan lanjut dengan lembah aluvial persawahan."
+    },
+    "Kabupaten Kuningan": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Andosol", "Latosol", "Podsolik"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Lereng Timur Gunung Ciremai",
+      "tingkat_rawan_tanah": "Tinggi di lereng perbukitan terjal",
+      "catatan": "Pengaruh kuat material vulkanik Gunung Ciremai."
+    },
+    "Kabupaten Cirebon": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial", "Grumusol", "Mediteran"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Dataran Rendah Pantai Utara (Pantura)",
+      "tingkat_rawan_tanah": "Rendah gerakan tanah (Rawan banjir/genangan)",
+      "catatan": "Aluvial endapan sungai dan tanah liat berat dataran pantai."
+    },
+    "Kabupaten Majalengka": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial Vertik (Pelludert)", "Tanah Residu Labil"],
+      "status": "Ada sumber (Jurnal Geologi Indonesia 2011)",
+      "zona_fisiografi": "Dataran Utara Kertajati & Perbukitan Selatan",
+      "tingkat_rawan_tanah": "Tinggi di Selatan, Labil di Kertajati",
+      "catatan": "Tanah residu setebal 2.4 - 14.2 m di atas batuan dasar di Kertajati; Aluvial kelabu di Randegan."
+    },
+    "Kabupaten Indramayu": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial Vertik (Grumusol)"],
+      "status": "Ada sumber (Desa Jangga)",
+      "zona_fisiografi": "Dataran Rendah Pantai Aluvial",
+      "tingkat_rawan_tanah": "Rendah longsor lereng (Liat montmorilonitik mudah amblas)",
+      "catatan": "Aluvial kelabu tua (Pelludert Entik) dengan liat sangat halus mengembang-mengkerut."
+    },
+    "Kabupaten Sumedang": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Podsolik", "Regosol"],
+      "status": "Indikatif (Sub DAS Genteng Tanjungsari)",
+      "zona_fisiografi": "Perbukitan Terpotong Sesar Aktif",
+      "tingkat_rawan_tanah": "Tinggi (Zona Tomo, Cimalaka, Tanjungsari)",
+      "catatan": "Batuan lempung napal Formasi Subang yang gembur saat kena air hujan lebat."
+    },
+    "Kabupaten Subang": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial (Utara)", "Latosol/Podsolik/Andosol (Selatan)"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Transisi Pantai Utara ke Lereng Tangkuban Parahu",
+      "tingkat_rawan_tanah": "Tinggi di Selatan (Ciater, Sagalaherang)",
+      "catatan": "Bagian selatan berlereng terjal vulkanik; bagian utara dataran sawah aluvial."
+    },
+    "Kabupaten Purwakarta": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Latosol", "Podsolik", "Mediteran"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Perbukitan & Waduk Jatiluhur/Cirata",
+      "tingkat_rawan_tanah": "Sedang hingga Tinggi",
+      "catatan": "Perbukitan berbatuan sedimen lempung dan batupasir."
+    },
+    "Kabupaten Karawang": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial"],
+      "status": "Ada sumber (Desa Jiun)",
+      "zona_fisiografi": "Dataran Aluvial Pantai & Perbukitan Selatan",
+      "tingkat_rawan_tanah": "Rendah di Utara, Sedang di Selatan (Pangkalan)",
+      "catatan": "Sentra persawahan aluvial endapan Citarum."
+    },
+    "Kabupaten Bekasi": {
+      "tipe": "Kabupaten",
+      "tanah_dominan": ["Aluvial"],
+      "status": "Indikatif (Studi Sukakarya)",
+      "zona_fisiografi": "Dataran Rendah Pesisir",
+      "tingkat_rawan_tanah": "Rendah",
+      "catatan": "Dataran aluvial hilir endapan sungai pantai utara."
+    },
+    "Kota Bogor": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Latosol"],
+      "status": "Ada sumber (Dramaga, Tajur, Cibinong)",
+      "zona_fisiografi": "Kaki Gunung Salak",
+      "tingkat_rawan_tanah": "Sedang (Rawan tebing sungai/bantaran)",
+      "catatan": "Latosol merah tebal hasil pelapukan batuan vulkanik Salak/Gede."
+    },
+    "Kota Depok": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Latosol", "Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Dataran Bergelombang",
+      "tingkat_rawan_tanah": "Rendah (Rawan longsor bibir tebing kali Ciliwung)",
+      "catatan": "Kondisi fisik mirip Bogor bagian utara."
+    },
+    "Kota Bekasi": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Dataran Rendah",
+      "tingkat_rawan_tanah": "Rendah",
+      "catatan": "Endapan sedimen kuarter aluvial."
+    },
+    "Kota Bandung": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Aluvial (Cekungan)", "Andosol / Latosol (Utara)"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Cekungan Bandung (Danau Purba)",
+      "tingkat_rawan_tanah": "Tinggi di Kawasan Bandung Utara (KBU)",
+      "catatan": "Dasar cekungan berupa endapan danau purba; bagian utara berlereng terjal."
+    },
+    "Kota Cimahi": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Andosol", "Latosol", "Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Kaki Lereng Tangkuban Parahu",
+      "tingkat_rawan_tanah": "Sedang di utara",
+      "catatan": "Pola tanah mengikuti Bandung Barat dan Cekungan Bandung."
+    },
+    "Kota Cirebon": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Aluvial", "Grumusol"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Pesisir Pantai Utara",
+      "tingkat_rawan_tanah": "Rendah",
+      "catatan": "Dataran pantai bertanah aluvial laut dan sungai."
+    },
+    "Kota Sukabumi": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Latosol"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Kaki Gunung Gede Selatan",
+      "tingkat_rawan_tanah": "Sedang",
+      "catatan": "Mengikuti pola vulkanik Kabupaten Sukabumi."
+    },
+    "Kota Tasikmalaya": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Latosol", "Andosol", "Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Cekungan Antar-Gunung",
+      "tingkat_rawan_tanah": "Sedang",
+      "catatan": "Kombinasi material lahar Galunggung dan lembah aluvial."
+    },
+    "Kota Banjar": {
+      "tipe": "Kota",
+      "tanah_dominan": ["Latosol", "Podsolik", "Aluvial"],
+      "status": "Indikatif",
+      "zona_fisiografi": "Lembah Sungai Citanduy & Perbukitan Timur",
+      "tingkat_rawan_tanah": "Sedang",
+      "catatan": "Dataran bantaran Citanduy dan perbukitan sedimen timur."
+    }
+  }
+}

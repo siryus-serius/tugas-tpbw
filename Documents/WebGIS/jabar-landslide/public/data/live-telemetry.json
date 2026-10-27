@@ -1,0 +1,78 @@
+{
+  "terakhir_diperbarui": "2026-10-27T14:16:43.114Z",
+  "mesin_eksekusi": "GitHub Actions Automated Cron Runner",
+  "gempa_bmkg": {
+    "Tanggal": "26 Okt 2026",
+    "Jam": "11:53:42 WIB",
+    "DateTime": "2026-10-26T04:53:42+00:00",
+    "Coordinates": "-8.45,121.45",
+    "Lintang": "8.45 LS",
+    "Bujur": "121.45 BT",
+    "Magnitude": "4.9",
+    "Kedalaman": "13 km",
+    "Wilayah": "Pusat gempa berada di laut 30 km timur laut Mbay, Nagekeo",
+    "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
+    "Dirasakan": "III Bajawa, III Maumere, II - III Ruteng",
+    "Shakemap": "20261026115342.mmi.jpg"
+  },
+  "rainviewer_radar_path": "/v2/radar/c45964047f3e",
+  "stasiun_cuaca_jabar": {
+    "Cianjur (Cugenang)": {
+      "lat": -6.82,
+      "lng": 107.1,
+      "suhu_c": 21.2,
+      "kelembapan_persen": 93,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Sukabumi (Cikembar)": {
+      "lat": -6.98,
+      "lng": 106.85,
+      "suhu_c": 22.4,
+      "kelembapan_persen": 93,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Bandung Barat (Lembang)": {
+      "lat": -6.82,
+      "lng": 107.61,
+      "suhu_c": 18.2,
+      "kelembapan_persen": 100,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Kab. Bandung (Kertasari)": {
+      "lat": -7.19,
+      "lng": 107.67,
+      "suhu_c": 16.4,
+      "kelembapan_persen": 100,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Garut (Pasirwangi)": {
+      "lat": -7.22,
+      "lng": 107.75,
+      "suhu_c": 15.7,
+      "kelembapan_persen": 100,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Sumedang (Tanjungsari)": {
+      "lat": -6.85,
+      "lng": 107.82,
+      "suhu_c": 19.4,
+      "kelembapan_persen": 99,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    },
+    "Bogor (Puncak Lereng)": {
+      "lat": -6.7,
+      "lng": 106.98,
+      "suhu_c": 19,
+      "kelembapan_persen": 95,
+      "curah_hujan_mm": 0,
+      "status_hujan": "Aman / Berawan"
+    }
+  },
+  "status_sistem": "Normal Operasional"
+}
