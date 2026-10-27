@@ -17,6 +17,15 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  getDatabase,
+  insertTelemetryBatch,
+  insertEarthquake,
+  insertHimawariLog,
+  insertCitizenReport,
+  setSystemMetadata,
+  exportDatabaseSnapshots
+} from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -157,6 +166,9 @@ async function main() {
   console.log(`⏰ Timestamp UTC: ${new Date().toISOString()}`);
   console.log('='.repeat(60));
 
+  // Inisialisasi Database SQLite
+  const db = await getDatabase();
+
   const [gempa, himawariStatus, stationsWeather, customAPIs] = await Promise.all([
     fetchBMKGGempa(),
     fetchHimawariStatus(),
@@ -164,9 +176,37 @@ async function main() {
     fetchCustomAPIs()
   ]);
 
+  const timestamp = new Date().toISOString();
+
+  // Simpan ke SQLite
+  if (gempa) {
+    insertEarthquake(db, gempa);
+  }
+  if (himawariStatus) {
+    insertHimawariLog(db, himawariStatus, timestamp);
+  }
+  if (stationsWeather) {
+    insertTelemetryBatch(db, stationsWeather, timestamp);
+  }
+
+  // Jika ada custom APIs yang berisi laporan lapangan / field reports
+  if (customAPIs?.api_2 && Array.isArray(customAPIs.api_2)) {
+    for (const rep of customAPIs.api_2) {
+      insertCitizenReport(db, rep);
+    }
+  }
+
+  setSystemMetadata(db, 'terakhir_fetch', timestamp);
+  setSystemMetadata(db, 'status_runner', 'GitHub Actions Runner - Berhasil');
+
+  // Ekspor Snapshot Database Terindeks
+  const dbSummary = exportDatabaseSnapshots(db);
+
   const payload = {
-    terakhir_diperbarui: new Date().toISOString(),
+    terakhir_diperbarui: timestamp,
     mesin_eksekusi: 'GitHub Actions Automated Cron Runner (fetch-apis.yml)',
+    mesin_database: 'SQLite v3 (node:sqlite) + JSON Read-Replica',
+    statistik_database: dbSummary.statistik,
     gempa_bmkg: gempa,
     himawari_9: himawariStatus,
     stasiun_cuaca_jabar: stationsWeather,
@@ -177,21 +217,18 @@ async function main() {
   // Simpan ke data/live-telemetry.json & data/latest.json
   const rootOutFile = path.join(ROOT_DATA_DIR, 'live-telemetry.json');
   const latestOutFile = path.join(ROOT_DATA_DIR, 'latest.json');
-  const timestampStr = new Date().toISOString().replace(/[:.]/g, '-');
-  const snapshotOutFile = path.join(ROOT_DATA_DIR, `api-snapshot-${timestampStr}.json`);
 
   fs.writeFileSync(rootOutFile, JSON.stringify(payload, null, 2), 'utf-8');
   fs.writeFileSync(latestOutFile, JSON.stringify(payload, null, 2), 'utf-8');
-  fs.writeFileSync(snapshotOutFile, JSON.stringify(payload, null, 2), 'utf-8');
 
   // Simpan ke Documents/WebGIS/jabar-landslide/public/data/live-telemetry.json (untuk aplikasi WebGIS)
   const publicOutFile = path.join(WEBGIS_PUBLIC_DATA_DIR, 'live-telemetry.json');
   fs.writeFileSync(publicOutFile, JSON.stringify(payload, null, 2), 'utf-8');
 
-  console.log(`[✅] Data snapshot berhasil disimpan ke:`);
-  console.log(`    1. ${rootOutFile}`);
-  console.log(`    2. ${latestOutFile}`);
-  console.log(`    3. ${snapshotOutFile}`);
+  console.log(`[✅] Data snapshot & database SQLite berhasil diperbarui:`);
+  console.log(`    1. ${path.join(ROOT_DATA_DIR, 'database.sqlite')}`);
+  console.log(`    2. ${rootOutFile}`);
+  console.log(`    3. ${latestOutFile}`);
   console.log(`    4. ${publicOutFile}`);
   console.log('='.repeat(60));
 }

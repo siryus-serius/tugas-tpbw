@@ -1,0 +1,167 @@
+{
+  "metadata": {
+    "terakhir_ekspor": "2026-10-27T16:38:38.119Z",
+    "mesin_database": "SQLite v3 (node:sqlite) + Edge JSON Read-Replica",
+    "status": "Terhubung & Terindeks",
+    "lokasi_db": "data/database.sqlite"
+  },
+  "statistik": {
+    "total_telemetri_tersimpan": 7,
+    "total_gempa_tercatat": 1,
+    "total_kejadian_longsor_historis": 4,
+    "total_laporan_masyarakat": 0,
+    "total_wilayah_klasifikasi_tanah": 27
+  },
+  "telemetri_terkini": [
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Bogor (Puncak Lereng)",
+      "lat": -6.7,
+      "lng": 106.98,
+      "temp_c": 18.9,
+      "humidity_pct": 95,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Sumedang (Tanjungsari)",
+      "lat": -6.85,
+      "lng": 107.82,
+      "temp_c": 18.7,
+      "humidity_pct": 99,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Garut (Pasirwangi)",
+      "lat": -7.22,
+      "lng": 107.75,
+      "temp_c": 15.3,
+      "humidity_pct": 100,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Kab. Bandung (Kertasari)",
+      "lat": -7.19,
+      "lng": 107.67,
+      "temp_c": 15.7,
+      "humidity_pct": 100,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Bandung Barat (Lembang)",
+      "lat": -6.82,
+      "lng": 107.61,
+      "temp_c": 17.7,
+      "humidity_pct": 100,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Sukabumi (Cikembar)",
+      "lat": -6.98,
+      "lng": 106.85,
+      "temp_c": 22.3,
+      "humidity_pct": 92,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-27T16:38:38.108Z",
+      "station_id": "Cianjur (Cugenang)",
+      "lat": -6.82,
+      "lng": 107.1,
+      "temp_c": 20.7,
+      "humidity_pct": 91,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    }
+  ],
+  "gempa_terkini": [
+    {
+      "id": "EQ-27-Okt-2026-214313WIB-5.4",
+      "datetime": "27 Okt 2026 21:43:13 WIB",
+      "magnitude": 5.4,
+      "depth_km": 10,
+      "lat": -9.2,
+      "lng": 110.39,
+      "region": "Pusat gempa berada di laut 137 km Selatan Gunungkidul",
+      "potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
+      "shakemap_url": "https://data.bmkg.go.id/DataMKG/TEWS/20261027214313.mmi.jpg"
+    }
+  ],
+  "kejadian_longsor": [
+    {
+      "id": "EQ-BDG-2024",
+      "year": 2024,
+      "nama": "Gempa Bumi Kertasari Bandung & Garut",
+      "tanggal": "18 September 2024, 09:41 WIB",
+      "lat": -7.19,
+      "lng": 107.67,
+      "wilayah": "Kecamatan Kertasari, Kab. Bandung & Pasirwangi, Kab. Garut",
+      "sesar_pemicu": "Sesar Garsela (Garut Selatan)",
+      "korban_meninggal": 2,
+      "korban_luka": 82,
+      "mengungsi": 450,
+      "rumah_rusak": 909,
+      "korelasi_longsor": "Memicu guguran batu dan longsoran kecil di tebing lereng perkebunan teh Kertasari.",
+      "status_bnpb": "Faktual Resmi BPBD Jabar & BNPB"
+    },
+    {
+      "id": "EQ-SMD-2023",
+      "year": 2023,
+      "nama": "Gempa Bumi Sumedang",
+      "tanggal": "31 Desember 2023, 20:35 WIB",
+      "lat": -6.85,
+      "lng": 107.92,
+      "wilayah": "Kabupaten Sumedang (12 Kecamatan Terdampak)",
+      "sesar_pemicu": "Sesar Sumedang / Sistem Sesar Baribis",
+      "korban_meninggal": 0,
+      "korban_luka": 11,
+      "mengungsi": 1603,
+      "rumah_rusak": 1325,
+      "korelasi_longsor": "Menyebabkan retakan tanah pada lereng perbukitan dan retakan dinding terowongan Tol Cisumdawu.",
+      "status_bnpb": "Faktual Resmi Pemkab Sumedang & BNPB"
+    },
+    {
+      "id": "EQ-CJR-2022",
+      "year": 2022,
+      "nama": "Gempa Bumi & Longsor Cianjur",
+      "tanggal": "21 November 2022, 13:21 WIB",
+      "lat": -6.853,
+      "lng": 107.095,
+      "wilayah": "Kecamatan Cugenang, Kabupaten Cianjur",
+      "sesar_pemicu": "Sesar Cugenang (Aktif Sesar Dangkal)",
+      "korban_meninggal": 321,
+      "korban_luka": 2046,
+      "mengungsi": 73874,
+      "rumah_rusak": 62628,
+      "korelasi_longsor": "Memicu tanah longsor masif di lereng Cugenang yang menimbun jalan nasional Cipanas–Cianjur dan kawasan permukiman lereng terjal.",
+      "status_bnpb": "Faktual Resmi BNPB / Tanggap Darurat Bencana"
+    },
+    {
+      "id": "EQ-SKB-2020",
+      "year": 2020,
+      "nama": "Gempa Bumi Kalapanunggal Sukabumi",
+      "tanggal": "10 Maret 2020, 17:18 WIB",
+      "lat": -6.89,
+      "lng": 106.62,
+      "wilayah": "Kecamatan Kalapanunggal & Kabandungan, Kab. Sukabumi",
+      "sesar_pemicu": "Sesar Cimandiri (Segmen Barat)",
+      "korban_meninggal": 0,
+      "korban_luka": 3,
+      "mengungsi": 780,
+      "rumah_rusak": 1082,
+      "korelasi_longsor": "Goncangan memicu pelepasan massa tanah pada zona perbukitan batuan lempung Sukabumi utara.",
+      "status_bnpb": "Faktual Resmi DIBI BNPB"
+    }
+  ],
+  "laporan_masyarakat": []
+}

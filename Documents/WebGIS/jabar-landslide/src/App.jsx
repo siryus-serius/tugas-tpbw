@@ -6,9 +6,10 @@ import AutomationBlock from './components/home/AutomationBlock';
 import BentoGrid from './components/home/BentoGrid';
 import WebGISMap from './components/map/WebGISMap';
 import StatsPanel from './components/panels/StatsPanel';
+import DatabasePanel from './components/panels/DatabasePanel';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats'
+  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats' | 'database'
   const [selectedInitialLayer, setSelectedInitialLayer] = useState(null);
 
   const handleTabChange = (tabId) => {
@@ -75,6 +76,10 @@ export default function App() {
         {/* Modal Panels */}
         {activeTab === 'stats' && (
           <StatsPanel onClose={() => setActiveTab('home')} />
+        )}
+
+        {activeTab === 'database' && (
+          <DatabasePanel onClose={() => setActiveTab('home')} />
         )}
       </main>
 

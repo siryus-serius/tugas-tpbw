@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Layers, BarChart3, ShieldAlert } from 'lucide-react';
+import { MapPin, Layers, BarChart3, ShieldAlert, Database } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab }) {
   const navItems = [
@@ -7,6 +7,7 @@ export default function Navbar({ activeTab, setActiveTab }) {
     { id: 'terkini', label: 'Peta Terkini (Live)', icon: Layers, isLive: true },
     { id: 'map', label: 'Arsip & Layer', icon: Layers },
     { id: 'stats', label: 'Statistik & Posko', icon: BarChart3 },
+    { id: 'database', label: 'Database EWS', icon: Database },
   ];
 
   return (
