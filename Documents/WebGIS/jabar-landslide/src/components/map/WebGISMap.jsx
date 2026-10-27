@@ -143,7 +143,7 @@ export default function WebGISMap({ initialLayer }) {
   const currentRealHour = now.getHours();
   const todayDateStr = `${currentRealYear}-${String(currentRealMonth).padStart(2, '0')}-${String(currentRealDay).padStart(2, '0')}`;
 
-  // State Filter Mode Simulasi: 'hari' (24 Jam) | 'bulan' (Harian dlm Bulan) | 'tahun' (2021-2026)
+  // State Filter Mode Simulasi: 'hari' (24 Jam) | 'pekan' (Skala 7 Hari) | 'bulan' (Harian dlm Bulan) | 'tahun' (2021-2026)
   const [simMode, setSimMode] = useState('hari');
   // State Kecepatan Putar (Playback Speed): 0.5x, 1x, 2x, 4x
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
@@ -167,15 +167,26 @@ export default function WebGISMap({ initialLayer }) {
   const maxAvailableDay = isCurrentMonth ? Math.min(daysInSelectedMonth, currentRealDay) : daysInSelectedMonth;
   const maxAvailableHour = isToday ? currentRealHour : 23;
 
+  // Mode Tahunan: index bulan dari Jan 2021 (0) s.d. bulan berjalan (maxMonthIndex)
+  const maxMonthIndex = (currentRealYear - 2021) * 12 + (currentRealMonth - 1);
+  const selectedMonthIndex = Math.min(maxMonthIndex, Math.max(0, (selectedYearNum - 2021) * 12 + (selectedMonthNum - 1)));
+
+  // Mode Pekan: 7 hari terakhir (H-6 s.d. H-0 / Hari Ini), 2 slot per hari (08:00 Pagi, 20:00 Malam) = total 14 slot
+  const diffDaysFromToday = Math.round((new Date(selectedDate) - new Date(todayDateStr)) / 86400000);
+  const clampedWeekDayOffset = Math.min(0, Math.max(-6, diffDaysFromToday));
+  const weekSlotIndex = (clampedWeekDayOffset + 6) * 2 + (selectedHour >= 14 ? 1 : 0);
+  const maxWeekSlot = isToday ? (currentRealHour >= 20 ? 13 : 12) : 13;
+
   // Status Live & Tahun Citra Satelit Terpilih
   const isLive = (simMode === 'hari' && isToday && selectedHour === currentRealHour) ||
+                 (simMode === 'pekan' && isToday && (selectedHour >= (currentRealHour >= 20 ? 20 : 8))) ||
                  (simMode === 'bulan' && isToday) ||
-                 (simMode === 'tahun' && selectedYearNum === 2026);
+                 (simMode === 'tahun' && selectedYearNum === currentRealYear && selectedMonthNum === currentRealMonth);
 
   const selectedYear = (selectedYearNum === 2026 || isLive) ? 'terkini' : String(selectedYearNum);
   const dateYear = String(selectedYearNum);
 
-  // Looping Auto-Play Timeline (Dengan Kecepatan Playback Speed Dinamis & Multi-Mode)
+  // Looping Auto-Play Timeline (Dengan Kecepatan Playback Speed Dinamis & Skala Pergerakan Mulus)
   useEffect(() => {
     let interval;
     if (isPlaying) {
@@ -189,8 +200,20 @@ export default function WebGISMap({ initialLayer }) {
 
       interval = setInterval(() => {
         if (simMode === 'hari') {
+          // Maju 1 jam
           setSelectedHour((prev) => (prev >= maxAvailableHour ? 0 : prev + 1));
+        } else if (simMode === 'pekan') {
+          // Maju per 12 jam (Pagi / Malam) agar skala pergerakan rentang 7 hari mulus
+          const nextSlot = weekSlotIndex >= maxWeekSlot ? 0 : weekSlotIndex + 1;
+          const dayOffset = Math.floor(nextSlot / 2) - 6;
+          const targetHour = (nextSlot % 2 === 0) ? 8 : 20;
+          const d = new Date(now);
+          d.setDate(d.getDate() + dayOffset);
+          const dStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+          setSelectedDate(dStr);
+          setSelectedHour(targetHour);
         } else if (simMode === 'bulan') {
+          // Maju per 3 hari
           setSelectedDate((prevDate) => {
             const [yS, mS, dS] = (prevDate || todayDateStr).split('-');
             const y = parseInt(yS, 10);
@@ -199,22 +222,24 @@ export default function WebGISMap({ initialLayer }) {
             const totalDays = new Date(y, m, 0).getDate();
             const isCurrM = y === currentRealYear && m === currentRealMonth;
             const maxD = isCurrM ? Math.min(totalDays, currentRealDay) : totalDays;
-            const nextD = d >= maxD ? 1 : d + 1;
+            const nextD = (d >= maxD) ? 1 : Math.min(maxD, d + 3);
             return `${y}-${String(m).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`;
           });
         } else if (simMode === 'tahun') {
-          setSelectedDate((prevDate) => {
-            const [yS, mS, dS] = (prevDate || todayDateStr).split('-');
-            const y = parseInt(yS, 10);
-            const nextY = y >= 2026 ? 2021 : y + 1;
-            if (nextY === 2026) return todayDateStr;
-            return `${nextY}-${mS}-${dS}`;
-          });
+          // Maju per 1 bulan sepanjang rentang 2021 s.d. 2026
+          const nextIdx = selectedMonthIndex >= maxMonthIndex ? 0 : selectedMonthIndex + 1;
+          const nextY = 2021 + Math.floor(nextIdx / 12);
+          const nextM = (nextIdx % 12) + 1;
+          const totalDays = new Date(nextY, nextM, 0).getDate();
+          const isCurrM = nextY === currentRealYear && nextM === currentRealMonth;
+          const maxD = isCurrM ? currentRealDay : totalDays;
+          const nextD = Math.min(maxD, selectedDayNum || 15);
+          setSelectedDate(`${nextY}-${String(nextM).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`);
         }
       }, delay);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, simMode, playbackSpeed, maxAvailableHour, maxAvailableDay, currentRealYear, currentRealMonth, currentRealDay, todayDateStr]);
+  }, [isPlaying, simMode, playbackSpeed, maxAvailableHour, weekSlotIndex, maxWeekSlot, maxAvailableDay, selectedMonthIndex, maxMonthIndex, selectedDayNum, currentRealYear, currentRealMonth, currentRealDay, todayDateStr]);
 
   // Jaga agar selectedHour tidak melampaui maxAvailableHour
   useEffect(() => {
@@ -242,37 +267,65 @@ export default function WebGISMap({ initialLayer }) {
 
   // Navigasi Langkah Mundur Sesuai Mode
   const canStepBack = simMode === 'hari' ? selectedHour > 0 :
+                      simMode === 'pekan' ? weekSlotIndex > 0 :
                       simMode === 'bulan' ? selectedDayNum > 1 :
-                      selectedYearNum > 2021;
+                      selectedMonthIndex > 0;
 
   const handleStepBack = () => {
     if (simMode === 'hari') {
       setSelectedHour((prev) => Math.max(0, prev - 1));
+    } else if (simMode === 'pekan') {
+      const prevSlot = Math.max(0, weekSlotIndex - 1);
+      const dayOffset = Math.floor(prevSlot / 2) - 6;
+      const targetHour = (prevSlot % 2 === 0) ? 8 : 20;
+      const d = new Date(now);
+      d.setDate(d.getDate() + dayOffset);
+      setSelectedDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+      setSelectedHour(targetHour);
     } else if (simMode === 'bulan') {
-      const prevD = Math.max(1, selectedDayNum - 1);
+      const prevD = Math.max(1, selectedDayNum - 3);
       setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(prevD).padStart(2, '0')}`);
     } else if (simMode === 'tahun') {
-      const prevY = Math.max(2021, selectedYearNum - 1);
-      if (prevY === 2026) setSelectedDate(todayDateStr);
-      else setSelectedDate(`${prevY}-${selMonthStr}-${selDayStr}`);
+      const prevIdx = Math.max(0, selectedMonthIndex - 1);
+      const prevY = 2021 + Math.floor(prevIdx / 12);
+      const prevM = (prevIdx % 12) + 1;
+      const totalDays = new Date(prevY, prevM, 0).getDate();
+      const isCurrM = prevY === currentRealYear && prevM === currentRealMonth;
+      const maxD = isCurrM ? currentRealDay : totalDays;
+      const prevD = Math.min(maxD, selectedDayNum || 15);
+      setSelectedDate(`${prevY}-${String(prevM).padStart(2, '0')}-${String(prevD).padStart(2, '0')}`);
     }
   };
 
   // Navigasi Langkah Maju Sesuai Mode
   const canStepForward = simMode === 'hari' ? selectedHour < maxAvailableHour :
+                         simMode === 'pekan' ? weekSlotIndex < maxWeekSlot :
                          simMode === 'bulan' ? selectedDayNum < maxAvailableDay :
-                         selectedYearNum < 2026;
+                         selectedMonthIndex < maxMonthIndex;
 
   const handleStepForward = () => {
     if (simMode === 'hari') {
       setSelectedHour((prev) => Math.min(maxAvailableHour, prev + 1));
+    } else if (simMode === 'pekan') {
+      const nextSlot = Math.min(maxWeekSlot, weekSlotIndex + 1);
+      const dayOffset = Math.floor(nextSlot / 2) - 6;
+      const targetHour = (nextSlot % 2 === 0) ? 8 : 20;
+      const d = new Date(now);
+      d.setDate(d.getDate() + dayOffset);
+      setSelectedDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+      setSelectedHour(targetHour);
     } else if (simMode === 'bulan') {
-      const nextD = Math.min(maxAvailableDay, selectedDayNum + 1);
+      const nextD = Math.min(maxAvailableDay, selectedDayNum + 3);
       setSelectedDate(`${selectedYearNum}-${String(selectedMonthNum).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`);
     } else if (simMode === 'tahun') {
-      const nextY = Math.min(2026, selectedYearNum + 1);
-      if (nextY === 2026) setSelectedDate(todayDateStr);
-      else setSelectedDate(`${nextY}-${selMonthStr}-${selDayStr}`);
+      const nextIdx = Math.min(maxMonthIndex, selectedMonthIndex + 1);
+      const nextY = 2021 + Math.floor(nextIdx / 12);
+      const nextM = (nextIdx % 12) + 1;
+      const totalDays = new Date(nextY, nextM, 0).getDate();
+      const isCurrM = nextY === currentRealYear && nextM === currentRealMonth;
+      const maxD = isCurrM ? currentRealDay : totalDays;
+      const nextD = Math.min(maxD, selectedDayNum || 15);
+      setSelectedDate(`${nextY}-${String(nextM).padStart(2, '0')}-${String(nextD).padStart(2, '0')}`);
     }
   };
 
@@ -800,11 +853,14 @@ export default function WebGISMap({ initialLayer }) {
                 {simMode === 'hari' && (
                   <span>{formatIndonesianDateFull(selectedDate)} &bull; <b className="text-emerald-400 font-bold">{String(selectedHour).padStart(2, '0')}:00 WIB</b></span>
                 )}
+                {simMode === 'pekan' && (
+                  <span>Simulasi Pekan: <b className="text-emerald-400 font-bold">{formatIndonesianDateFull(selectedDate)} ({selectedHour === 8 ? '08:00 Pagi' : '20:00 Malam'})</b></span>
+                )}
                 {simMode === 'bulan' && (
-                  <span>Simulasi Bulanan: <b className="text-emerald-400 font-bold">{formatIndonesianDateFull(selectedDate)}</b></span>
+                  <span>Simulasi Bulanan: <b className="text-emerald-400 font-bold">Tgl {selectedDayNum} {getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}</b></span>
                 )}
                 {simMode === 'tahun' && (
-                  <span>Simulasi Multi-Tahun: <b className="text-emerald-400 font-bold">Tahun {selectedYearNum}</b></span>
+                  <span>Simulasi Tahunan: <b className="text-emerald-400 font-bold">{getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}</b></span>
                 )}
               </span>
               {playbackSpeed > 1 && (
@@ -892,16 +948,16 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Filter Mode Simulasi: Hari, Bulanan, Tahunan */}
+            {/* Filter Mode Simulasi: 24 Jam, Pekan, Bulanan, Tahunan */}
             <div className="space-y-1">
               <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-400 block">
-                Filter Mode Simulasi:
+                Filter Skala Simulasi:
               </span>
-              <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
+              <div className="grid grid-cols-4 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
                 <button
                   type="button"
                   onClick={() => { setSimMode('hari'); setIsPlaying(false); }}
-                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                  className={`py-1.5 text-[11px] font-semibold rounded-lg transition-all cursor-pointer text-center flex flex-col items-center justify-center gap-0.5 ${
                     simMode === 'hari'
                       ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/10'
@@ -912,8 +968,20 @@ export default function WebGISMap({ initialLayer }) {
                 </button>
                 <button
                   type="button"
+                  onClick={() => { setSimMode('pekan'); setIsPlaying(false); }}
+                  className={`py-1.5 text-[11px] font-semibold rounded-lg transition-all cursor-pointer text-center flex flex-col items-center justify-center gap-0.5 ${
+                    simMode === 'pekan'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <Calendar className="w-3 h-3" />
+                  <span>Pekan</span>
+                </button>
+                <button
+                  type="button"
                   onClick={() => { setSimMode('bulan'); setIsPlaying(false); }}
-                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                  className={`py-1.5 text-[11px] font-semibold rounded-lg transition-all cursor-pointer text-center flex flex-col items-center justify-center gap-0.5 ${
                     simMode === 'bulan'
                       ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/10'
@@ -925,7 +993,7 @@ export default function WebGISMap({ initialLayer }) {
                 <button
                   type="button"
                   onClick={() => { setSimMode('tahun'); setIsPlaying(false); }}
-                  className={`py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                  className={`py-1.5 text-[11px] font-semibold rounded-lg transition-all cursor-pointer text-center flex flex-col items-center justify-center gap-0.5 ${
                     simMode === 'tahun'
                       ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md shadow-emerald-400/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/10'
@@ -936,9 +1004,10 @@ export default function WebGISMap({ initialLayer }) {
                 </button>
               </div>
               <div className="text-[10px] text-zinc-400 leading-tight pt-0.5">
-                {simMode === 'hari' && '⚡ Simulasi diurnal jam per jam (00:00 - 23:00) & awan radar Himawari-9.'}
-                {simMode === 'bulan' && `📅 Simulasi progres harian bulan ${getIndonesianMonthName(selectedMonthNum)} ${selectedYearNum}.`}
-                {simMode === 'tahun' && '🛰️ Komparasi citra Sentinel-2 & bencana gempa tahunan (2021 – 2026).'}
+                {simMode === 'hari' && '⚡ Geser per 1 jam (00:00 - 23:00 WIB) & awan radar Himawari-9.'}
+                {simMode === 'pekan' && '📆 Skala 7 hari: geser per 12 jam (Pagi/Malam) dengan transisi mulus.'}
+                {simMode === 'bulan' && `📅 Skala bulanan: geser per 3 hari (${getIndonesianMonthName(selectedMonthNum)} ${selectedYearNum}).`}
+                {simMode === 'tahun' && '🗓️ Skala tahunan (2021 – 2026): geser per 1 bulan & citra Sentinel-2.'}
               </div>
             </div>
 
@@ -1063,7 +1132,7 @@ export default function WebGISMap({ initialLayer }) {
               <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1 border-t border-white/5">
                 <span>Mode Simulasi:</span>
                 <span className="text-emerald-300 font-semibold uppercase">
-                  {simMode === 'hari' ? '24 Jam' : simMode === 'bulan' ? 'Bulanan' : 'Tahunan'} ({playbackSpeed}x)
+                  {simMode === 'hari' ? '24 Jam' : simMode === 'pekan' ? 'Pekan (7 Hari)' : simMode === 'bulan' ? 'Bulanan (3 Hari)' : 'Tahunan (Per Bulan)'} ({playbackSpeed}x)
                 </span>
               </div>
               <div className="flex items-center justify-between text-[10px] text-zinc-400">
@@ -1478,7 +1547,7 @@ export default function WebGISMap({ initialLayer }) {
                 </div>
               </div>
 
-              {/* Mode Simulasi Switcher: 24 Jam / Bulanan / Tahunan */}
+              {/* Mode Simulasi Switcher: 24 Jam / Pekan / Bulanan / Tahunan */}
               <div className="flex items-center bg-white/5 p-0.5 sm:p-1 rounded-xl border border-white/10 text-xs">
                 <button
                   type="button"
@@ -1500,6 +1569,23 @@ export default function WebGISMap({ initialLayer }) {
                 <button
                   type="button"
                   onClick={() => {
+                    setSimMode('pekan');
+                    setIsPlaying(false);
+                  }}
+                  className={`px-2 sm:px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer flex items-center gap-1 text-[11px] ${
+                    simMode === 'pekan'
+                      ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/10'
+                  }`}
+                  title="Simulasi Skala Pekan (7 Hari - Step 12 Jam Mulus)"
+                >
+                  <Calendar className="w-3 h-3" />
+                  <span>Pekan</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
                     setSimMode('bulan');
                     setIsPlaying(false);
                   }}
@@ -1508,7 +1594,7 @@ export default function WebGISMap({ initialLayer }) {
                       ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/10'
                   }`}
-                  title="Simulasi Harian dalam Sebulan"
+                  title="Simulasi Bulanan (Step 3 Hari)"
                 >
                   <Calendar className="w-3 h-3" />
                   <span>Bulanan</span>
@@ -1525,7 +1611,7 @@ export default function WebGISMap({ initialLayer }) {
                       ? 'bg-emerald-400 text-zinc-950 font-bold shadow-sm shadow-emerald-400/20'
                       : 'text-zinc-400 hover:text-white hover:bg-white/10'
                   }`}
-                  title="Simulasi Tahunan (2021 – 2026)"
+                  title="Simulasi Tahunan 2021–2026 (Step 1 Bulan)"
                 >
                   <Sparkles className="w-3 h-3" />
                   <span>Tahunan</span>
@@ -1544,11 +1630,22 @@ export default function WebGISMap({ initialLayer }) {
                       <span className="text-[10px] text-zinc-400">WIB</span>
                     </>
                   )}
+                  {simMode === 'pekan' && (
+                    <>
+                      <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="font-semibold text-xs text-white">
+                        {formatIndonesianDateFull(selectedDate)}
+                      </span>
+                      <span className="font-mono text-[10px] px-1 rounded bg-white/10 text-emerald-300 font-bold">
+                        {selectedHour === 8 ? '08:00 Pagi' : '20:00 Malam'}
+                      </span>
+                    </>
+                  )}
                   {simMode === 'bulan' && (
                     <>
                       <Calendar className="w-3.5 h-3.5 text-emerald-400" />
                       <span className="font-semibold text-xs text-white">
-                        {selectedDayNum} {getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}
+                        Tgl {selectedDayNum} {getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}
                       </span>
                     </>
                   )}
@@ -1556,7 +1653,7 @@ export default function WebGISMap({ initialLayer }) {
                     <>
                       <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                       <span className="font-bold text-sm text-white">
-                        {selectedYearNum === 2026 ? '2026 (Live)' : `Tahun ${selectedYearNum}`}
+                        {getIndonesianMonthName(selectedMonthNum)} {selectedYearNum}
                       </span>
                     </>
                   )}
@@ -1588,7 +1685,7 @@ export default function WebGISMap({ initialLayer }) {
             {/* Dynamic Slider Bar based on simMode */}
             <div className="space-y-1">
               <div className="relative flex items-center">
-                {/* 1. Mode Hari (00:00 s.d. maxAvailableHour) */}
+                {/* 1. Mode Hari (00:00 s.d. maxAvailableHour - step 1 jam) */}
                 {simMode === 'hari' && (
                   <input
                     type="range"
@@ -1604,13 +1701,35 @@ export default function WebGISMap({ initialLayer }) {
                   />
                 )}
 
-                {/* 2. Mode Bulan (1 s.d. maxAvailableDay) */}
+                {/* 2. Mode Pekan (7 Hari - step 12 jam / Pagi-Malam) */}
+                {simMode === 'pekan' && (
+                  <input
+                    type="range"
+                    min={0}
+                    max={maxWeekSlot}
+                    step={1}
+                    value={weekSlotIndex}
+                    onChange={(e) => {
+                      const slot = parseInt(e.target.value, 10);
+                      const dayOffset = Math.floor(slot / 2) - 6;
+                      const targetHour = (slot % 2 === 0) ? 8 : 20;
+                      const d = new Date(now);
+                      d.setDate(d.getDate() + dayOffset);
+                      setSelectedDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+                      setSelectedHour(targetHour);
+                      setIsPlaying(false);
+                    }}
+                    className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
+                  />
+                )}
+
+                {/* 3. Mode Bulan (1 s.d. maxAvailableDay - step 3 hari) */}
                 {simMode === 'bulan' && (
                   <input
                     type="range"
                     min={1}
                     max={maxAvailableDay}
-                    step={1}
+                    step={3}
                     value={selectedDayNum}
                     onChange={(e) => {
                       const dVal = parseInt(e.target.value, 10);
@@ -1621,18 +1740,23 @@ export default function WebGISMap({ initialLayer }) {
                   />
                 )}
 
-                {/* 3. Mode Tahun (2021 s.d. 2026) */}
+                {/* 4. Mode Tahun (Jan 2021 s.d. Okt 2026 - step 1 bulan) */}
                 {simMode === 'tahun' && (
                   <input
                     type="range"
-                    min={2021}
-                    max={2026}
+                    min={0}
+                    max={maxMonthIndex}
                     step={1}
-                    value={selectedYearNum}
+                    value={selectedMonthIndex}
                     onChange={(e) => {
-                      const yVal = parseInt(e.target.value, 10);
-                      if (yVal === 2026) handleDateChange(todayDateStr);
-                      else handleDateChange(`${yVal}-06-15`);
+                      const idx = parseInt(e.target.value, 10);
+                      const y = 2021 + Math.floor(idx / 12);
+                      const m = (idx % 12) + 1;
+                      const totalDays = new Date(y, m, 0).getDate();
+                      const isCurrM = y === currentRealYear && m === currentRealMonth;
+                      const maxD = isCurrM ? currentRealDay : totalDays;
+                      const d = Math.min(maxD, selectedDayNum || 15);
+                      setSelectedDate(`${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`);
                       setIsPlaying(false);
                     }}
                     className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/10 rounded-lg appearance-none transition-all"
@@ -1695,9 +1819,40 @@ export default function WebGISMap({ initialLayer }) {
                 </div>
               )}
 
+              {simMode === 'pekan' && (
+                <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
+                  {[
+                    { slot: 0, label: 'H-6' },
+                    { slot: 2, label: 'H-5' },
+                    { slot: 4, label: 'H-4' },
+                    { slot: 6, label: 'H-3' },
+                    { slot: 8, label: 'H-2' },
+                    { slot: 10, label: 'Kemarin' },
+                    { slot: Math.min(12, maxWeekSlot), label: 'Hari Ini' }
+                  ].map(({ slot, label }) => (
+                    <button
+                      key={`tick-week-${slot}`}
+                      type="button"
+                      onClick={() => {
+                        const dayOffset = Math.floor(slot / 2) - 6;
+                        const d = new Date(now);
+                        d.setDate(d.getDate() + dayOffset);
+                        setSelectedDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+                        setSelectedHour(8);
+                      }}
+                      className={`hover:text-white cursor-pointer ${
+                        Math.floor(weekSlotIndex / 2) * 2 === slot ? 'text-emerald-400 font-bold' : ''
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {simMode === 'bulan' && (
                 <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
-                  {[1, 5, 10, 15, 20, 25, maxAvailableDay].map((d) => (
+                  {[1, 4, 7, 10, 13, 16, 19, 22, 25, 28, maxAvailableDay].filter((v, i, a) => a.indexOf(v) === i).map((d) => (
                     <button
                       key={`tick-day-${d}`}
                       type="button"
@@ -1709,7 +1864,7 @@ export default function WebGISMap({ initialLayer }) {
                         selectedDayNum === d ? 'text-emerald-400 font-bold' : ''
                       }`}
                     >
-                      {d === maxAvailableDay && isCurrentMonth ? `Tgl ${d} (Hari Ini)` : `Tgl ${d}`}
+                      {d === maxAvailableDay && isCurrentMonth ? `Tgl ${d} (Maks)` : `Tgl ${d}`}
                     </button>
                   ))}
                 </div>
@@ -1717,23 +1872,27 @@ export default function WebGISMap({ initialLayer }) {
 
               {simMode === 'tahun' && (
                 <div className="flex justify-between items-center text-[9px] text-zinc-400 font-mono px-0.5 pt-0.5 select-none">
-                  {[2021, 2022, 2023, 2024, 2025, 2026].map((yr) => (
-                    <button
-                      key={`tick-year-${yr}`}
-                      type="button"
-                      onClick={() => {
-                        if (yr === 2026) handleDateChange(todayDateStr);
-                        else handleDateChange(`${yr}-06-15`);
-                      }}
-                      className={`hover:text-white cursor-pointer ${
-                        selectedYearNum === yr
-                          ? yr === 2026 ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'
-                          : ''
-                      }`}
-                    >
-                      {yr === 2026 ? '2026 (Live)' : yr}
-                    </button>
-                  ))}
+                  {[2021, 2022, 2023, 2024, 2025, 2026].map((yr) => {
+                    const yrIdx = (yr - 2021) * 12 + (yr === 2026 ? currentRealMonth - 1 : 0);
+                    return (
+                      <button
+                        key={`tick-year-${yr}`}
+                        type="button"
+                        onClick={() => {
+                          const targetMonth = yr === 2026 ? currentRealMonth : 6;
+                          const targetDate = yr === 2026 ? todayDateStr : `${yr}-${String(targetMonth).padStart(2, '0')}-15`;
+                          handleDateChange(targetDate);
+                        }}
+                        className={`hover:text-white cursor-pointer ${
+                          selectedYearNum === yr
+                            ? yr === 2026 ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'
+                            : ''
+                        }`}
+                      >
+                        {yr === 2026 ? `2026 (${getIndonesianMonthName(currentRealMonth)})` : yr}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
             </div>
