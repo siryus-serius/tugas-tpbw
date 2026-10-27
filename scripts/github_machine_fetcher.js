@@ -46,23 +46,29 @@ async function fetchBMKGGempa() {
   return null;
 }
 
-async function fetchRainViewerRadar() {
-  console.log('[*] Menarik timestamp radar hujan live dari RainViewer...');
-  try {
-    const res = await fetch('https://api.rainviewer.com/public/weather-maps.json');
-    if (res.ok) {
-      const data = await res.json();
-      const past = data?.radar?.past;
-      if (past && past.length > 0) {
-        const latestPath = past[past.length - 1].path;
-        console.log(`[+] Radar Hujan Terkini Path: ${latestPath}`);
-        return latestPath;
-      }
+async function fetchHimawariStatus() {
+  console.log('[*] Memeriksa ketersediaan citra satelit cuaca Himawari-9 BMKG...');
+  const products = {
+    'EH': 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png',
+    'RP': 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png',
+    'NC': 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png'
+  };
+  const statusResults = {};
+  for (const [code, url] of Object.entries(products)) {
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      statusResults[code] = {
+        url,
+        tersedia: res.ok,
+        terakhir_diperbarui: res.headers.get('last-modified') || new Date().toISOString()
+      };
+      console.log(`[+] Himawari-9 (${code}): ${res.status === 200 ? 'Aktif 200 OK' : 'Non-aktif'}`);
+    } catch (err) {
+      statusResults[code] = { url, tersedia: false, error: err.message };
+      console.warn(`[-] Gagal periksa Himawari-9 (${code}):`, err.message);
     }
-  } catch (err) {
-    console.warn('[-] Gagal fetch RainViewer:', err.message);
   }
-  return null;
+  return statusResults;
 }
 
 async function fetchWeatherStations() {
@@ -99,9 +105,9 @@ async function main() {
   console.log(`⏰ Timestamp: ${new Date().toISOString()}`);
   console.log('='.repeat(60));
 
-  const [gempa, radarPath, stationsWeather] = await Promise.all([
+  const [gempa, himawariStatus, stationsWeather] = await Promise.all([
     fetchBMKGGempa(),
-    fetchRainViewerRadar(),
+    fetchHimawariStatus(),
     fetchWeatherStations()
   ]);
 
@@ -109,7 +115,7 @@ async function main() {
     terakhir_diperbarui: new Date().toISOString(),
     mesin_eksekusi: 'GitHub Actions Automated Cron Runner',
     gempa_bmkg: gempa,
-    rainviewer_radar_path: radarPath,
+    himawari_9: himawariStatus,
     stasiun_cuaca_jabar: stationsWeather,
     status_sistem: 'Normal Operasional'
   };

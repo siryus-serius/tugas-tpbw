@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup, Polyline, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup, Polyline, Tooltip, ImageOverlay, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
@@ -87,6 +87,37 @@ const TILE_OPENTOPO_URL =
 const SAR_PERMANENT_URL = 
   "https://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg";
 
+// 5. SATELIT CUACA HIMAWARI-9 BMKG (SEKTOR INDONESIA & JAWA BARAT)
+// Ekstensi koordinat resmi citra satelit inderaja BMKG: Latitude [-20.0, 20.0], Longitude [90.0, 150.0]
+const HIMAWARI_BOUNDS = [
+  [-20.0, 90.0],  // Pojok Barat Daya [Lat, Lng]
+  [20.0, 150.0]   // Pojok Timur Laut [Lat, Lng]
+];
+
+const HIMAWARI_PRODUCTS = {
+  'EH': {
+    id: 'EH',
+    name: 'Enhanced IR (Awan Konvektif / Cb)',
+    shortName: 'Awan Konvektif',
+    url: 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png',
+    desc: 'Deteksi awan dingin Cumulonimbus pemicu hujan badai & longsor'
+  },
+  'RP': {
+    id: 'RP',
+    name: 'Rainfall Potential (Curah Hujan)',
+    shortName: 'Potensi Hujan',
+    url: 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png',
+    desc: 'Estimasi intensitas curah hujan per jam dari sensor satelit'
+  },
+  'NC': {
+    id: 'NC',
+    name: 'Natural Color (RGB Tutupan Awan)',
+    shortName: 'Warna Alami',
+    url: 'https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png',
+    desc: 'Komposit optik warna alami tutupan awan di atas Jawa Barat'
+  }
+};
+
 // Sub-komponen Kontrol Kamera Peta (Fly to User GPS)
 function MapCameraController({ userCoords }) {
   const map = useMap();
@@ -113,7 +144,10 @@ export default function WebGISMap({ initialLayer }) {
   const [showDem, setShowDem] = useState(false);
   const [showSentinel2, setShowSentinel2] = useState(true);
   const [showSar, setShowSar] = useState(false);
-  const [showRain, setShowRain] = useState(false);
+  const [showHimawari, setShowHimawari] = useState(true);
+  const [himawariProduct, setHimawariProduct] = useState('EH'); // 'EH' | 'RP' | 'NC'
+  const [himawariOpacity, setHimawariOpacity] = useState(0.7);
+  const [himawariTimestamp, setHimawariTimestamp] = useState(Date.now());
   const [showGempa, setShowGempa] = useState(true);
   const [showFaults, setShowFaults] = useState(true);
   const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
@@ -124,10 +158,6 @@ export default function WebGISMap({ initialLayer }) {
   const [demOpacity, setDemOpacity] = useState(0.7);
   const [s2Opacity, setS2Opacity] = useState(0.9);
   const [sarOpacity, setSarOpacity] = useState(0.65);
-  const [rainOpacity, setRainOpacity] = useState(0.75);
-
-  // Live Weather Radar (RainViewer Dynamic Tile Path)
-  const [rainRadarPath, setRainRadarPath] = useState(null);
 
   // Live Gempa BMKG Terkini
   const [gempaData, setGempaData] = useState(null);
@@ -154,19 +184,6 @@ export default function WebGISMap({ initialLayer }) {
       })
       .then((data) => setGeoData(data))
       .catch((err) => console.error('Error membaca data GeoJSON:', err));
-  }, []);
-
-  // 2. Ambil Radar Curah Hujan Realtime (RainViewer Live API)
-  useEffect(() => {
-    fetch('https://api.rainviewer.com/public/weather-maps.json')
-      .then(res => res.json())
-      .then(data => {
-        if (data?.radar?.past?.length > 0) {
-          const latest = data.radar.past[data.radar.past.length - 1];
-          setRainRadarPath(latest.path);
-        }
-      })
-      .catch(err => console.warn('Gagal memuat RainViewer Live Radar:', err));
   }, []);
 
   // 3. Ambil Data Gempa Bumi Terkini Resmi dari BMKG
@@ -216,7 +233,7 @@ export default function WebGISMap({ initialLayer }) {
   useEffect(() => {
     if (initialLayer === 'terkini') {
       setSelectedYear('terkini');
-      setShowRain(true);
+      setShowHimawari(true);
       setShowGempa(true);
       setShowSentinel2(true);
     } else if (initialLayer === 'slope') {
@@ -226,15 +243,16 @@ export default function WebGISMap({ initialLayer }) {
     } else if (initialLayer === 'gempa') {
       setShowGempa(true);
       setShowFaults(true);
-    } else if (initialLayer === 'radar') {
-      setShowRain(true);
+    } else if (initialLayer === 'radar' || initialLayer === 'himawari') {
+      setShowHimawari(true);
     }
   }, [initialLayer]);
 
-  // Handle Refresh Data Live
+  // Handle Refresh Data Live (Termasuk Satelit Himawari-9 & Sensor Cuaca)
   const [isRefreshing, setIsRefreshing] = useState(false);
   const handleRefreshLive = () => {
     setIsRefreshing(true);
+    setHimawariTimestamp(Date.now());
     fetch('/data/live-telemetry.json?t=' + Date.now())
       .then(res => res.json())
       .then(data => {
@@ -404,13 +422,14 @@ export default function WebGISMap({ initialLayer }) {
           />
         )}
 
-        {/* 6. Layer Radar Cuaca & Curah Hujan Live (RainViewer) */}
-        {showRain && rainRadarPath && (
-          <TileLayer
-            key={`rain-${rainRadarPath}`}
-            url={`https://tilecache.rainviewer.com${rainRadarPath}/256/{z}/{x}/{y}/2/1_1.png`}
-            opacity={rainOpacity}
-            attribution='Live Precipitation Radar &bull; <a href="https://www.rainviewer.com">RainViewer</a>'
+        {/* 6. Layer Satelit Cuaca & Radar Awan Hujan Himawari-9 (BMKG Resmi) */}
+        {showHimawari && (
+          <ImageOverlay
+            key={`himawari-${himawariProduct}-${himawariTimestamp}`}
+            url={`${HIMAWARI_PRODUCTS[himawariProduct].url}?t=${himawariTimestamp}`}
+            bounds={HIMAWARI_BOUNDS}
+            opacity={himawariOpacity}
+            zIndex={350}
           />
         )}
 
@@ -583,7 +602,7 @@ export default function WebGISMap({ initialLayer }) {
             <div className="text-[11px] text-zinc-300 hidden md:flex items-center gap-2 font-mono whitespace-nowrap">
               <span className="text-emerald-400">● 7 Stasiun</span>
               <span>&bull;</span>
-              <span className="text-sky-300">Radar Hujan</span>
+              <span className="text-sky-300">Himawari-9 ({HIMAWARI_PRODUCTS[himawariProduct].shortName})</span>
               <span>&bull;</span>
               <span className="text-zinc-400">Esri Imagery</span>
             </div>
@@ -614,7 +633,7 @@ export default function WebGISMap({ initialLayer }) {
             <button
               onClick={() => {
                 setSelectedYear('terkini');
-                setShowRain(true);
+                setShowHimawari(true);
                 setShowGempa(true);
               }}
               className="ml-2 px-2.5 py-1 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white text-[10px] font-bold shadow-md shadow-rose-600/30 flex items-center gap-1.5 cursor-pointer transition-all border border-rose-400/30 whitespace-nowrap"
@@ -687,7 +706,7 @@ export default function WebGISMap({ initialLayer }) {
             <button
               onClick={() => {
                 setSelectedYear('terkini');
-                setShowRain(true);
+                setShowHimawari(true);
                 setShowGempa(true);
               }}
               className={`w-full mb-3 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
@@ -885,36 +904,66 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Curah Hujan Radar Live (RainViewer) */}
-            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 space-y-2">
+            {/* Satelit Cuaca Himawari-9 BMKG (Awan & Potensi Hujan) */}
+            <div className="p-3 rounded-2xl bg-sky-950/20 border border-sky-500/20 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400 shadow-sm shadow-blue-400"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-sm shadow-sky-400 animate-pulse"></span>
                   <div>
-                    <span className="text-xs font-semibold text-white block">Radar Hujan Real-Time</span>
-                    <span className="text-[10px] text-zinc-400">RainViewer Live Radar Awan</span>
+                    <span className="text-xs font-semibold text-white block">Satelit Cuaca Himawari-9</span>
+                    <span className="text-[10px] text-sky-300">BMKG Remote Sensing &bull; Geostasioner</span>
                   </div>
                 </div>
                 <input
                   type="checkbox"
-                  checked={showRain}
-                  onChange={(e) => setShowRain(e.target.checked)}
-                  className="accent-emerald-400 w-4 h-4 cursor-pointer"
+                  checked={showHimawari}
+                  onChange={(e) => setShowHimawari(e.target.checked)}
+                  className="accent-sky-400 w-4 h-4 cursor-pointer"
                 />
               </div>
-              {showRain && (
-                <div className="flex items-center justify-between text-[10px] text-zinc-400">
-                  <span>Opasitas</span>
-                  <input
-                    type="range"
-                    min="0.1"
-                    max="1"
-                    step="0.05"
-                    value={rainOpacity}
-                    onChange={(e) => setRainOpacity(parseFloat(e.target.value))}
-                    className="w-28 accent-blue-400 cursor-pointer"
-                  />
-                  <span className="font-mono">{Math.round(rainOpacity * 100)}%</span>
+
+              {showHimawari && (
+                <div className="space-y-2 pt-1.5 border-t border-white/5">
+                  {/* Selector Kanal / Produk Himawari-9 */}
+                  <div>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">
+                      Kanal / Produk Satelit:
+                    </span>
+                    <div className="grid grid-cols-3 gap-1">
+                      {Object.values(HIMAWARI_PRODUCTS).map((prod) => (
+                        <button
+                          key={prod.id}
+                          onClick={() => setHimawariProduct(prod.id)}
+                          className={`py-1 px-1 rounded-lg text-[10px] font-semibold transition-all cursor-pointer truncate ${
+                            himawariProduct === prod.id
+                              ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/30'
+                              : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
+                          }`}
+                          title={prod.name}
+                        >
+                          {prod.shortName}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-zinc-400 mt-1.5 italic leading-tight">
+                      {HIMAWARI_PRODUCTS[himawariProduct].desc}
+                    </p>
+                  </div>
+
+                  {/* Opasitas Himawari */}
+                  <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1">
+                    <span>Opasitas</span>
+                    <input
+                      type="range"
+                      min="0.1"
+                      max="1"
+                      step="0.05"
+                      value={himawariOpacity}
+                      onChange={(e) => setHimawariOpacity(parseFloat(e.target.value))}
+                      className="w-28 accent-sky-400 cursor-pointer"
+                    />
+                    <span className="font-mono">{Math.round(himawariOpacity * 100)}%</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -1043,6 +1092,10 @@ export default function WebGISMap({ initialLayer }) {
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-amber-500"></span>
             <span>Hillshade: Morfologi Lereng 3D</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded bg-sky-400"></span>
+            <span>Himawari-9: Awan Konvektif & Hujan (BMKG)</span>
           </div>
         </div>
       </div>

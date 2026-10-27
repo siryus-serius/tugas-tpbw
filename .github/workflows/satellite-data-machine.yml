@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Eksekusi Mesin Penarik Data Satelit & Sensor (BMKG, Open-Meteo, RainViewer)
+      - name: Eksekusi Mesin Penarik Data Satelit & Sensor (Himawari-9, BMKG TEWS, Open-Meteo)
         run: |
           node scripts/github_machine_fetcher.js
 

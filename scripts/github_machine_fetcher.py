@@ -47,17 +47,28 @@ def fetch_bmkg_gempa():
         return gempa
     return None
 
-def fetch_rainviewer_radar():
-    print("[*] Menarik timestamp radar hujan live dari RainViewer...")
-    url = "https://api.rainviewer.com/public/weather-maps.json"
-    data = fetch_json(url)
-    if data and "radar" in data and "past" in data["radar"]:
-        past = data["radar"]["past"]
-        if len(past) > 0:
-            latest_path = past[-1].get("path")
-            print(f"[+] Radar Hujan Terkini Path: {latest_path}")
-            return latest_path
-    return None
+def fetch_himawari_status():
+    print("[*] Memeriksa ketersediaan citra satelit cuaca Himawari-9 BMKG...")
+    products = {
+        "EH": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
+        "RP": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
+        "NC": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png"
+    }
+    status_results = {}
+    for code, url in products.items():
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "GitHub-Machine-Jabar-EWS/1.0"}, method="HEAD")
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                status_results[code] = {
+                    "url": url,
+                    "tersedia": resp.status == 200,
+                    "terakhir_diperbarui": resp.headers.get("Last-Modified") or datetime.utcnow().isoformat()
+                }
+                print(f"[+] Himawari-9 ({code}): Aktif 200 OK")
+        except Exception as e:
+            status_results[code] = {"url": url, "tersedia": False, "error": str(e)}
+            print(f"[-] Gagal periksa Himawari-9 ({code}): {e}")
+    return status_results
 
 def fetch_weather_stations():
     print("[*] Menarik data presipitasi & kelembapan tanah satelit via Open-Meteo...")
@@ -91,14 +102,14 @@ def main():
     print("=" * 60)
 
     gempa = fetch_bmkg_gempa()
-    radar_path = fetch_rainviewer_radar()
+    himawari_status = fetch_himawari_status()
     stations_weather = fetch_weather_stations()
 
     output_payload = {
         "terakhir_diperbarui": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"),
         "mesin_eksekusi": "GitHub Actions Automated Cron Runner",
         "gempa_bmkg": gempa,
-        "rainviewer_radar_path": radar_path,
+        "himawari_9": himawari_status,
         "stasiun_cuaca_jabar": stations_weather,
         "status_sistem": "Normal Operasional"
     }

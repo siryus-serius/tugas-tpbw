@@ -4,13 +4,13 @@ import { CloudRain, Mountain, Layers, Trees, Radio, Compass, AlertOctagon, Trend
 export default function FeatureGrid({ onOpenMapWithLayer }) {
   const factors = [
     {
-      id: 'rain',
-      title: 'Curah Hujan (CHIRPS)',
-      desc: 'Pemicu utama infiltrasi air tanah dan peningkatan kejenuhan massa tanah.',
+      id: 'himawari',
+      title: 'Satelit Cuaca Himawari-9',
+      desc: 'Pendeteksian awan konvektif tebal (Cb) & estimasi presipitasi BMKG pemicu longsor.',
       icon: CloudRain,
-      color: 'text-blue-400',
-      bg: 'bg-blue-500/10',
-      border: 'border-blue-500/20'
+      color: 'text-sky-400',
+      bg: 'bg-sky-500/10',
+      border: 'border-sky-500/20'
     },
     {
       id: 'slope',
