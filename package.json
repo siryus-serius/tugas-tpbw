@@ -1,0 +1,8 @@
+{
+  "name": "tpbw-api-fetcher",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "fetch": "node scripts/fetch-apis.js"
+  }
+}
