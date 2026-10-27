@@ -43,24 +43,35 @@ export default function HeroSection({ onExploreMap }) {
             Sistem Informasi Geografis terintegrasi Google Earth Engine (2021–2025). Mengolah citra satelit radar Sentinel-1, optik Sentinel-2, elevasi SRTM DEM, dan curah hujan CHIRPS secara temporal untuk pemodelan kerawanan bencana di 27 Kabupaten/Kota.
           </p>
 
-          {/* Interactive Action Button */}
+          {/* Interactive Action Buttons */}
           <div className="flex flex-wrap items-center gap-4">
             <button
-              onClick={onExploreMap}
-              className="group inline-flex items-center gap-4 bg-white text-zinc-950 pl-7 pr-2.5 py-2.5 rounded-full font-semibold text-sm hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-white/10 cursor-pointer"
+              onClick={() => onExploreMap('terkini')}
+              className="group inline-flex items-center gap-3.5 bg-gradient-to-r from-rose-600 to-rose-500 text-white pl-6 pr-2.5 py-2.5 rounded-full font-semibold text-sm hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-rose-600/30 cursor-pointer border border-rose-400/40"
             >
-              <span>Buka Peta Interaktif</span>
-              <div className="w-10 h-10 rounded-full bg-zinc-900 group-hover:bg-zinc-700 flex items-center justify-center text-white transition-colors duration-200">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+              </span>
+              <span>Buka Peta Terkini (Live)</span>
+              <div className="w-10 h-10 rounded-full bg-black/30 group-hover:bg-black/50 flex items-center justify-center text-white transition-colors duration-200">
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </button>
 
+            <button
+              onClick={() => onExploreMap('2025')}
+              className="group inline-flex items-center gap-3 bg-white text-zinc-950 px-6 py-3.5 rounded-full font-semibold text-sm hover:bg-zinc-100 hover:scale-105 active:scale-100 transition-all duration-300 shadow-xl shadow-white/10 cursor-pointer"
+            >
+              <span>Arsip Historis (2021–2025)</span>
+            </button>
+
             <a
               href="#feature-grid"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-zinc-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition-all backdrop-blur-md cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-zinc-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition-all backdrop-blur-md cursor-pointer"
             >
               <Satellite className="w-4 h-4 text-emerald-400" />
-              <span>Parameter Penginderaan Jauh</span>
+              <span>Multi-Kriteria Satelit</span>
             </a>
           </div>
         </div>

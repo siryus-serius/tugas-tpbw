@@ -6,7 +6,7 @@ import {
   Layers, Mountain, Satellite, Radio, CloudRain, MapPin, 
   Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles,
   PanelLeftClose, PanelLeftOpen, Activity, AlertTriangle, ShieldAlert,
-  Flame, Home, Users, Building2, Info, X
+  Flame, Home, Users, Building2, Info, X, RefreshCw
 } from 'lucide-react';
 
 // Fix Leaflet Default Marker Icon
@@ -45,12 +45,29 @@ const createHistoricalQuakeIcon = (mag) => {
   });
 };
 
+// Custom Icon untuk Stasiun Cuaca & Sensor Terkini
+const createWeatherStationIcon = (stationName, rainStatus) => {
+  const isRain = rainStatus && rainStatus.includes('Hujan');
+  return new L.DivIcon({
+    className: 'custom-weather-station-marker',
+    html: `
+      <div style="display: flex; items-center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 1.5px solid ${isRain ? '#38bdf8' : '#34d399'}; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); white-space: nowrap; cursor: pointer;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: ${isRain ? '#38bdf8' : '#34d399'}; box-shadow: 0 0 6px ${isRain ? '#38bdf8' : '#34d399'};"></span>
+        <span style="color: #ffffff; font-size: 10px; font-weight: 700; font-family: sans-serif;">${stationName.split(' ')[0]}</span>
+      </div>
+    `,
+    iconSize: [85, 24],
+    iconAnchor: [42, 12],
+  });
+};
+
 // =========================================================================
 // DATA CITRA SATELIT RESMI & PERMANEN (100% BEBAS EXPIRE)
 // =========================================================================
 
-// 1. CITRA OPTIK SENTINEL-2 RESMI (EOX Cloudless Mozaik per Tahun 2021-2025)
+// 1. CITRA OPTIK SENTINEL-2 RESMI (EOX Cloudless Mozaik per Tahun 2021-2025 & Terkini)
 const S2_PERMANENT_TILES = {
+  'terkini': "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   '2021': "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
   '2022': "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg",
   '2023': "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2023_3857/default/g/{z}/{y}/{x}.jpg",
@@ -185,6 +202,50 @@ export default function WebGISMap({ initialLayer }) {
       .then(data => setSoilData(data))
       .catch(err => console.error('Gagal mengambil data jenis tanah:', err));
   }, []);
+
+  // 6. Ambil Data Telemetri Real-time Stasiun Pantau Jabar (GitHub Machine)
+  const [liveTelemetry, setLiveTelemetry] = useState(null);
+  useEffect(() => {
+    fetch('/data/live-telemetry.json')
+      .then(res => res.json())
+      .then(data => setLiveTelemetry(data))
+      .catch(err => console.warn('Belum ada data live telemetry:', err));
+  }, []);
+
+  // Handle Initial Layer / Mode dari luar (Navbar/Hero)
+  useEffect(() => {
+    if (initialLayer === 'terkini') {
+      setSelectedYear('terkini');
+      setShowRain(true);
+      setShowGempa(true);
+      setShowSentinel2(true);
+    } else if (initialLayer === 'slope') {
+      setShowSlope(true);
+    } else if (initialLayer === 'soil') {
+      setShowSoilLayer(true);
+    } else if (initialLayer === 'gempa') {
+      setShowGempa(true);
+      setShowFaults(true);
+    } else if (initialLayer === 'radar') {
+      setShowRain(true);
+    }
+  }, [initialLayer]);
+
+  // Handle Refresh Data Live
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefreshLive = () => {
+    setIsRefreshing(true);
+    fetch('/data/live-telemetry.json?t=' + Date.now())
+      .then(res => res.json())
+      .then(data => {
+        setLiveTelemetry(data);
+        setTimeout(() => setIsRefreshing(false), 500);
+      })
+      .catch(err => {
+        console.warn('Gagal memuat telemetry:', err);
+        setIsRefreshing(false);
+      });
+  };
 
   // Handle Locate Me (GPS)
   const handleLocateMe = () => {
@@ -443,7 +504,37 @@ export default function WebGISMap({ initialLayer }) {
           </Marker>
         )}
 
-        {/* 11. Marker GPS Posisi Pengguna */}
+        {/* 11. Stasiun Pantau Cuaca & Sensor Satelit Terkini (Aktif pada Mode Terkini) */}
+        {selectedYear === 'terkini' && liveTelemetry?.stasiun_cuaca_jabar && (
+          Object.entries(liveTelemetry.stasiun_cuaca_jabar).map(([namaStasiun, dataStasiun], idx) => (
+            <Marker
+              key={`stasiun-${idx}`}
+              position={[dataStasiun.lat, dataStasiun.lng]}
+              icon={createWeatherStationIcon(namaStasiun, dataStasiun.status_hujan)}
+            >
+              <Popup>
+                <div className="p-1 font-sans text-xs space-y-1.5 text-zinc-900 max-w-xs">
+                  <div className="flex items-center gap-1.5 text-emerald-600 font-bold">
+                    <CloudRain className="w-4 h-4" />
+                    <span>STASIUN SENSOR TERKINI</span>
+                  </div>
+                  <div className="font-bold text-sm text-zinc-900">{namaStasiun}</div>
+                  <div className="grid grid-cols-2 gap-2 text-[11px] bg-zinc-50 p-2 rounded-xl border border-zinc-200">
+                    <div>Suhu Udara: <b className="text-zinc-900">{dataStasiun.suhu_c}°C</b></div>
+                    <div>Kelembapan: <b>{dataStasiun.kelembapan_persen}%</b></div>
+                    <div>Curah Hujan: <b className="text-blue-600">{dataStasiun.curah_hujan_mm} mm</b></div>
+                    <div>Status: <b className={dataStasiun.status_hujan.includes('Lebat') ? 'text-rose-600' : 'text-emerald-600'}>{dataStasiun.status_hujan}</b></div>
+                  </div>
+                  <div className="text-[10px] text-zinc-500 italic">
+                    Sumber: Open-Meteo & Radar Satelit Live
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))
+        )}
+
+        {/* 12. Marker GPS Posisi Pengguna */}
         {userLocation && (
           <Marker position={[userLocation.lat, userLocation.lng]}>
             <Popup>
@@ -474,6 +565,66 @@ export default function WebGISMap({ initialLayer }) {
           {locationError}
         </div>
       )}
+
+      {/* Floating Center Mode HUD (Terkini / Historis Switcher) */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[900] max-w-[92vw] flex items-center gap-2.5 px-4 py-2 rounded-2xl glass-panel-elevated border border-white/10 shadow-2xl backdrop-blur-xl animate-fade-in-up">
+        {selectedYear === 'terkini' ? (
+          <>
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
+              </span>
+              <span className="text-xs font-bold text-white tracking-wide uppercase whitespace-nowrap">
+                Peta Terkini (Live)
+              </span>
+            </div>
+            <div className="h-3.5 w-px bg-white/20 hidden md:block"></div>
+            <div className="text-[11px] text-zinc-300 hidden md:flex items-center gap-2 font-mono whitespace-nowrap">
+              <span className="text-emerald-400">● 7 Stasiun</span>
+              <span>&bull;</span>
+              <span className="text-sky-300">Radar Hujan</span>
+              <span>&bull;</span>
+              <span className="text-zinc-400">Esri Imagery</span>
+            </div>
+            <button
+              onClick={handleRefreshLive}
+              disabled={isRefreshing}
+              title="Segarkan data telemetri live"
+              className="ml-1 p-1 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[10px] font-semibold flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              <RefreshCw className={`w-3 h-3 text-rose-400 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+            <button
+              onClick={() => setSelectedYear('2025')}
+              className="ml-0.5 px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/15 text-zinc-300 text-[10px] transition-colors cursor-pointer border border-white/10 whitespace-nowrap"
+            >
+              Ke Historis
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span className="text-xs font-semibold text-zinc-200 whitespace-nowrap">
+                Arsip Historis: <b className="text-emerald-400 font-bold">{selectedYear}</b>
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                setSelectedYear('terkini');
+                setShowRain(true);
+                setShowGempa(true);
+              }}
+              className="ml-2 px-2.5 py-1 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white text-[10px] font-bold shadow-md shadow-rose-600/30 flex items-center gap-1.5 cursor-pointer transition-all border border-rose-400/30 whitespace-nowrap"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+              <span>Beralih ke Peta Terkini</span>
+            </button>
+          </>
+        )}
+      </div>
 
       {/* Floating Button to Reopen Sidebar (Visible when Sidebar is Closed) */}
       {!isSidebarOpen && (
@@ -519,10 +670,42 @@ export default function WebGISMap({ initialLayer }) {
 
         {/* Scrollable Panel Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-left">
-          {/* 1. Pemilih Tahun */}
+          {/* 1. Pemilih Waktu / Mode Pengamatan */}
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">
-              Tahun Pengamatan Satelit
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                Mode Waktu Pengamatan
+              </span>
+              {selectedYear === 'terkini' && (
+                <span className="flex items-center gap-1 text-[9px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/30 animate-pulse">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span> LIVE AKTIF
+                </span>
+              )}
+            </div>
+
+            {/* Tombol Utama: Terkini (Live) */}
+            <button
+              onClick={() => {
+                setSelectedYear('terkini');
+                setShowRain(true);
+                setShowGempa(true);
+              }}
+              className={`w-full mb-3 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
+                selectedYear === 'terkini'
+                  ? 'bg-gradient-to-r from-rose-600 to-rose-500 text-white border-rose-400 shadow-lg shadow-rose-600/30'
+                  : 'bg-white/5 hover:bg-white/10 text-zinc-300 border-white/10'
+              }`}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              <span>Peta Terkini (Live Real-Time)</span>
+            </button>
+
+            {/* Sub-label Arsip Historis */}
+            <span className="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 block mb-1">
+              Arsip Satelit Historis
             </span>
             <div className="grid grid-cols-5 gap-1 p-1 rounded-xl bg-white/5 border border-white/10">
               {['2021', '2022', '2023', '2024', '2025'].map((yr) => (

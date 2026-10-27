@@ -11,6 +11,18 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats'
   const [selectedInitialLayer, setSelectedInitialLayer] = useState(null);
 
+  const handleTabChange = (tabId) => {
+    if (tabId === 'terkini') {
+      setSelectedInitialLayer('terkini');
+      setActiveTab('map');
+    } else {
+      if (tabId === 'map' && selectedInitialLayer === 'terkini') {
+        setSelectedInitialLayer(null);
+      }
+      setActiveTab(tabId);
+    }
+  };
+
   const handleOpenMapWithLayer = (layerId) => {
     setSelectedInitialLayer(layerId);
     setActiveTab('map');
@@ -22,13 +34,20 @@ export default function App() {
       <div className="grain-overlay" />
 
       {/* Floating Glass Navbar */}
-      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navbar activeTab={selectedInitialLayer === 'terkini' && activeTab === 'map' ? 'terkini' : activeTab} setActiveTab={handleTabChange} />
 
       {/* Main Content Area */}
       <main className="flex-1 w-full flex flex-col">
         {activeTab === 'home' && (
           <div className="w-full flex flex-col animate-fade-in-up">
-            <HeroSection onExploreMap={() => setActiveTab('map')} />
+            <HeroSection onExploreMap={(mode) => {
+              if (mode === 'terkini') {
+                setSelectedInitialLayer('terkini');
+              } else {
+                setSelectedInitialLayer(null);
+              }
+              setActiveTab('map');
+            }} />
             <FeatureGrid onOpenMapWithLayer={handleOpenMapWithLayer} />
             <AutomationBlock />
             <BentoGrid onOpenStats={() => setActiveTab('stats')} />
