@@ -1,0 +1,171 @@
+{
+  "source": "Badan Nasional Penanggulangan Bencana (BNPB) & Pusat Studi Gempa Nasional (PuSGeN) / BMKG",
+  "period": "2020–2025",
+  "historicalDisasters": [
+    {
+      "id": "EQ-CJR-2022",
+      "nama": "Gempa Bumi & Longsor Cianjur",
+      "tanggal": "21 November 2022, 13:21 WIB",
+      "magnitudo": 5.6,
+      "kedalaman_km": 11,
+      "koordinat": [-6.853, 107.095],
+      "wilayah": "Kecamatan Cugenang, Kabupaten Cianjur",
+      "sesar_pemicu": "Sesar Cugenang (Aktif Sesar Dangkal)",
+      "dampak": {
+        "meninggal": 321,
+        "luka_luka": 2046,
+        "mengungsi": 73874,
+        "total_rumah_rusak": 62628,
+        "rumah_rusak_berat": 27434,
+        "rumah_rusak_sedang": 13070,
+        "rumah_rusak_ringan": 22124,
+        "fasilitas_pendidikan": 540,
+        "tempat_ibadah": 279,
+        "fasilitas_kesehatan": 18
+      },
+      "korelasi_longsor": "Memicu tanah longsor masif di lereng Cugenang yang menimbun jalan nasional Cipanas–Cianjur dan kawasan permukiman lereng terjal.",
+      "status_bnpb": "Faktual Resmi BNPB / Tanggap Darurat Bencana"
+    },
+    {
+      "id": "EQ-SMD-2023",
+      "nama": "Gempa Bumi Sumedang",
+      "tanggal": "31 Desember 2023, 20:35 WIB",
+      "magnitudo": 4.8,
+      "kedalaman_km": 5,
+      "koordinat": [-6.850, 107.920],
+      "wilayah": "Kabupaten Sumedang (12 Kecamatan Terdampak)",
+      "sesar_pemicu": "Sesar Sumedang / Sistem Sesar Baribis",
+      "dampak": {
+        "meninggal": 0,
+        "luka_luka": 11,
+        "mengungsi": 1603,
+        "total_rumah_rusak": 1325,
+        "rumah_rusak_berat": 130,
+        "rumah_rusak_sedang": 176,
+        "rumah_rusak_ringan": 1019,
+        "fasilitas_pendidikan": 14,
+        "tempat_ibadah": 18,
+        "fasilitas_kesehatan": 2
+      },
+      "korelasi_longsor": "Menyebabkan retakan tanah pada lereng perbukitan dan retakan dinding terowongan Tol Cisumdawu.",
+      "status_bnpb": "Faktual Resmi Pemkab Sumedang & BNPB"
+    },
+    {
+      "id": "EQ-BDG-2024",
+      "nama": "Gempa Bumi Kertasari Bandung & Garut",
+      "tanggal": "18 September 2024, 09:41 WIB",
+      "magnitudo": 5.0,
+      "kedalaman_km": 10,
+      "koordinat": [-7.190, 107.670],
+      "wilayah": "Kecamatan Kertasari, Kab. Bandung & Pasirwangi, Kab. Garut",
+      "sesar_pemicu": "Sesar Garsela (Garut Selatan)",
+      "dampak": {
+        "meninggal": 2,
+        "luka_luka": 82,
+        "mengungsi": 450,
+        "total_rumah_rusak": 909,
+        "rumah_rusak_berat": 245,
+        "rumah_rusak_sedang": 286,
+        "rumah_rusak_ringan": 378,
+        "fasilitas_pendidikan": 116,
+        "tempat_ibadah": 67,
+        "fasilitas_kesehatan": 18
+      },
+      "korelasi_longsor": "Memicu guguran batu dan longsoran kecil di tebing lereng perkebunan teh Kertasari.",
+      "status_bnpb": "Faktual Resmi BPBD Jabar & BNPB"
+    },
+    {
+      "id": "EQ-SKB-2020",
+      "nama": "Gempa Bumi Kalapanunggal Sukabumi",
+      "tanggal": "10 Maret 2020, 17:18 WIB",
+      "magnitudo": 5.0,
+      "kedalaman_km": 10,
+      "koordinat": [-6.890, 106.620],
+      "wilayah": "Kecamatan Kalapanunggal & Kabandungan, Kab. Sukabumi",
+      "sesar_pemicu": "Sesar Cimandiri (Segmen Barat)",
+      "dampak": {
+        "meninggal": 0,
+        "luka_luka": 3,
+        "mengungsi": 780,
+        "total_rumah_rusak": 1082,
+        "rumah_rusak_berat": 286,
+        "rumah_rusak_sedang": 344,
+        "rumah_rusak_ringan": 452,
+        "fasilitas_pendidikan": 8,
+        "tempat_ibadah": 12,
+        "fasilitas_kesehatan": 3
+      },
+      "korelasi_longsor": "Goncangan memicu pelepasan massa tanah pada zona perbukitan batuan lempung Sukabumi utara.",
+      "status_bnpb": "Faktual Resmi DIBI BNPB"
+    }
+  ],
+  "sesarAktif": [
+    {
+      "nama": "Sesar Lembang",
+      "panjang_km": 29,
+      "kecepatan_geser": "0.3 - 1.4 cm/tahun",
+      "tipe": "Sesar Geser Mengiri (Left-lateral Strike Slip)",
+      "bentangan": "Padalarang -> Cisarua -> Lembang -> Gunung Manglayang",
+      "jalur_koordinat": [
+        [-6.840, 107.490],
+        [-6.832, 107.540],
+        [-6.818, 107.610],
+        [-6.820, 107.680],
+        [-6.850, 107.740]
+      ]
+    },
+    {
+      "nama": "Sesar Cimandiri",
+      "panjang_km": 100,
+      "kecepatan_geser": "0.4 - 0.7 cm/tahun",
+      "tipe": "Sesar Naik & Mendatar (Oblique Thrust)",
+      "bentangan": "Teluk Pelabuhan Ratu -> Cikembar -> Sukabumi -> Cibeber -> Padalarang",
+      "jalur_koordinat": [
+        [-7.020, 106.550],
+        [-6.980, 106.750],
+        [-6.920, 106.920],
+        [-6.860, 107.120],
+        [-6.820, 107.380]
+      ]
+    },
+    {
+      "nama": "Sesar Baribis",
+      "panjang_km": 130,
+      "kecepatan_geser": "0.5 - 1.0 cm/tahun",
+      "tipe": "Sesar Naik (Thrust Fault)",
+      "bentangan": "Purwakarta -> Subang -> Majalengka -> Kuningan",
+      "jalur_koordinat": [
+        [-6.550, 107.450],
+        [-6.580, 107.750],
+        [-6.750, 108.150],
+        [-6.950, 108.450],
+        [-7.100, 108.650]
+      ]
+    },
+    {
+      "nama": "Sesar Garsela (Garut Selatan)",
+      "panjang_km": 42,
+      "kecepatan_geser": "0.3 - 0.5 cm/tahun",
+      "tipe": "Sesar Mendatar (Strike Slip)",
+      "bentangan": "Cikelet -> Pasirwangi -> Kertasari -> Cileunyi",
+      "jalur_koordinat": [
+        [-7.650, 107.720],
+        [-7.420, 107.750],
+        [-7.220, 107.680],
+        [-7.050, 107.710]
+      ]
+    },
+    {
+      "nama": "Sesar Cugenang",
+      "panjang_km": 9,
+      "kecepatan_geser": "Reaktivasi 2022",
+      "tipe": "Sesar Sesar Kerak Dangkal",
+      "bentangan": "Cibeureum -> Sarampad -> Benjot -> Nyalindung (Cianjur)",
+      "jalur_koordinat": [
+        [-6.830, 107.080],
+        [-6.850, 107.100],
+        [-6.870, 107.110]
+      ]
+    }
+  ]
+}

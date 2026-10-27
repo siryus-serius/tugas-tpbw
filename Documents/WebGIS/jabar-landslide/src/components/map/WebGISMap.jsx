@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup, Polyline, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
   Layers, Mountain, Satellite, Radio, CloudRain, MapPin, 
   Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles,
-  PanelLeftClose, PanelLeftOpen, Activity, AlertTriangle
+  PanelLeftClose, PanelLeftOpen, Activity, AlertTriangle, ShieldAlert,
+  Flame, Home, Users, Building2, Info, X
 } from 'lucide-react';
 
 // Fix Leaflet Default Marker Icon
@@ -16,7 +17,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// Custom Icon untuk Titik Gempa BMKG
+// Custom Icon untuk Titik Gempa Real-time BMKG
 const earthquakeIcon = new L.DivIcon({
   className: 'custom-earthquake-marker',
   html: `
@@ -29,8 +30,23 @@ const earthquakeIcon = new L.DivIcon({
   iconAnchor: [14, 14],
 });
 
+// Custom Icon untuk Gempa Merusak Historis BNPB
+const createHistoricalQuakeIcon = (mag) => {
+  return new L.DivIcon({
+    className: 'custom-historical-quake-marker',
+    html: `
+      <div style="display: flex; align-items: center; gap: 4px; background: rgba(15, 23, 42, 0.95); border: 2px solid #f43f5e; padding: 3px 8px; border-radius: 9999px; box-shadow: 0 4px 14px rgba(244, 63, 94, 0.6); white-space: nowrap; cursor: pointer;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #f43f5e; box-shadow: 0 0 6px #f43f5e;"></span>
+        <span style="color: #ffffff; font-size: 11px; font-weight: 800; font-family: sans-serif;">M ${mag}</span>
+      </div>
+    `,
+    iconSize: [75, 26],
+    iconAnchor: [37, 13],
+  });
+};
+
 // =========================================================================
-// DATA CITRA SATELIT RESMI & PERMANEN (100% BEBAS EXPIRE / TANPA GEE TOKEN)
+// DATA CITRA SATELIT RESMI & PERMANEN (100% BEBAS EXPIRE)
 // =========================================================================
 
 // 1. CITRA OPTIK SENTINEL-2 RESMI (EOX Cloudless Mozaik per Tahun 2021-2025)
@@ -82,6 +98,8 @@ export default function WebGISMap({ initialLayer }) {
   const [showSar, setShowSar] = useState(false);
   const [showRain, setShowRain] = useState(false);
   const [showGempa, setShowGempa] = useState(true);
+  const [showFaults, setShowFaults] = useState(true);
+  const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
 
   // Opacity states
   const [slopeOpacity, setSlopeOpacity] = useState(0.85);
@@ -95,6 +113,10 @@ export default function WebGISMap({ initialLayer }) {
 
   // Live Gempa BMKG Terkini
   const [gempaData, setGempaData] = useState(null);
+
+  // Data Faktual BNPB & PuSGeN
+  const [seismicData, setSeismicData] = useState(null);
+  const [selectedDisasterDetail, setSelectedDisasterDetail] = useState(null);
 
   // GPS Locate Me state
   const [userLocation, setUserLocation] = useState(null);
@@ -144,6 +166,14 @@ export default function WebGISMap({ initialLayer }) {
         }
       })
       .catch(err => console.warn('Gagal mengambil data gempa BMKG:', err));
+  }, []);
+
+  // 4. Ambil Data Faktual Gempa & Jalur Sesar BNPB / PuSGeN
+  useEffect(() => {
+    fetch('/data/jabar-earthquakes-bnpb.json')
+      .then(res => res.json())
+      .then(data => setSeismicData(data))
+      .catch(err => console.error('Gagal mengambil data seismik BNPB:', err));
   }, []);
 
   // Handle Locate Me (GPS)
@@ -278,7 +308,63 @@ export default function WebGISMap({ initialLayer }) {
           />
         )}
 
-        {/* 8. Marker Gempa Bumi Terkini (BMKG Real-time) */}
+        {/* 8. Jalur Sesar Aktif Utama Jawa Barat (PuSGeN / Badan Geologi) */}
+        {showFaults && seismicData?.sesarAktif?.map((sesar, idx) => (
+          <Polyline
+            key={`sesar-${idx}`}
+            positions={sesar.jalur_koordinat}
+            pathOptions={{
+              color: '#f43f5e',
+              weight: 4,
+              dashArray: '8, 6',
+              opacity: 0.95
+            }}
+          >
+            <Tooltip sticky>
+              <div className="font-sans text-xs">
+                <strong className="text-rose-600 block text-sm">⚡ {sesar.nama}</strong>
+                <span>Panjang: <b>{sesar.panjang_km} km</b> &bull; Laju: <b>{sesar.kecepatan_geser}</b></span>
+              </div>
+            </Tooltip>
+            <Popup>
+              <div className="p-1 font-sans text-xs space-y-1.5 text-zinc-900 max-w-xs">
+                <div className="flex items-center gap-1.5 text-rose-600 font-bold text-sm">
+                  <span>⚡ {sesar.nama}</span>
+                </div>
+                <div className="text-[11px] text-zinc-600 font-medium">{sesar.tipe}</div>
+                <div className="border-y border-zinc-200 py-1.5 text-[11px] space-y-0.5">
+                  <div>Panjang Jalur: <b>{sesar.panjang_km} km</b></div>
+                  <div>Kecepatan Geser: <b>{sesar.kecepatan_geser}</b></div>
+                  <div>Bentangan Wilayah: <b>{sesar.bentangan}</b></div>
+                </div>
+                <div className="text-[10px] text-zinc-500 italic">
+                  Sumber: Pusat Studi Gempa Nasional (PuSGeN) & Badan Geologi ESDM
+                </div>
+              </div>
+            </Popup>
+          </Polyline>
+        ))}
+
+        {/* 9. Marker Gempa Merusak Historis (Faktual BNPB) */}
+        {showHistoricalQuakes && seismicData?.historicalDisasters?.map((event) => (
+          <Marker
+            key={event.id}
+            position={event.koordinat}
+            icon={createHistoricalQuakeIcon(event.magnitudo)}
+            eventHandlers={{
+              click: () => setSelectedDisasterDetail(event)
+            }}
+          >
+            <Tooltip direction="top" offset={[0, -10]}>
+              <div className="font-sans text-xs">
+                <span className="font-bold text-rose-600 block">{event.nama} (M {event.magnitudo})</span>
+                <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
+              </div>
+            </Tooltip>
+          </Marker>
+        ))}
+
+        {/* 10. Marker Gempa Bumi Terkini (BMKG Real-time) */}
         {showGempa && gempaData && (
           <Marker position={[gempaData.lat, gempaData.lng]} icon={earthquakeIcon}>
             <Popup>
@@ -302,7 +388,7 @@ export default function WebGISMap({ initialLayer }) {
           </Marker>
         )}
 
-        {/* 9. Marker GPS Posisi Pengguna */}
+        {/* 11. Marker GPS Posisi Pengguna */}
         {userLocation && (
           <Marker position={[userLocation.lat, userLocation.lng]}>
             <Popup>
@@ -429,10 +515,68 @@ export default function WebGISMap({ initialLayer }) {
             </div>
           </div>
 
-          {/* 3. Daftar Layer Penginderaan Jauh Permanen */}
+          {/* 3. Section Khusus: Zona Seismik & Gempa Faktual BNPB */}
+          <div className="space-y-2 pt-2 border-t border-white/10">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-rose-400 block mb-1">
+              Data Seismik & Gempa (BNPB & PuSGeN)
+            </span>
+
+            {/* Jalur Sesar Aktif (PuSGeN) */}
+            <div className="p-3 rounded-2xl bg-rose-950/20 border border-rose-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-0.5 bg-rose-500 shadow-sm shadow-rose-500"></span>
+                <div>
+                  <span className="text-xs font-semibold text-white block">Jalur Sesar Aktif Utama</span>
+                  <span className="text-[10px] text-zinc-400">Lembang, Cimandiri, Garsela, Baribis</span>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={showFaults}
+                onChange={(e) => setShowFaults(e.target.checked)}
+                className="accent-rose-500 w-4 h-4 cursor-pointer"
+              />
+            </div>
+
+            {/* Gempa Merusak Historis (BNPB) */}
+            <div className="p-3 rounded-2xl bg-rose-950/20 border border-rose-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                <div>
+                  <span className="text-xs font-semibold text-white block">Gempa Merusak BNPB (2020–2024)</span>
+                  <span className="text-[10px] text-zinc-400">Cianjur, Sumedang, Bandung, Sukabumi</span>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={showHistoricalQuakes}
+                onChange={(e) => setShowHistoricalQuakes(e.target.checked)}
+                className="accent-rose-500 w-4 h-4 cursor-pointer"
+              />
+            </div>
+
+            {/* Gempa Real-time BMKG */}
+            <div className="p-3 rounded-2xl bg-rose-950/20 border border-rose-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+                <div>
+                  <span className="text-xs font-semibold text-white block">Titik Gempa Real-time BMKG</span>
+                  <span className="text-[10px] text-zinc-400">Pembaruan Langsung Sensor TEWS</span>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={showGempa}
+                onChange={(e) => setShowGempa(e.target.checked)}
+                className="accent-rose-500 w-4 h-4 cursor-pointer"
+              />
+            </div>
+          </div>
+
+          {/* 4. Daftar Layer Penginderaan Jauh Permanen */}
           <div className="space-y-2 pt-2 border-t border-white/10">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">
-              Layer Satelit & Bencana (Permanen)
+              Layer Satelit & Terrain (Permanen)
             </span>
 
             {/* Sentinel-2 RGB (EOX Cloudless) */}
@@ -605,23 +749,6 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Gempa Terkini BMKG (Real-time Pin) */}
-            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-                <div>
-                  <span className="text-xs font-semibold text-white block">Titik Gempa Terkini</span>
-                  <span className="text-[10px] text-zinc-400">BMKG AutoGempa Real-time</span>
-                </div>
-              </div>
-              <input
-                type="checkbox"
-                checked={showGempa}
-                onChange={(e) => setShowGempa(e.target.checked)}
-                className="accent-rose-500 w-4 h-4 cursor-pointer"
-              />
-            </div>
-
             {/* Batas 27 Kab/Kota */}
             <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -643,27 +770,152 @@ export default function WebGISMap({ initialLayer }) {
       <div className="absolute bottom-6 right-6 z-[900] p-4 rounded-2xl glass-panel-elevated border border-white/10 text-left max-w-xs text-xs shadow-2xl hidden sm:block">
         <div className="font-semibold text-white mb-2 flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Legenda Pemetaan Jawa Barat</span>
+          <span>Legenda Seismik & Satelit Jabar</span>
         </div>
         <div className="space-y-1.5 text-[11px] text-zinc-300">
           <div className="flex items-center gap-2">
+            <span className="w-4 h-0.5 border-t-2 border-dashed border-rose-500"></span>
+            <span>Garis Merah Putus: Jalur Sesar Aktif (PuSGeN)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="px-1.5 py-0.2 rounded-full bg-rose-600 text-white font-bold text-[9px]">M 5.6</span>
+            <span>Pin Angka: Gempa Merusak (BNPB)</span>
+          </div>
+          <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-emerald-400"></span>
-            <span>Sentinel-2 : Citra Optik Alami</span>
+            <span>Sentinel-2: Citra Optik Alami</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded bg-amber-500"></span>
-            <span>Hillshade : Lereng Terjal Pegunungan</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded bg-blue-400"></span>
-            <span>RainViewer : Radar Presipitasi Live</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded bg-rose-500 animate-pulse"></span>
-            <span>Pin Berdenyut : Pusat Gempa BMKG</span>
+            <span>Hillshade: Morfologi Lereng 3D</span>
           </div>
         </div>
       </div>
+
+      {/* Modal Detail Kerusakan Gempa BNPB (Faktual) */}
+      {selectedDisasterDetail && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up text-left">
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl glass-panel-elevated border border-rose-500/30 p-6 sm:p-8 shadow-2xl text-white">
+            <div className="flex items-start justify-between border-b border-white/10 pb-4 mb-4">
+              <div>
+                <div className="flex items-center gap-2 text-rose-400 text-xs font-semibold mb-1">
+                  <ShieldAlert className="w-4 h-4" />
+                  <span>DATA RESMI KERUSAKAN & DAMPAK BENCANA BNPB</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  {selectedDisasterDetail.nama}
+                </h3>
+                <div className="text-xs text-zinc-400 mt-1 flex flex-wrap gap-2">
+                  <span>📅 {selectedDisasterDetail.tanggal}</span>
+                  <span>&bull;</span>
+                  <span>📍 {selectedDisasterDetail.wilayah}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedDisasterDetail(null)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-zinc-300 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Parameter Seismik */}
+            <div className="grid grid-cols-3 gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/10 mb-4 text-center">
+              <div>
+                <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Magnitudo</span>
+                <span className="text-xl font-black text-rose-500">M {selectedDisasterDetail.magnitudo}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Kedalaman</span>
+                <span className="text-xl font-bold text-white">{selectedDisasterDetail.kedalaman_km} km</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">Sesar Pemicu</span>
+                <span className="text-xs font-bold text-amber-300 block mt-1">{selectedDisasterDetail.sesar_pemicu}</span>
+              </div>
+            </div>
+
+            {/* Statistik Dampak Korban Jiwa & Pengungsi */}
+            <div className="mb-4">
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Dampak Korban Jiwa (Laporan BNPB)</span>
+              </span>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-center">
+                  <div className="text-xs text-rose-300">Meninggal Dunia</div>
+                  <div className="text-2xl font-black text-rose-400">{selectedDisasterDetail.dampak.meninggal.toLocaleString('id-ID')}</div>
+                  <div className="text-[10px] text-zinc-400">Jiwa</div>
+                </div>
+                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center">
+                  <div className="text-xs text-amber-300">Luka-luka</div>
+                  <div className="text-2xl font-black text-amber-400">{selectedDisasterDetail.dampak.luka_luka.toLocaleString('id-ID')}</div>
+                  <div className="text-[10px] text-zinc-400">Jiwa</div>
+                </div>
+                <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-center">
+                  <div className="text-xs text-blue-300">Mengungsi</div>
+                  <div className="text-2xl font-black text-blue-400">{selectedDisasterDetail.dampak.mengungsi.toLocaleString('id-ID')}</div>
+                  <div className="text-[10px] text-zinc-400">Jiwa</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Statistik Kerusakan Rumah & Fasilitas Fisik */}
+            <div className="mb-4">
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-2 flex items-center gap-1.5">
+                <Home className="w-3.5 h-3.5 text-blue-400" />
+                <span>Rincian Kerusakan Rumah & Fasilitas Umum</span>
+              </span>
+              <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3">
+                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                  <span className="text-xs text-zinc-300">Total Kerusakan Rumah</span>
+                  <span className="text-sm font-bold text-white">{selectedDisasterDetail.dampak.total_rumah_rusak.toLocaleString('id-ID')} Unit</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                  <div className="p-2 rounded-lg bg-white/5">
+                    <span className="text-[10px] text-rose-400 block">Rusak Berat</span>
+                    <span className="font-bold">{selectedDisasterDetail.dampak.rumah_rusak_berat.toLocaleString('id-ID')}</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5">
+                    <span className="text-[10px] text-amber-400 block">Rusak Sedang</span>
+                    <span className="font-bold">{selectedDisasterDetail.dampak.rumah_rusak_sedang.toLocaleString('id-ID')}</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/5">
+                    <span className="text-[10px] text-emerald-400 block">Rusak Ringan</span>
+                    <span className="font-bold">{selectedDisasterDetail.dampak.rumah_rusak_ringan.toLocaleString('id-ID')}</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/5 text-[11px] text-zinc-400">
+                  <div>Sekolah: <b className="text-white">{selectedDisasterDetail.dampak.fasilitas_pendidikan}</b> unit</div>
+                  <div>Tempat Ibadah: <b className="text-white">{selectedDisasterDetail.dampak.tempat_ibadah}</b> unit</div>
+                  <div>Faskes: <b className="text-white">{selectedDisasterDetail.dampak.fasilitas_kesehatan}</b> unit</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Korelasi Tanah Longsor */}
+            <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 mb-4">
+              <strong className="block mb-1 flex items-center gap-1.5 text-amber-300 font-bold">
+                <Mountain className="w-3.5 h-3.5" /> Korelasi Dampak Tanah Longsor:
+              </strong>
+              <span>{selectedDisasterDetail.korelasi_longsor}</span>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2 border-t border-white/10">
+              <span className="flex items-center gap-1">
+                <Info className="w-3.5 h-3.5 text-emerald-400" /> Sumber: BNPB & Pusat Studi Gempa Nasional
+              </span>
+              <button
+                onClick={() => setSelectedDisasterDetail(null)}
+                className="px-5 py-2 rounded-full bg-white text-zinc-950 font-bold text-xs hover:bg-zinc-200 transition-colors cursor-pointer"
+              >
+                Tutup Rincian
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
