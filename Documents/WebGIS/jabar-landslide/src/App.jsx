@@ -6,10 +6,9 @@ import AutomationBlock from './components/home/AutomationBlock';
 import BentoGrid from './components/home/BentoGrid';
 import WebGISMap from './components/map/WebGISMap';
 import StatsPanel from './components/panels/StatsPanel';
-import ReportPanel from './components/panels/ReportPanel';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats' | 'report'
+  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats'
   const [selectedInitialLayer, setSelectedInitialLayer] = useState(null);
 
   const handleOpenMapWithLayer = (layerId) => {
@@ -58,11 +57,8 @@ export default function App() {
         {activeTab === 'stats' && (
           <StatsPanel onClose={() => setActiveTab('home')} />
         )}
-
-        {activeTab === 'report' && (
-          <ReportPanel onClose={() => setActiveTab('home')} />
-        )}
       </main>
+
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import React from 'react';
-import { MapPin, Layers, BarChart3, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { MapPin, Layers, BarChart3, ShieldAlert } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab }) {
   const navItems = [
     { id: 'home', label: 'Beranda', icon: ShieldAlert },
     { id: 'map', label: 'Peta Interaktif', icon: Layers },
     { id: 'stats', label: 'Statistik & Posko', icon: BarChart3 },
-    { id: 'report', label: 'Lapor Bencana', icon: AlertTriangle },
   ];
+
 
   return (
     <header className="fixed top-5 inset-x-0 z-[1000] flex justify-center px-4 pointer-events-none">
