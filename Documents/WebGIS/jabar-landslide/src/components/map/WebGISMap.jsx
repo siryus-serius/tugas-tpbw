@@ -449,9 +449,13 @@ export default function WebGISMap({ initialLayer }) {
   const [showSentinel2, setShowSentinel2] = useState(true);
   const [showSar, setShowSar] = useState(false);
   const [showHimawari, setShowHimawari] = useState(true);
+  const [radarEngine, setRadarEngine] = useState('himawari_ir'); // 'himawari_ir' | 'rainviewer_loop' | 'imerg_rain' | 'bmkg_static'
   const [himawariProduct, setHimawariProduct] = useState('EH'); // 'EH' | 'RP' | 'NC'
-  const [himawariOpacity, setHimawariOpacity] = useState(0.7);
+  const [himawariOpacity, setHimawariOpacity] = useState(0.75);
   const [himawariTimestamp, setHimawariTimestamp] = useState(Date.now());
+  const [rainviewerData, setRainviewerData] = useState(null);
+  const [radarFrameIndex, setRadarFrameIndex] = useState(0);
+  const [isRadarPlaying, setIsRadarPlaying] = useState(true);
   const [showGempa, setShowGempa] = useState(true);
   const [showFaults, setShowFaults] = useState(true);
   const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
@@ -544,6 +548,59 @@ export default function WebGISMap({ initialLayer }) {
       .then(data => setEmergencyFacilities(data.facilities || []))
       .catch(err => console.warn('Gagal memuat direktori fasilitas darurat:', err));
   }, []);
+
+  // 8. Ambil Data Radar Doppler Cuaca Real-time (RainViewer API)
+  useEffect(() => {
+    fetch('https://api.rainviewer.com/public/weather-maps.json')
+      .then(res => res.json())
+      .then(data => {
+        setRainviewerData(data);
+        if (data?.radar?.past?.length) {
+          setRadarFrameIndex(data.radar.past.length - 1);
+        }
+      })
+      .catch(err => console.warn('Gagal memuat data RainViewer radar:', err));
+  }, []);
+
+  // Animasi Loop Frame Radar Cuaca Doppler Real-time
+  useEffect(() => {
+    if (radarEngine !== 'rainviewer_loop' || !isRadarPlaying || !rainviewerData?.radar?.past?.length) return;
+    const interval = setInterval(() => {
+      setRadarFrameIndex(prev => (prev + 1) % rainviewerData.radar.past.length);
+    }, 750);
+    return () => clearInterval(interval);
+  }, [radarEngine, isRadarPlaying, rainviewerData]);
+
+  // Generator URL Tile Himawari-9 AHI Band 13 Clean Infrared (NASA GIBS)
+  const getHimawariTileUrl = () => {
+    try {
+      const selDate = new Date(`${selectedDate}T${String(selectedHour).padStart(2, '0')}:00:00+07:00`);
+      const now = new Date();
+      const diffDays = (now - selDate) / (1000 * 60 * 60 * 24);
+
+      if (diffDays >= 0 && diffDays <= 20) {
+        const utcHour = selDate.getUTCHours();
+        const utcDay = selDate.toISOString().slice(0, 10);
+        const timeStr = `${utcDay}T${String(utcHour).padStart(2, '0')}:00:00Z`;
+        return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/Himawari_AHI_Band13_Clean_Infrared/default/${timeStr}/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png`;
+      }
+    } catch (e) {}
+    return 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/Himawari_AHI_Band13_Clean_Infrared/default/default/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png';
+  };
+
+  // Generator URL Tile GPM IMERG Presipitasi Nyata Historis 2021-2026 (NASA GIBS)
+  const getImergTileUrl = () => {
+    const d = selectedDate || '2026-10-26';
+    return `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/IMERG_Precipitation_Rate/default/${d}/GoogleMapsCompatible_Level6/{z}/{y}/{x}.png`;
+  };
+
+  // Generator URL Tile RainViewer Doppler Radar Real-time
+  const getRainViewerTileUrl = () => {
+    if (!rainviewerData?.radar?.past?.length) return null;
+    const frames = rainviewerData.radar.past;
+    const frame = frames[radarFrameIndex] || frames[frames.length - 1];
+    return `${rainviewerData.host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`;
+  };
 
   // Handle Initial Layer / Mode dari luar (Navbar/Hero)
   useEffect(() => {
@@ -742,15 +799,53 @@ export default function WebGISMap({ initialLayer }) {
           />
         )}
 
-        {/* 6. Layer Satelit Cuaca & Radar Awan Hujan Himawari-9 (BMKG Resmi) */}
+        {/* 6. Multi-Engine Radar & Satelit Cuaca Dinamis (Himawari-9 AHI IR, IMERG Hujan Historis, RainViewer Radar Loop, & BMKG) */}
         {showHimawari && (
-          <ImageOverlay
-            key={`himawari-${himawariProduct}-${himawariTimestamp}`}
-            url={`${HIMAWARI_PRODUCTS[himawariProduct].url}?t=${himawariTimestamp}`}
-            bounds={HIMAWARI_BOUNDS}
-            opacity={himawariOpacity}
-            zIndex={350}
-          />
+          <>
+            {/* OPSI 1: Himawari-9 AHI Band 13 Clean Infrared (NASA GIBS) - Dinamis per Jam Sesuai Timeline */}
+            {radarEngine === 'himawari_ir' && (
+              <TileLayer
+                key={`himawari-ir-${selectedDate}-${selectedHour}`}
+                url={getHimawariTileUrl()}
+                opacity={himawariOpacity}
+                zIndex={350}
+                attribution="JMA Himawari-9 AHI Infrared &bull; NASA GIBS"
+              />
+            )}
+
+            {/* OPSI 2: GPM IMERG Presipitasi Nyata Historis 2021-2026 (NASA GIBS) - Mengubah Peta Hujan Sesuai Hari Kalender */}
+            {radarEngine === 'imerg_rain' && (
+              <TileLayer
+                key={`imerg-rain-${selectedDate}`}
+                url={getImergTileUrl()}
+                opacity={himawariOpacity}
+                zIndex={350}
+                attribution="NASA/JAXA GPM IMERG Real Precipitation Rate"
+              />
+            )}
+
+            {/* OPSI 3: RainViewer Doppler Weather Radar (Animasi Loop 13 Frame Nyata) */}
+            {radarEngine === 'rainviewer_loop' && getRainViewerTileUrl() && (
+              <TileLayer
+                key={`rainviewer-${radarFrameIndex}`}
+                url={getRainViewerTileUrl()}
+                opacity={himawariOpacity}
+                zIndex={350}
+                attribution="RainViewer Real-time Weather Doppler Radar"
+              />
+            )}
+
+            {/* OPSI 4: BMKG Inderaja Indonesia (Snapshot Statis Kalibrasi Suhu BMKG) */}
+            {radarEngine === 'bmkg_static' && (
+              <ImageOverlay
+                key={`himawari-bmkg-${himawariProduct}-${himawariTimestamp}`}
+                url={`${HIMAWARI_PRODUCTS[himawariProduct].url}?t=${himawariTimestamp}`}
+                bounds={HIMAWARI_BOUNDS}
+                opacity={himawariOpacity}
+                zIndex={350}
+              />
+            )}
+          </>
         )}
 
         {/* 7. Layer Batas Administrasi & Klasifikasi Tanah 27 Kab/Kota */}
@@ -1535,14 +1630,14 @@ export default function WebGISMap({ initialLayer }) {
               )}
             </div>
 
-            {/* Satelit Cuaca Himawari-9 BMKG (Awan & Potensi Hujan) */}
-            <div className="p-3 rounded-2xl bg-sky-950/20 border border-sky-500/20 space-y-2.5">
+            {/* Pusat Radar Satelit Cuaca Dinamis (Himawari-9 IR Dinamis, RainViewer Radar Loop, IMERG Hujan, BMKG) */}
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-950/40 via-blue-950/20 to-zinc-900/60 border border-sky-500/30 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shadow-sm shadow-sky-400 animate-pulse"></span>
                   <div>
-                    <span className="text-xs font-semibold text-white block">Satelit Cuaca Himawari-9</span>
-                    <span className="text-[10px] text-sky-300">BMKG Remote Sensing &bull; Geostasioner</span>
+                    <span className="text-xs font-semibold text-white block">Radar & Satelit Cuaca Dinamis</span>
+                    <span className="text-[10px] text-sky-300 font-mono">Bergerak Nyata Sesuai Timeline</span>
                   </div>
                 </div>
                 <input
@@ -1554,36 +1649,165 @@ export default function WebGISMap({ initialLayer }) {
               </div>
 
               {showHimawari && (
-                <div className="space-y-2 pt-1.5 border-t border-white/5">
-                  {/* Selector Kanal / Produk Himawari-9 */}
+                <div className="space-y-3 pt-1 border-t border-white/5">
+                  {/* Selector 4 Engine Radar Satelit */}
                   <div>
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">
-                      Kanal / Produk Satelit:
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1.5">
+                      Pilih Sumber Mesin Radar:
                     </span>
-                    <div className="grid grid-cols-3 gap-1">
-                      {Object.values(HIMAWARI_PRODUCTS).map((prod) => (
-                        <button
-                          key={prod.id}
-                          onClick={() => setHimawariProduct(prod.id)}
-                          className={`py-1 px-1 rounded-lg text-[10px] font-semibold transition-all cursor-pointer truncate ${
-                            himawariProduct === prod.id
-                              ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/30'
-                              : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
-                          }`}
-                          title={prod.name}
-                        >
-                          {prod.shortName}
-                        </button>
-                      ))}
+                    <div className="grid grid-cols-2 gap-1 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={() => setRadarEngine('himawari_ir')}
+                        className={`p-1.5 rounded-xl font-semibold transition-all text-left flex flex-col cursor-pointer ${
+                          radarEngine === 'himawari_ir'
+                            ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30 font-bold'
+                            : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span className="text-xs">🛰️ Himawari-9 IR</span>
+                        <span className="text-[9px] opacity-80">Dinamis Per Jam</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setRadarEngine('rainviewer_loop')}
+                        className={`p-1.5 rounded-xl font-semibold transition-all text-left flex flex-col cursor-pointer ${
+                          radarEngine === 'rainviewer_loop'
+                            ? 'bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/30 font-bold'
+                            : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span className="text-xs">📡 Radar Doppler</span>
+                        <span className="text-[9px] opacity-80">Animasi Bergerak</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setRadarEngine('imerg_rain')}
+                        className={`p-1.5 rounded-xl font-semibold transition-all text-left flex flex-col cursor-pointer ${
+                          radarEngine === 'imerg_rain'
+                            ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30 font-bold'
+                            : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span className="text-xs">🌧️ GPM IMERG</span>
+                        <span className="text-[9px] opacity-80">Hujan 2021–2026</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setRadarEngine('bmkg_static')}
+                        className={`p-1.5 rounded-xl font-semibold transition-all text-left flex flex-col cursor-pointer ${
+                          radarEngine === 'bmkg_static'
+                            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold'
+                            : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <span className="text-xs">🇮🇩 BMKG Inderaja</span>
+                        <span className="text-[9px] opacity-80">Suhu Terkalibrasi</span>
+                      </button>
                     </div>
-                    <p className="text-[10px] text-zinc-400 mt-1.5 italic leading-tight">
-                      {HIMAWARI_PRODUCTS[himawariProduct].desc}
-                    </p>
                   </div>
 
-                  {/* Opasitas Himawari */}
+                  {/* KONTROL KHUSUS ENGINE 1: Himawari-9 IR Dinamis */}
+                  {radarEngine === 'himawari_ir' && (
+                    <div className="p-2 rounded-xl bg-sky-950/40 border border-sky-500/20 text-[11px] text-sky-200 space-y-1">
+                      <div className="flex items-center justify-between font-bold text-sky-300">
+                        <span>Pola Awan Berubah Sesuai Jam:</span>
+                        <span className="font-mono bg-sky-900/60 px-1.5 py-0.5 rounded text-[10px]">
+                          {String(selectedHour).padStart(2, '0')}:00 WIB
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-zinc-400 leading-tight">
+                        Sensor AHI Band 13 Clean Infrared (NASA GIBS / JMA). Mengikuti pergerakan scrubber timeline harian dan bulanan secara nyata.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* KONTROL KHUSUS ENGINE 2: RainViewer Radar Doppler Animasi Loop */}
+                  {radarEngine === 'rainviewer_loop' && (
+                    <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-[11px] space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-emerald-300 text-xs">Animasi Radar Doppler:</span>
+                        <button
+                          type="button"
+                          onClick={() => setIsRadarPlaying(!isRadarPlaying)}
+                          className="px-2 py-0.5 rounded-lg bg-emerald-500 text-zinc-950 font-bold text-[10px] flex items-center gap-1 cursor-pointer"
+                        >
+                          {isRadarPlaying ? <Pause className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3 fill-current" />}
+                          <span>{isRadarPlaying ? 'Jeda' : 'Putar'}</span>
+                        </button>
+                      </div>
+
+                      {rainviewerData?.radar?.past?.length ? (
+                        <div>
+                          <input
+                            type="range"
+                            min="0"
+                            max={rainviewerData.radar.past.length - 1}
+                            value={radarFrameIndex}
+                            onChange={(e) => {
+                              setRadarFrameIndex(parseInt(e.target.value, 10));
+                              setIsRadarPlaying(false);
+                            }}
+                            className="w-full accent-emerald-400 cursor-pointer h-1.5 bg-white/10 rounded"
+                          />
+                          <div className="flex justify-between text-[9px] text-zinc-400 font-mono mt-1">
+                            <span>Frame {radarFrameIndex + 1} dari {rainviewerData.radar.past.length}</span>
+                            <span className="text-emerald-400 font-bold">● Loop Aktif 10 Mnt</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-[10px] text-zinc-500">Memuat radar doppler...</div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* KONTROL KHUSUS ENGINE 3: GPM IMERG Presipitasi Historis */}
+                  {radarEngine === 'imerg_rain' && (
+                    <div className="p-2 rounded-xl bg-blue-950/40 border border-blue-500/20 text-[11px] text-blue-200 space-y-1">
+                      <div className="flex items-center justify-between font-bold text-blue-300">
+                        <span>Peta Curah Hujan Historis:</span>
+                        <span className="font-mono bg-blue-900/60 px-1.5 py-0.5 rounded text-[10px]">
+                          {selectedDate}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-zinc-400 leading-tight">
+                        Data satelit radar presipitasi global (NASA GPM / JAXA) untuk semua tahun 2021 s.d. 2026. Peta hujan berubah mengikuti tanggal kalender yang Anda pilih.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* KONTROL KHUSUS ENGINE 4: BMKG Inderaja Indonesia */}
+                  {radarEngine === 'bmkg_static' && (
+                    <div>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block mb-1">
+                        Kanal BMKG Inderaja:
+                      </span>
+                      <div className="grid grid-cols-3 gap-1">
+                        {Object.values(HIMAWARI_PRODUCTS).map((prod) => (
+                          <button
+                            key={prod.id}
+                            type="button"
+                            onClick={() => setHimawariProduct(prod.id)}
+                            className={`py-1 px-1 rounded-lg text-[10px] font-semibold transition-all cursor-pointer truncate ${
+                              himawariProduct === prod.id
+                                ? 'bg-indigo-500 text-white shadow-sm'
+                                : 'bg-white/5 text-zinc-400 hover:text-white'
+                            }`}
+                            title={prod.name}
+                          >
+                            {prod.shortName}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Pengatur Opasitas Satelit/Radar */}
                   <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1">
-                    <span>Opasitas</span>
+                    <span>Opasitas Layer</span>
                     <input
                       type="range"
                       min="0.1"
