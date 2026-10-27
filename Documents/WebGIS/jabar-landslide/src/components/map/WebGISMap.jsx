@@ -4,7 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
   Layers, Mountain, Satellite, Radio, CloudRain, MapPin, 
-  Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles
+  Navigation, Eye, EyeOff, Sliders, ChevronDown, ChevronUp, Sparkles,
+  PanelLeftClose, PanelLeftOpen, X
 } from 'lucide-react';
 
 // Fix Leaflet Default Icon in Webpack/Vite
@@ -95,8 +96,8 @@ export default function WebGISMap({ initialLayer }) {
   const [isLocating, setIsLocating] = useState(false);
   const [locationError, setLocationError] = useState(null);
 
-  // UI state
-  const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
+  // UI state: Docked left sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Load GeoJSON Batas Administrasi
   useEffect(() => {
@@ -285,30 +286,50 @@ export default function WebGISMap({ initialLayer }) {
         </div>
       )}
 
-      {/* Floating HUD Control Panel (Left Side) */}
+      {/* Floating Button to Reopen Sidebar (Visible when Sidebar is Closed) */}
+      {!isSidebarOpen && (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="absolute top-4 left-4 z-[900] px-4 py-2.5 rounded-2xl bg-zinc-950/85 hover:bg-zinc-800 text-white border border-white/20 backdrop-blur-md shadow-2xl flex items-center gap-2.5 text-xs font-semibold hover:border-emerald-400/50 hover:scale-105 active:scale-95 transition-all cursor-pointer group animate-fade-in-up"
+          title="Buka Panel Layer"
+        >
+          <Layers className="w-4 h-4 text-emerald-400 group-hover:rotate-12 transition-transform" />
+          <span>Layer & Kontrol</span>
+        </button>
+      )}
+
+      {/* Docked Left Sidebar (Menyatu ke Kiri & Bisa Ditutup) */}
       <aside 
-        className={`absolute top-4 left-4 z-[900] w-80 max-w-[calc(100vw-32px)] max-h-[calc(100%-32px)] overflow-y-auto rounded-3xl glass-panel-elevated p-4 text-left border border-white/10 shadow-2xl transition-all duration-300 ${
-          isPanelCollapsed ? 'h-14 overflow-hidden' : ''
+        className={`absolute top-0 bottom-0 left-0 z-[950] w-84 max-w-[85vw] h-full bg-zinc-950/92 backdrop-blur-2xl border-r border-white/10 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Panel Header */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-bold uppercase tracking-wider text-white">
-              Layer & Analisis
-            </span>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-white/[0.02]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <Layers className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-white block">
+                Layer & Analisis
+              </span>
+              <span className="text-[10px] text-zinc-400 font-mono">
+                WebGIS Jabar EWS
+              </span>
+            </div>
           </div>
           <button
-            onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
-            className="p-1 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            onClick={() => setIsSidebarOpen(false)}
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer group"
+            title="Tutup Panel ke Kiri"
           >
-            {isPanelCollapsed ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
+            <PanelLeftClose className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
           </button>
         </div>
 
-        {!isPanelCollapsed && (
-          <div className="space-y-4">
+        {/* Scrollable Panel Body */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 text-left">
             {/* 1. Pemilih Tahun */}
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block mb-2">
@@ -538,8 +559,7 @@ export default function WebGISMap({ initialLayer }) {
                 />
               </div>
             </div>
-          </div>
-        )}
+        </div>
       </aside>
 
       {/* Floating Bottom-Right Legend */}
