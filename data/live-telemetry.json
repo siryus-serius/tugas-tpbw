@@ -1,101 +1,101 @@
 {
-  "terakhir_diperbarui": "2026-10-27T23:47:43.500Z",
+  "terakhir_diperbarui": "2026-10-28T02:36:58.033Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 28,
-    "total_gempa_tercatat": 1,
+    "total_telemetri_tersimpan": 35,
+    "total_gempa_tercatat": 2,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "gempa_bmkg": {
-    "Tanggal": "27 Okt 2026",
-    "Jam": "21:43:13 WIB",
-    "DateTime": "2026-10-27T14:43:13+00:00",
-    "Coordinates": "-9.20,110.39",
-    "Lintang": "9.20 LS",
-    "Bujur": "110.39 BT",
+    "Tanggal": "28 Okt 2026",
+    "Jam": "08:11:54 WIB",
+    "DateTime": "2026-10-28T01:11:54+00:00",
+    "Coordinates": "5.59,125.27",
+    "Lintang": "5.59 LU",
+    "Bujur": "125.27 BT",
     "Magnitude": "5.4",
     "Kedalaman": "10 km",
-    "Wilayah": "Pusat gempa berada di laut 137 km Selatan Gunungkidul",
-    "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "II Bantul, II Sleman, II Wonogiri, II Kulon Progo, II Sukoharjo, II Trenggalek, II Nganjuk, II Pacitan, II Klaten, II Kediri, II Ponorogo, II Banjarnegara, II Lumajang, II Blitar",
-    "Shakemap": "20261027214313.mmi.jpg"
+    "Wilayah": "221 km BaratLaut PULAUKARATUNG-SULUT",
+    "Potensi": "Tidak berpotensi tsunami",
+    "Dirasakan": "-",
+    "Shakemap": "20261028081433.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 23:36:18 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 02:26:20 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 23:37:20 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 02:29:11 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 27 Oct 2026 23:42:25 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 02:32:30 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 22.2,
-      "kelembapan_persen": 92,
+      "suhu_c": 26.3,
+      "kelembapan_persen": 69,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 23.6,
-      "kelembapan_persen": 87,
-      "curah_hujan_mm": 0,
+      "suhu_c": 27.6,
+      "kelembapan_persen": 66,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 19.4,
-      "kelembapan_persen": 95,
+      "suhu_c": 23.5,
+      "kelembapan_persen": 75,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 17.4,
-      "kelembapan_persen": 100,
-      "curah_hujan_mm": 0,
+      "suhu_c": 21.6,
+      "kelembapan_persen": 73,
+      "curah_hujan_mm": 0.2,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 16.7,
-      "kelembapan_persen": 100,
-      "curah_hujan_mm": 0,
+      "suhu_c": 21.9,
+      "kelembapan_persen": 67,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 20,
-      "kelembapan_persen": 98,
-      "curah_hujan_mm": 0,
+      "suhu_c": 25.3,
+      "kelembapan_persen": 67,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 19.9,
-      "kelembapan_persen": 97,
-      "curah_hujan_mm": 0,
+      "suhu_c": 22.8,
+      "kelembapan_persen": 80,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     }
   },
