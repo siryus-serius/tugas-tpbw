@@ -1,9 +1,9 @@
 {
-  "terakhir_diperbarui": "2026-10-28T15:45:24.742Z",
+  "terakhir_diperbarui": "2026-10-28T20:35:37.973Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 49,
+    "total_telemetri_tersimpan": 56,
     "total_gempa_tercatat": 4,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
@@ -28,64 +28,64 @@
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Wed, 28 Oct 2026 15:36:19 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 20:26:18 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Wed, 28 Oct 2026 15:38:43 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 20:28:28 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Wed, 28 Oct 2026 15:32:15 GMT"
+      "terakhir_diperbarui": "Wed, 28 Oct 2026 20:32:15 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 21.1,
-      "kelembapan_persen": 97,
+      "suhu_c": 20.5,
+      "kelembapan_persen": 95,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 22.4,
-      "kelembapan_persen": 99,
-      "curah_hujan_mm": 0.1,
+      "suhu_c": 22.3,
+      "kelembapan_persen": 98,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 17.9,
-      "kelembapan_persen": 100,
+      "suhu_c": 17.5,
+      "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 16.6,
+      "suhu_c": 17,
       "kelembapan_persen": 100,
-      "curah_hujan_mm": 0.1,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 16.1,
+      "suhu_c": 16.3,
       "kelembapan_persen": 100,
-      "curah_hujan_mm": 0.1,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 18.8,
+      "suhu_c": 18.1,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -93,8 +93,8 @@
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 18.9,
-      "kelembapan_persen": 99,
+      "suhu_c": 18.4,
+      "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     }
