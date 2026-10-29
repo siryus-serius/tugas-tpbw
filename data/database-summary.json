@@ -1,19 +1,89 @@
 {
   "metadata": {
-    "terakhir_ekspor": "2026-10-29T18:45:19.946Z",
+    "terakhir_ekspor": "2026-10-29T22:59:42.556Z",
     "mesin_database": "SQLite v3 (node:sqlite) + Edge JSON Read-Replica",
     "status": "Terhubung & Terindeks",
     "lokasi_db": "data/database.sqlite"
   },
   "statistik": {
-    "total_telemetri_tersimpan": 84,
-    "total_gempa_tercatat": 6,
+    "total_telemetri_tersimpan": 91,
+    "total_gempa_tercatat": 7,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "telemetri_terkini": [
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Bogor (Puncak Lereng)",
+      "lat": -6.7,
+      "lng": 106.98,
+      "temp_c": 18.8,
+      "humidity_pct": 98,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Sumedang (Tanjungsari)",
+      "lat": -6.85,
+      "lng": 107.82,
+      "temp_c": 18.4,
+      "humidity_pct": 100,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Garut (Pasirwangi)",
+      "lat": -7.22,
+      "lng": 107.75,
+      "temp_c": 15.5,
+      "humidity_pct": 99,
+      "rainfall_mm": 0.1,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Kab. Bandung (Kertasari)",
+      "lat": -7.19,
+      "lng": 107.67,
+      "temp_c": 16.1,
+      "humidity_pct": 100,
+      "rainfall_mm": 0.1,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Bandung Barat (Lembang)",
+      "lat": -6.82,
+      "lng": 107.61,
+      "temp_c": 17.4,
+      "humidity_pct": 100,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Sukabumi (Cikembar)",
+      "lat": -6.98,
+      "lng": 106.85,
+      "temp_c": 22.4,
+      "humidity_pct": 99,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-10-29T22:59:42.551Z",
+      "station_id": "Cianjur (Cugenang)",
+      "lat": -6.82,
+      "lng": 107.1,
+      "temp_c": 20.7,
+      "humidity_pct": 94,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
     {
       "timestamp": "2026-10-29T18:45:19.940Z",
       "station_id": "Bogor (Puncak Lereng)",
@@ -153,79 +223,20 @@
       "humidity_pct": 86,
       "rainfall_mm": 0,
       "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Bogor (Puncak Lereng)",
-      "lat": -6.7,
-      "lng": 106.98,
-      "temp_c": 25.1,
-      "humidity_pct": 70,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Sumedang (Tanjungsari)",
-      "lat": -6.85,
-      "lng": 107.82,
-      "temp_c": 23.8,
-      "humidity_pct": 86,
-      "rainfall_mm": 0.7,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Garut (Pasirwangi)",
-      "lat": -7.22,
-      "lng": 107.75,
-      "temp_c": 21.7,
-      "humidity_pct": 71,
-      "rainfall_mm": 0.3,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Kab. Bandung (Kertasari)",
-      "lat": -7.19,
-      "lng": 107.67,
-      "temp_c": 22.8,
-      "humidity_pct": 67,
-      "rainfall_mm": 0.1,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Bandung Barat (Lembang)",
-      "lat": -6.82,
-      "lng": 107.61,
-      "temp_c": 21,
-      "humidity_pct": 96,
-      "rainfall_mm": 0.6,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Sukabumi (Cikembar)",
-      "lat": -6.98,
-      "lng": 106.85,
-      "temp_c": 30.7,
-      "humidity_pct": 55,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-10-29T06:08:26.509Z",
-      "station_id": "Cianjur (Cugenang)",
-      "lat": -6.82,
-      "lng": 107.1,
-      "temp_c": 28.7,
-      "humidity_pct": 60,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
     }
   ],
   "gempa_terkini": [
+    {
+      "id": "EQ-30-Okt-2026-033213WIB-5.3",
+      "datetime": "30 Okt 2026 03:32:13 WIB",
+      "magnitude": 5.3,
+      "depth_km": 10,
+      "lat": -4.4,
+      "lng": 132.49,
+      "region": "139 km BaratLaut TUAL-MALUKU",
+      "potensi": "Tidak berpotensi tsunami",
+      "shakemap_url": "https://data.bmkg.go.id/DataMKG/TEWS/20261030033504.mmi.jpg"
+    },
     {
       "id": "EQ-29-Okt-2026-102649WIB-6.0",
       "datetime": "29 Okt 2026 10:26:49 WIB",
@@ -269,17 +280,6 @@
       "region": "Pusat gempa berada di darat 8 km Barat Laut Tanggamus",
       "potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
       "shakemap_url": "https://data.bmkg.go.id/DataMKG/TEWS/20261028152346.mmi.jpg"
-    },
-    {
-      "id": "EQ-28-Okt-2026-081154WIB-5.4",
-      "datetime": "28 Okt 2026 08:11:54 WIB",
-      "magnitude": 5.4,
-      "depth_km": 10,
-      "lat": 5.59,
-      "lng": 125.27,
-      "region": "221 km BaratLaut PULAUKARATUNG-SULUT",
-      "potensi": "Tidak berpotensi tsunami",
-      "shakemap_url": "https://data.bmkg.go.id/DataMKG/TEWS/20261028081433.mmi.jpg"
     }
   ],
   "kejadian_longsor": [

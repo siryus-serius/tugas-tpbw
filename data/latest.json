@@ -1,59 +1,59 @@
 {
-  "terakhir_diperbarui": "2026-10-29T18:45:19.940Z",
+  "terakhir_diperbarui": "2026-10-29T22:59:42.551Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 84,
-    "total_gempa_tercatat": 6,
+    "total_telemetri_tersimpan": 91,
+    "total_gempa_tercatat": 7,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "gempa_bmkg": {
-    "Tanggal": "29 Okt 2026",
-    "Jam": "10:26:49 WIB",
-    "DateTime": "2026-10-29T03:26:49+00:00",
-    "Coordinates": "-5.45,141.90",
-    "Lintang": "5.45 LS",
-    "Bujur": "141.90 BT",
-    "Magnitude": "6.0",
-    "Kedalaman": "120 km",
-    "Wilayah": "Pusat gempa berada di darat 153 km tenggara Oksibil",
-    "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "III Boven Digoel, II Jayapura, II Merauke",
-    "Shakemap": "20261029102649.mmi.jpg"
+    "Tanggal": "30 Okt 2026",
+    "Jam": "03:32:13 WIB",
+    "DateTime": "2026-10-29T20:32:13+00:00",
+    "Coordinates": "-4.40,132.49",
+    "Lintang": "4.40 LS",
+    "Bujur": "132.49 BT",
+    "Magnitude": "5.3",
+    "Kedalaman": "10 km",
+    "Wilayah": "139 km BaratLaut TUAL-MALUKU",
+    "Potensi": "Tidak berpotensi tsunami",
+    "Dirasakan": "-",
+    "Shakemap": "20261030033504.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Thu, 29 Oct 2026 18:36:17 GMT"
+      "terakhir_diperbarui": "Thu, 29 Oct 2026 22:56:17 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Thu, 29 Oct 2026 18:38:11 GMT"
+      "terakhir_diperbarui": "Thu, 29 Oct 2026 22:57:05 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Thu, 29 Oct 2026 18:42:12 GMT"
+      "terakhir_diperbarui": "Thu, 29 Oct 2026 22:52:13 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 21,
-      "kelembapan_persen": 93,
+      "suhu_c": 20.7,
+      "kelembapan_persen": 94,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 22.8,
+      "suhu_c": 22.4,
       "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -61,7 +61,7 @@
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 18,
+      "suhu_c": 17.4,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -69,31 +69,31 @@
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 16.2,
+      "suhu_c": 16.1,
       "kelembapan_persen": 100,
-      "curah_hujan_mm": 0,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 15.8,
-      "kelembapan_persen": 100,
-      "curah_hujan_mm": 0,
+      "suhu_c": 15.5,
+      "kelembapan_persen": 99,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 19.3,
-      "kelembapan_persen": 99,
+      "suhu_c": 18.4,
+      "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 18.9,
+      "suhu_c": 18.8,
       "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
