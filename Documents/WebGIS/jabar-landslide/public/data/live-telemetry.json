@@ -1,15 +1,6 @@
 {
-  "terakhir_diperbarui": "2026-10-31T14:57:18.522Z",
-  "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
-  "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
-  "statistik_database": {
-    "total_telemetri_tersimpan": 147,
-    "total_gempa_tercatat": 10,
-    "total_kejadian_longsor_historis": 4,
-    "total_laporan_masyarakat": 0,
-    "total_wilayah_klasifikasi_tanah": 27,
-    "total_fasilitas_darurat": 22
-  },
+  "terakhir_diperbarui": "2026-10-31T16:28:05.319Z",
+  "mesin_eksekusi": "GitHub Actions Automated Cron Runner",
   "gempa_bmkg": {
     "Tanggal": "31 Okt 2026",
     "Jam": "15:23:13 WIB",
@@ -45,47 +36,47 @@
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 21.8,
-      "kelembapan_persen": 90,
+      "suhu_c": 21.1,
+      "kelembapan_persen": 92,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 23.1,
-      "kelembapan_persen": 96,
+      "suhu_c": 22.8,
+      "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 18.1,
-      "kelembapan_persen": 96,
+      "suhu_c": 17.7,
+      "kelembapan_persen": 94,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 16.4,
-      "kelembapan_persen": 97,
+      "suhu_c": 15.3,
+      "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 15.6,
-      "kelembapan_persen": 99,
+      "suhu_c": 14.8,
+      "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 18.8,
+      "suhu_c": 18.1,
       "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -93,8 +84,8 @@
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 19.6,
-      "kelembapan_persen": 96,
+      "suhu_c": 19.3,
+      "kelembapan_persen": 94,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     }
