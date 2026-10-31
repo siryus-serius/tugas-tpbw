@@ -1,28 +1,28 @@
 {
-  "terakhir_diperbarui": "2026-10-31T19:07:51.726Z",
+  "terakhir_diperbarui": "2026-10-31T22:26:22.812Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 154,
-    "total_gempa_tercatat": 10,
+    "total_telemetri_tersimpan": 161,
+    "total_gempa_tercatat": 11,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "gempa_bmkg": {
-    "Tanggal": "31 Okt 2026",
-    "Jam": "15:23:13 WIB",
-    "DateTime": "2026-10-31T08:23:13+00:00",
-    "Coordinates": "-2.87,122.21",
-    "Lintang": "2.87 LS",
-    "Bujur": "122.21 BT",
-    "Magnitude": "3.5",
-    "Kedalaman": "4 km",
-    "Wilayah": "Pusat gempa berada di laut 13 km tenggara Bahodopi",
+    "Tanggal": "01 Nov 2026",
+    "Jam": "03:48:49 WIB",
+    "DateTime": "2026-10-31T20:48:49+00:00",
+    "Coordinates": "-3.92,122.63",
+    "Lintang": "3.92 LS",
+    "Bujur": "122.63 BT",
+    "Magnitude": "2.8",
+    "Kedalaman": "10 km",
+    "Wilayah": "Pusat gempa berada di darat 14 km Timur Laut Kendari",
     "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "II - III Morowali",
-    "Shakemap": "20261031152313.mmi.jpg"
+    "Dirasakan": "II - III Kota Kendari",
+    "Shakemap": "20261101034849.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
@@ -45,7 +45,7 @@
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 20.6,
+      "suhu_c": 20.5,
       "kelembapan_persen": 91,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -53,39 +53,39 @@
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 22,
-      "kelembapan_persen": 99,
+      "suhu_c": 22.4,
+      "kelembapan_persen": 90,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 17.3,
-      "kelembapan_persen": 90,
+      "suhu_c": 17.8,
+      "kelembapan_persen": 85,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 14.3,
-      "kelembapan_persen": 100,
+      "suhu_c": 14.7,
+      "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 14,
-      "kelembapan_persen": 100,
+      "suhu_c": 14.6,
+      "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 17.5,
+      "suhu_c": 17.2,
       "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -93,8 +93,8 @@
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 19.5,
-      "kelembapan_persen": 92,
+      "suhu_c": 19.1,
+      "kelembapan_persen": 95,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     }
