@@ -1,101 +1,101 @@
 {
-  "terakhir_diperbarui": "2026-11-03T08:15:54.134Z",
+  "terakhir_diperbarui": "2026-11-03T16:18:49.332Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 231,
-    "total_gempa_tercatat": 15,
+    "total_telemetri_tersimpan": 238,
+    "total_gempa_tercatat": 16,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "gempa_bmkg": {
-    "Tanggal": "02 Nov 2026",
-    "Jam": "16:58:58 WIB",
-    "DateTime": "2026-11-02T09:58:58+00:00",
-    "Coordinates": "-2.49,140.66",
-    "Lintang": "2.49 LS",
-    "Bujur": "140.66 BT",
-    "Magnitude": "2.6",
-    "Kedalaman": "8 km",
-    "Wilayah": "Pusat gempa berada di darat 9 km Utara Kota Jayapura",
+    "Tanggal": "03 Nov 2026",
+    "Jam": "18:43:49 WIB",
+    "DateTime": "2026-11-03T11:43:49+00:00",
+    "Coordinates": "-8.27,120.63",
+    "Lintang": "8.27 LS",
+    "Bujur": "120.63 BT",
+    "Magnitude": "4.2",
+    "Kedalaman": "10 km",
+    "Wilayah": "Pusat gempa berada di laut 42 km Timur Laut Ruteng, Manggarai",
     "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "III Jayapura",
-    "Shakemap": "20261102165858.mmi.jpg"
+    "Dirasakan": "II - III Kab. Nagekeo, II - III Kab. Manggarai",
+    "Shakemap": "20261103184349.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 03 Nov 2026 08:06:15 GMT"
+      "terakhir_diperbarui": "Tue, 03 Nov 2026 16:06:16 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 03 Nov 2026 08:08:51 GMT"
+      "terakhir_diperbarui": "Tue, 03 Nov 2026 16:07:33 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Tue, 03 Nov 2026 08:12:15 GMT"
+      "terakhir_diperbarui": "Tue, 03 Nov 2026 16:12:12 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 29.3,
-      "kelembapan_persen": 50,
+      "suhu_c": 21.6,
+      "kelembapan_persen": 80,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 27.1,
-      "kelembapan_persen": 76,
-      "curah_hujan_mm": 0.1,
+      "suhu_c": 23.2,
+      "kelembapan_persen": 90,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 24.3,
-      "kelembapan_persen": 65,
+      "suhu_c": 17.3,
+      "kelembapan_persen": 96,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 22.4,
-      "kelembapan_persen": 68,
-      "curah_hujan_mm": 0.1,
+      "suhu_c": 16,
+      "kelembapan_persen": 99,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 21.8,
-      "kelembapan_persen": 69,
-      "curah_hujan_mm": 0.1,
+      "suhu_c": 15.5,
+      "kelembapan_persen": 99,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 26.5,
-      "kelembapan_persen": 57,
-      "curah_hujan_mm": 0.1,
+      "suhu_c": 18.2,
+      "kelembapan_persen": 99,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 24.4,
-      "kelembapan_persen": 65,
-      "curah_hujan_mm": 0.2,
+      "suhu_c": 19.4,
+      "kelembapan_persen": 86,
+      "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     }
   },
