@@ -1,51 +1,42 @@
 {
-  "terakhir_diperbarui": "2026-11-07T19:13:48.576Z",
-  "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
-  "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
-  "statistik_database": {
-    "total_telemetri_tersimpan": 357,
-    "total_gempa_tercatat": 22,
-    "total_kejadian_longsor_historis": 4,
-    "total_laporan_masyarakat": 0,
-    "total_wilayah_klasifikasi_tanah": 27,
-    "total_fasilitas_darurat": 22
-  },
+  "terakhir_diperbarui": "2026-11-07T21:11:54.927Z",
+  "mesin_eksekusi": "GitHub Actions Automated Cron Runner",
   "gempa_bmkg": {
-    "Tanggal": "07 Nov 2026",
-    "Jam": "17:05:52 WIB",
-    "DateTime": "2026-11-07T10:05:52+00:00",
-    "Coordinates": "-8.37,116.54",
-    "Lintang": "8.37 LS",
-    "Bujur": "116.54 BT",
-    "Magnitude": "3.0",
-    "Kedalaman": "10 km",
-    "Wilayah": "Pusat gempa berada di darat 31 km utara Lombok Timur",
+    "Tanggal": "08 Nov 2026",
+    "Jam": "01:54:12 WIB",
+    "DateTime": "2026-11-07T18:54:12+00:00",
+    "Coordinates": "-4.01,122.69",
+    "Lintang": "4.01 LS",
+    "Bujur": "122.69 BT",
+    "Magnitude": "3.3",
+    "Kedalaman": "5 km",
+    "Wilayah": "Pusat gempa berada di darat 20 km timur Kendari",
     "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "II Lombok Timur",
-    "Shakemap": "20261107170552.mmi.jpg"
+    "Dirasakan": "",
+    "Shakemap": "20261108015412.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sat, 07 Nov 2026 19:06:17 GMT"
+      "terakhir_diperbarui": "Sat, 07 Nov 2026 21:06:18 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sat, 07 Nov 2026 19:07:29 GMT"
+      "terakhir_diperbarui": "Sat, 07 Nov 2026 21:07:33 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sat, 07 Nov 2026 19:12:14 GMT"
+      "terakhir_diperbarui": "Sat, 07 Nov 2026 21:02:10 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 19.8,
+      "suhu_c": 19.5,
       "kelembapan_persen": 97,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
@@ -53,24 +44,24 @@
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 23.2,
-      "kelembapan_persen": 89,
+      "suhu_c": 22.9,
+      "kelembapan_persen": 88,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 18.8,
-      "kelembapan_persen": 99,
+      "suhu_c": 18.2,
+      "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 15.8,
-      "kelembapan_persen": 100,
+      "suhu_c": 15.7,
+      "kelembapan_persen": 98,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
@@ -78,22 +69,22 @@
       "lat": -7.22,
       "lng": 107.75,
       "suhu_c": 15.9,
-      "kelembapan_persen": 95,
+      "kelembapan_persen": 92,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 19.1,
-      "kelembapan_persen": 100,
+      "suhu_c": 18.3,
+      "kelembapan_persen": 99,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 18.6,
+      "suhu_c": 18.5,
       "kelembapan_persen": 100,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
