@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "terakhir_ekspor": "2026-11-08T01:53:37.454Z",
+    "terakhir_ekspor": "2026-11-08T08:26:45.530Z",
     "mesin_database": "SQLite v3 (node:sqlite) + Edge JSON Read-Replica",
     "status": "Terhubung & Terindeks",
     "lokasi_db": "data/database.sqlite"
   },
   "statistik": {
-    "total_telemetri_tersimpan": 371,
+    "total_telemetri_tersimpan": 378,
     "total_gempa_tercatat": 23,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
@@ -14,6 +14,76 @@
     "total_fasilitas_darurat": 22
   },
   "telemetri_terkini": [
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Bogor (Puncak Lereng)",
+      "lat": -6.7,
+      "lng": 106.98,
+      "temp_c": 24.5,
+      "humidity_pct": 64,
+      "rainfall_mm": 0.1,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Sumedang (Tanjungsari)",
+      "lat": -6.85,
+      "lng": 107.82,
+      "temp_c": 27.8,
+      "humidity_pct": 48,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Garut (Pasirwangi)",
+      "lat": -7.22,
+      "lng": 107.75,
+      "temp_c": 23.7,
+      "humidity_pct": 51,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Kab. Bandung (Kertasari)",
+      "lat": -7.19,
+      "lng": 107.67,
+      "temp_c": 24.3,
+      "humidity_pct": 50,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Bandung Barat (Lembang)",
+      "lat": -6.82,
+      "lng": 107.61,
+      "temp_c": 25.6,
+      "humidity_pct": 52,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Sukabumi (Cikembar)",
+      "lat": -6.98,
+      "lng": 106.85,
+      "temp_c": 29.1,
+      "humidity_pct": 63,
+      "rainfall_mm": 0.1,
+      "status": "Aman / Berawan"
+    },
+    {
+      "timestamp": "2026-11-08T08:26:45.463Z",
+      "station_id": "Cianjur (Cugenang)",
+      "lat": -6.82,
+      "lng": 107.1,
+      "temp_c": 29.5,
+      "humidity_pct": 49,
+      "rainfall_mm": 0,
+      "status": "Aman / Berawan"
+    },
     {
       "timestamp": "2026-11-08T01:53:37.451Z",
       "station_id": "Bogor (Puncak Lereng)",
@@ -151,76 +221,6 @@
       "lng": 107.1,
       "temp_c": 20.2,
       "humidity_pct": 95,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Bogor (Puncak Lereng)",
-      "lat": -6.7,
-      "lng": 106.98,
-      "temp_c": 18.6,
-      "humidity_pct": 100,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Sumedang (Tanjungsari)",
-      "lat": -6.85,
-      "lng": 107.82,
-      "temp_c": 19.1,
-      "humidity_pct": 100,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Garut (Pasirwangi)",
-      "lat": -7.22,
-      "lng": 107.75,
-      "temp_c": 15.9,
-      "humidity_pct": 95,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Kab. Bandung (Kertasari)",
-      "lat": -7.19,
-      "lng": 107.67,
-      "temp_c": 15.8,
-      "humidity_pct": 100,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Bandung Barat (Lembang)",
-      "lat": -6.82,
-      "lng": 107.61,
-      "temp_c": 18.8,
-      "humidity_pct": 99,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Sukabumi (Cikembar)",
-      "lat": -6.98,
-      "lng": 106.85,
-      "temp_c": 23.2,
-      "humidity_pct": 89,
-      "rainfall_mm": 0,
-      "status": "Aman / Berawan"
-    },
-    {
-      "timestamp": "2026-11-07T19:13:48.576Z",
-      "station_id": "Cianjur (Cugenang)",
-      "lat": -6.82,
-      "lng": 107.1,
-      "temp_c": 19.8,
-      "humidity_pct": 97,
       "rainfall_mm": 0,
       "status": "Aman / Berawan"
     }
