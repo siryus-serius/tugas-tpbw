@@ -1,100 +1,100 @@
 {
-  "terakhir_diperbarui": "2026-11-08T23:22:11.649Z",
+  "terakhir_diperbarui": "2026-11-09T02:51:20.535Z",
   "mesin_eksekusi": "GitHub Actions Automated Cron Runner (fetch-apis.yml)",
   "mesin_database": "SQLite v3 (node:sqlite) + JSON Read-Replica",
   "statistik_database": {
-    "total_telemetri_tersimpan": 399,
-    "total_gempa_tercatat": 23,
+    "total_telemetri_tersimpan": 406,
+    "total_gempa_tercatat": 24,
     "total_kejadian_longsor_historis": 4,
     "total_laporan_masyarakat": 0,
     "total_wilayah_klasifikasi_tanah": 27,
     "total_fasilitas_darurat": 22
   },
   "gempa_bmkg": {
-    "Tanggal": "08 Nov 2026",
-    "Jam": "01:54:12 WIB",
-    "DateTime": "2026-11-07T18:54:12+00:00",
-    "Coordinates": "-4.01,122.69",
-    "Lintang": "4.01 LS",
-    "Bujur": "122.69 BT",
-    "Magnitude": "3.3",
-    "Kedalaman": "5 km",
-    "Wilayah": "Pusat gempa berada di darat 20 km timur Kendari",
+    "Tanggal": "09 Nov 2026",
+    "Jam": "07:44:58 WIB",
+    "DateTime": "2026-11-09T00:44:58+00:00",
+    "Coordinates": "1.06,127.47",
+    "Lintang": "1.06 LU",
+    "Bujur": "127.47 BT",
+    "Magnitude": "2.5",
+    "Kedalaman": "10 km",
+    "Wilayah": "Pusat gempa berada di laut 1 km timur Jailolo",
     "Potensi": "Gempa ini dirasakan untuk diteruskan pada masyarakat",
-    "Dirasakan": "",
-    "Shakemap": "20261108015412.mmi.jpg"
+    "Dirasakan": "II Kab. Halmahera Barat",
+    "Shakemap": "20261109074458.mmi.jpg"
   },
   "himawari_9": {
     "EH": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_EH_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sun, 08 Nov 2026 23:16:19 GMT"
+      "terakhir_diperbarui": "Mon, 09 Nov 2026 02:46:18 GMT"
     },
     "RP": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_RP_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sun, 08 Nov 2026 23:18:42 GMT"
+      "terakhir_diperbarui": "Mon, 09 Nov 2026 02:47:06 GMT"
     },
     "NC": {
       "url": "https://inderaja.bmkg.go.id/IMAGE/HIMA/H08_NC_Indonesia.png",
       "tersedia": true,
-      "terakhir_diperbarui": "Sun, 08 Nov 2026 23:12:19 GMT"
+      "terakhir_diperbarui": "Mon, 09 Nov 2026 02:42:17 GMT"
     }
   },
   "stasiun_cuaca_jabar": {
     "Cianjur (Cugenang)": {
       "lat": -6.82,
       "lng": 107.1,
-      "suhu_c": 21.6,
-      "kelembapan_persen": 88,
+      "suhu_c": 28.3,
+      "kelembapan_persen": 56,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sukabumi (Cikembar)": {
       "lat": -6.98,
       "lng": 106.85,
-      "suhu_c": 22.7,
-      "kelembapan_persen": 92,
+      "suhu_c": 29.2,
+      "kelembapan_persen": 59,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bandung Barat (Lembang)": {
       "lat": -6.82,
       "lng": 107.61,
-      "suhu_c": 18.7,
-      "kelembapan_persen": 96,
-      "curah_hujan_mm": 0,
+      "suhu_c": 25.1,
+      "kelembapan_persen": 57,
+      "curah_hujan_mm": 0.1,
       "status_hujan": "Aman / Berawan"
     },
     "Kab. Bandung (Kertasari)": {
       "lat": -7.19,
       "lng": 107.67,
-      "suhu_c": 16.2,
-      "kelembapan_persen": 95,
+      "suhu_c": 23.7,
+      "kelembapan_persen": 56,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Garut (Pasirwangi)": {
       "lat": -7.22,
       "lng": 107.75,
-      "suhu_c": 15.8,
-      "kelembapan_persen": 94,
+      "suhu_c": 22.8,
+      "kelembapan_persen": 58,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Sumedang (Tanjungsari)": {
       "lat": -6.85,
       "lng": 107.82,
-      "suhu_c": 18.9,
-      "kelembapan_persen": 96,
+      "suhu_c": 26.7,
+      "kelembapan_persen": 56,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     },
     "Bogor (Puncak Lereng)": {
       "lat": -6.7,
       "lng": 106.98,
-      "suhu_c": 19.6,
-      "kelembapan_persen": 94,
+      "suhu_c": 25,
+      "kelembapan_persen": 63,
       "curah_hujan_mm": 0,
       "status_hujan": "Aman / Berawan"
     }
