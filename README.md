@@ -8,7 +8,10 @@ Proyek tugas TPBW: peta kejadian longsor terverifikasi Jawa Barat (2021–2026) 
 - **Peta warna Δ kecepatan (InSAR)**: merah berarti menjauhi satelit (turun/gerak lereng), biru berarti mendekati.
 - **Panel detail kejadian**: Sentinel-2 warna asli dan NDVI, serta Sentinel-1 radar VV, sebelum dan sesudah kejadian.
 - **Mosaik Sentinel-2 tahunan** (EOX cloudless 2019–2025).
-- **Faktor Keamanan (FK) lereng dinamis**: kelembapan tanah terkini + prakiraan 72 jam (Open-Meteo) → model lereng tak hingga → warna titik Labil/Kritis/Stabil (Bowles 1989). Parameter tanah (c', φ', γ, z, n) bisa diubah dan FK dihitung ulang seketika.
+- **Faktor Keamanan (FK) lereng**: kemiringan lereng (DEM) + skenario air tanah (Kering/Lembap/Jenuh) → model lereng tak hingga → warna titik Labil/Kritis/Stabil (Bowles 1989). Parameter tanah (c', φ', γ, z) bisa diubah dan FK dihitung ulang seketika.
+- **Gempa**: BMKG terkini (live) + riwayat USGS sejak 2021; kaitan otomatis gempa ↔ longsor.
+- **Prediksi kerawanan**: indeks gabungan FK, anomali InSAR, dan guncangan gempa 30 hari.
+- **Validasi data**: 16 pemeriksaan otomatis, pembaruan bulanan hanya bila lolos.
 
 ## Arsitektur
 
@@ -21,7 +24,7 @@ scripts/
   stages/insar.js                anomali pergeseran tanah → insar/{anomalies.geojson, summary.json, *.png}
   lib/                           http, stac, licsar, raster, png, geo, terrain (modul murni & I/O terpisah)
 Documents/WebGIS/jabar-landslide/src/
-  App.jsx                        komposisi saja: data → filter → kelembapan → FK → tampilan
+  App.jsx                        komposisi saja: data → filter → gempa → FK → kerawanan → tampilan
   config/constants.js            konstanta tampilan & domain
   services/                      dataApi (JSON statis), soilMoistureApi (Open-Meteo)
   hooks/                         useWebgisData, useMapFilters, useMonitoringPoints, useSoilMoisture, useSlopeStability
@@ -37,7 +40,8 @@ Tidak ada server, database, maupun secret. Semua sumber data publik **tanpa logi
 | Interferogram Sentinel-1 | [COMET-LiCSAR](https://comet.nerc.ac.uk/comet-lics-portal/) (JASMIN + arsip CEDA) |
 | Scene & render Sentinel-1 RTC / Sentinel-2 L2A | [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/) |
 | Mosaik Sentinel-2 cloudless | [EOX s2maps.eu](https://s2maps.eu) (CC BY-NC-SA 4.0) |
-| Kelembapan tanah 27–81 cm (live, per jam) & DEM Copernicus 90 m | [Open-Meteo](https://open-meteo.com/) |
+| DEM Copernicus 90 m (kemiringan lereng titik kejadian) | [Open-Meteo Elevation API](https://open-meteo.com/) |
+| Gempa terkini / riwayat gempa | [BMKG](https://data.bmkg.go.id/gempabumi) (wajib dicantumkan) / [USGS](https://earthquake.usgs.gov/fdsnws/event/1/) |
 
 ## Metode anomali pergeseran (ringkas)
 1. Tiga frame LiCSAR mencakup Jabar: `098A_09673_121312` (asc), `047D_09652_111009` dan `149D_09700_081210` (desc).
@@ -50,7 +54,7 @@ Tidak ada server, database, maupun secret. Semua sumber data publik **tanpa logi
 
 ## Faktor Keamanan lereng
 
-FK = [c' + (γ − m·γw)·z·cos²β·tan φ'] / [γ·z·sin β·cos β] (lereng tak hingga), dengan m = θ / n dari kelembapan tanah. Kemiringan β: kejadian = persentil-90 lereng ±400 m (DEM Copernicus 90 m); anomali = rata-rata klaster (DEM LiCSAR). Indikator memakai **FK minimum 72 jam** (skenario terbasah). Kelembapan berasal dari model beresolusi ±10–25 km, jadi FK adalah indikator regional, bukan pengganti uji geoteknik.
+FK = [c' + (γ − m·γw)·z·cos²β·tan φ'] / [γ·z·sin β·cos β] (lereng tak hingga), dengan m = rasio muka air sebagai **skenario** (0 kering, 0,5 lembap, 1 jenuh). Kemiringan β: kejadian = persentil-90 lereng ±400 m (DEM Copernicus 90 m); anomali = rata-rata klaster (DEM LiCSAR). FK adalah indikator regional, bukan pengganti uji geoteknik.
 
 ## Menjalankan
 
