@@ -4,6 +4,7 @@
  * karena longsor terjadi di lereng terjal sekitar desa, bukan tepat di titik pusatnya.
  */
 import { fetchRetry } from './http.js';
+import { circularMean } from './motion.js';
 
 const ELEVATION_API = 'https://api.open-meteo.com/v1/elevation';
 const N = 9; // grid 9×9 (81 titik ≤ batas 100 koordinat per request)
@@ -22,18 +23,25 @@ export async function slopeAroundPoint(lng, lat) {
     }
   }
   const { elevation: z } = await fetchRetry(`${ELEVATION_API}?latitude=${lats.join(',')}&longitude=${lngs.join(',')}`);
-  const slopes = [];
+  const cells = [];
   for (let r = 1; r < N - 1; r++) {
     for (let c = 1; c < N - 1; c++) {
       const i = r * N + c;
-      const gx = (z[i + 1] - z[i - 1]) / (2 * STEP_M);
-      const gy = (z[i - N] - z[i + N]) / (2 * STEP_M);
-      slopes.push((Math.atan(Math.hypot(gx, gy)) * 180) / Math.PI);
+      const dzE = (z[i + 1] - z[i - 1]) / (2 * STEP_M);
+      const dzN = (z[i - N] - z[i + N]) / (2 * STEP_M); // baris 0 = utara
+      cells.push({
+        slope: (Math.atan(Math.hypot(dzE, dzN)) * 180) / Math.PI,
+        aspect: ((Math.atan2(-dzE, -dzN) * 180) / Math.PI + 360) % 360, // arah lereng turun
+      });
     }
   }
-  slopes.sort((a, b) => a - b);
+  const sorted = [...cells].sort((a, b) => a.slope - b.slope);
+  const p90 = sorted[Math.floor(0.9 * (sorted.length - 1))].slope;
+  // Arah lereng turun dominan dari 25% sel paling terjal (bobot = kemiringan)
+  const steep = sorted.slice(Math.floor(0.75 * sorted.length));
   return {
-    slope_deg: Math.round(slopes[Math.floor(0.9 * (slopes.length - 1))] * 10) / 10,
+    slope_deg: Math.round(p90 * 10) / 10,
+    aspect_deg: Math.round(circularMean(steep.map((c) => c.aspect), steep.map((c) => c.slope))),
     elevation_m: Math.round(z[Math.floor((N * N) / 2)]),
   };
 }

@@ -2,6 +2,7 @@
  * Pencarian scene Sentinel-1 RTC & Sentinel-2 L2A di Microsoft Planetary Computer (tanpa login).
  * Hanya ID scene yang disimpan; gambar di-render on-the-fly oleh PC Data API di frontend.
  */
+import { geometryCoversBbox } from './geo.js';
 import { postJson } from './http.js';
 
 const STAC_SEARCH = 'https://planetarycomputer.microsoft.com/api/stac/v1/search';
@@ -11,16 +12,21 @@ export const bboxAround = (lng, lat, delta) => [lng - delta, lat - delta, lng + 
 
 const search = async (body) => (await postJson(STAC_SEARCH, body)).features || [];
 
-/** Scene Sentinel-2 L2A paling sedikit awan dalam rentang waktu. */
-export async function bestSentinel2(bbox, startMs, endMs, maxCloud = 40) {
-  const [item] = await search({
+/**
+ * Scene Sentinel-2 L2A paling sedikit awan dalam rentang waktu yang MENUTUPI seluruh area tampilan
+ * (scene di tepi petak/swath sering hanya menutupi sebagian → citra terpotong/kosong).
+ * coverBbox: area yang harus tertutup penuh (default = bbox pencarian).
+ */
+export async function bestSentinel2(bbox, startMs, endMs, maxCloud = 40, coverBbox = bbox) {
+  const items = await search({
     collections: ['sentinel-2-l2a'],
     bbox,
     datetime: `${iso(startMs)}/${iso(endMs)}`,
     query: { 'eo:cloud_cover': { lt: maxCloud } },
     sortby: [{ field: 'eo:cloud_cover', direction: 'asc' }],
-    limit: 1,
+    limit: 20,
   });
+  const item = items.find((it) => geometryCoversBbox(it.geometry, coverBbox));
   return item
     ? { id: item.id, datetime: item.properties.datetime, cloud: Math.round(item.properties['eo:cloud_cover'] * 10) / 10 }
     : null;

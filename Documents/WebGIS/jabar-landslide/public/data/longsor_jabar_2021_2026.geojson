@@ -24,8 +24,39 @@
         "kode_wilayah": "32.11.14.2010",
         "sumber": "BNPB; ANTARA Jabar (BPBD Jabar)",
         "tautan_sumber": [
-          "https://bnpb.go.id/berita/longsor-kembali-terjadi-sebanyak-11-warga-sumedang-meninggal-dunia",
-          "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang"
+          "https://www.bnpb.go.id/berita/longsor-kembali-terjadi-sebanyak-11-warga-sumedang-meninggal-dunia",
+          "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+          "https://www.cnnindonesia.com/nasional/20210203131442-20-601730/longsor-sumedang-40-orang-tewas-1126-jiwa-terdampak",
+          "https://news.detik.com/berita-jawa-barat/d-5339465/longsor-sumedang-40-korban-tewas-ratusan-rumah-akan-direlokasi"
+        ],
+        "status_verifikasi": "Terverifikasi (4 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.72948,
+          -7.07747
+        ]
+      },
+      "properties": {
+        "no": 35,
+        "kabupaten": "Kabupaten Bandung",
+        "kecamatan": "Ibun",
+        "desa": "Desa Neglasari",
+        "kampung": "-",
+        "tanggal": "2021-04-11",
+        "tahun": 2021,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing sekitar 30 m runtuh ke area sawah di Kampung Ancuh dan menimbun seorang petani perempuan.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com (mengutip BPBD Kab. Bandung); kompas.com",
+        "tautan_sumber": [
+          "https://news.detik.com/berita-jawa-barat/d-5528917/satu-orang-tewas-tertimbun-longsor-di-ibun-bandung",
+          "https://regional.kompas.com/read/2021/04/13/112844578/seorang-petani-tewas-tertimbun-longsor-saat-tandur-di-sawah"
         ],
         "status_verifikasi": "Terverifikasi (2 sumber)"
       }
@@ -53,9 +84,127 @@
         "kode_wilayah": "32.02.47.2002",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-"
+          "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+          "https://megapolitan.antaranews.com/berita/138242/longsor-timbun-tiga-warga-sukabumi-satu-meninggal",
+          "https://www.liputan6.com/news/read/4547412/longsor-di-sukabumi-satu-orang-meninggal-dunia"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.5808,
+          -6.79301
+        ]
+      },
+      "properties": {
+        "no": 15,
+        "kabupaten": "Kabupaten Bandung Barat",
+        "kecamatan": "Parongpong",
+        "desa": "Desa Cihanjuang Rahayu",
+        "kampung": "-",
+        "tanggal": "2021-05-08",
+        "tahun": 2021,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor malam hari menimpa rumah di Kampung Manglayang; seorang kerabat yang berkunjung untuk buka puasa tertimbun dan meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com (mengutip Pusdalops BPBD Jabar); cnnindonesia.com",
+        "tautan_sumber": [
+          "https://news.detik.com/berita-jawa-barat/d-5563593/longsor-di-bandung-barat-seorang-pria-tewas-tertimbun",
+          "https://www.cnnindonesia.com/nasional/20210509122214-20-640562/longsor-terjang-rumah-di-bandung-barat-1-orang-meninggal"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.48493,
+          -7.08091
+        ]
+      },
+      "properties": {
+        "no": 36,
+        "kabupaten": "Kabupaten Bandung",
+        "kecamatan": "Pasirjambu",
+        "desa": "Desa Cukanggenteng",
+        "kampung": "-",
+        "tanggal": "2021-11-27",
+        "tahun": 2021,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor tebing menimbun rumah setelah hujan sejak siang; seorang balita meninggal, dua penghuni lain selamat.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "BNPB; detik.com",
+        "tautan_sumber": [
+          "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+          "https://news.detik.com/berita-jawa-barat/d-5830558/tertimbun-longsor-balita-di-pasirjambu-bandung-meninggal-dunia"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.57113,
+          -7.1767
+        ]
+      },
+      "properties": {
+        "no": 16,
+        "kabupaten": "Kabupaten Bandung",
+        "kecamatan": "Pangalengan",
+        "desa": "Desa Sukaluyu",
+        "kampung": "-",
+        "tanggal": "2022-01-15",
+        "tahun": 2022,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor di kawasan kebun kentang Kampung Giriawas menimpa bangunan; satu pekerja harian tewas dan tujuh lainnya luka.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com; liputan6.com",
+        "tautan_sumber": [
+          "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
+          "https://www.liputan6.com/regional/read/4861304/longsor-di-giriawas-pangalengan-bandung-1-orang-meninggal-dunia"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.08411,
+          -6.88714
+        ]
+      },
+      "properties": {
+        "no": 37,
+        "kabupaten": "Kabupaten Cianjur",
+        "kecamatan": "Sukaresmi",
+        "desa": "Desa Cikancana",
+        "kampung": "-",
+        "tanggal": "2022-02-06",
+        "tahun": 2022,
+        "korban_meninggal": 2,
+        "keterangan": "Tanah dan tembok penahan ambruk menimpa rumah di Kampung Bakom dini hari; dua anak kakak-adik tewas, orang tua luka berat.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "liputan6.com (mengutip BPBD Jabar & BPBD Cianjur); kompas.com",
+        "tautan_sumber": [
+          "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
+          "https://bandung.kompas.com/read/2022/02/06/122122978/longsor-di-cianjur-kakak-adik-tewas-orangtua-luka-parah"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -83,6 +232,35 @@
         "tautan_sumber": [
           "https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
           "https://jabar.antaranews.com/berita/382505/4-warga-tertimbun-longsor-di-pasir-pogor-bogor"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.62556,
+          -6.69431
+        ]
+      },
+      "properties": {
+        "no": 17,
+        "kabupaten": "Kabupaten Bogor",
+        "kecamatan": "Pamijahan",
+        "desa": "Desa Cibunian",
+        "kampung": "-",
+        "tanggal": "2022-06-22",
+        "tahun": 2022,
+        "korban_meninggal": 2,
+        "keterangan": "Banjir bandang disertai longsor dari luapan Sungai Cianten menimbun rumah di Kampung Muara; puluhan rumah rusak, dua warga meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "BNPB; liputan6.com (mengutip BPBD Kab. Bogor)",
+        "tautan_sumber": [
+          "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+          "https://www.liputan6.com/news/read/4995343/satu-jasad-korban-tertimbun-longsor-di-cibunian-bogor-ditemukan"
         ],
         "status_verifikasi": "Terverifikasi (2 sumber)"
       }
@@ -121,6 +299,64 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          107.79613,
+          -7.55936
+        ]
+      },
+      "properties": {
+        "no": 18,
+        "kabupaten": "Kabupaten Garut",
+        "kecamatan": "Cisompet",
+        "desa": "Desa Sukamukti",
+        "kampung": "-",
+        "tanggal": "2022-09-22",
+        "tahun": 2022,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor saat hujan lebat di Garut selatan merobohkan pohon ke rumah di Kampung Cibitung; seorang lansia perempuan tewas.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "cnnindonesia.com; detik.com",
+        "tautan_sumber": [
+          "https://www.cnnindonesia.com/nasional/20220924135604-20-852117/longsor-terjang-garut-satu-warga-tewas-usai-rumah-tertimpa-pohon",
+          "https://www.detik.com/jabar/berita/d-6308061/longsor-terjang-cisompet-garut-satu-orang-tewas"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.78572,
+          -6.59052
+        ]
+      },
+      "properties": {
+        "no": 19,
+        "kabupaten": "Kota Bogor",
+        "kecamatan": "Bogor Tengah",
+        "desa": "Desa Kebon Kelapa",
+        "kampung": "-",
+        "tanggal": "2022-10-12",
+        "tahun": 2022,
+        "korban_meninggal": 4,
+        "keterangan": "Tebing longsor saat hujan deras menimbun permukiman padat di Gang Barjo; delapan orang tertimbun, empat meninggal, ratusan warga mengungsi.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip BPBD Kota Bogor); kompas.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/3178657/tim-sar-kembali-temukan-korban-longsor-kebon-kelapa-bogor",
+          "https://megapolitan.kompas.com/read/2022/10/18/19081301/144-warga-gang-barjo-bogor-diungsikan-bantuan-makanan-hingga-obat-obatan"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           106.90346,
           -6.82945
         ]
@@ -139,9 +375,40 @@
         "kode_wilayah": "32.02.31.2009",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://bnpb.go.id/berita/tanah-longsor-telan-tiga-korban-di-sukabumi"
+          "https://bnpb.go.id/berita/tanah-longsor-telan-tiga-korban-di-sukabumi",
+          "https://bandung.kompas.com/read/2022/10/25/220616378/dampak-tanah-longsor-di-sukabumi-5-rumah-rusak-berat-3-warga-meninggal-dunia",
+          "https://megapolitan.antaranews.com/berita/217553/relawan-evakuasi-jasad-terakhir-korban-tertimbun-longsor-di-sukabumi"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.79962,
+          -6.61411
+        ]
+      },
+      "properties": {
+        "no": 20,
+        "kabupaten": "Kota Bogor",
+        "kecamatan": "Bogor Selatan",
+        "desa": "Desa Empang",
+        "kampung": "-",
+        "tanggal": "2023-03-14",
+        "tahun": 2023,
+        "korban_meninggal": 6,
+        "keterangan": "Tembok penahan tanah rel kereta longsor malam hari menimpa lima rumah; 17 warga tertimbun dan enam meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip BPBD Kota Bogor); detik.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
+          "https://news.detik.com/berita/d-6636613/korban-tewas-longsor-empang-bogor-bertambah-jadi-7-orang"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -167,9 +434,10 @@
         "kode_wilayah": "32.06.02.2011",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://www.bnpb.go.id/berita/dua-warga-tasikmalaya-meninggal-akibat-tanah-longsor"
+          "https://www.bnpb.go.id/berita/dua-warga-tasikmalaya-meninggal-akibat-tanah-longsor",
+          "https://20.detik.com/detikupdate/20230609-230609095/penampakan-longsor-yang-tewaskan-pasutri-di-tasikmalaya"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -195,9 +463,69 @@
         "kode_wilayah": "32.01.30.2005",
         "sumber": "Poskota",
         "tautan_sumber": [
-          "https://www.poskota.co.id/2023/11/28/pasutri-tewas-terimpa-longsong-iwan-sentil-bpbd-kabupaten-bogor-kita-kecolongan"
+          "https://www.poskota.co.id/2023/11/28/pasutri-tewas-terimpa-longsong-iwan-sentil-bpbd-kabupaten-bogor-kita-kecolongan",
+          "https://megapolitan.antaranews.com/berita/269892/bupati-bogor-serahkan-bantuan-untuk-keluarga-korban-meninggal-akibat-longsor-dramaga",
+          "https://news.detik.com/berita/d-7060493/fakta-fakta-longsor-di-desa-petir-bogor-yang-tewaskan-2-orang"
         ],
-        "status_verifikasi": "1 sumber berita — cocokkan dengan DIBI"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.37157,
+          -7.30879
+        ]
+      },
+      "properties": {
+        "no": 38,
+        "kabupaten": "Kabupaten Ciamis",
+        "kecamatan": "Cihaurbeuti",
+        "desa": "Desa Sukamaju",
+        "kampung": "-",
+        "tanggal": "2023-12-01",
+        "tahun": 2023,
+        "korban_meninggal": 2,
+        "keterangan": "Tembok penahan tanah longsor dini hari setelah hujan semalaman; nenek dan cucu balita tertimbun saat hendak mengungsi.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com; kompas.com",
+        "tautan_sumber": [
+          "https://www.detik.com/jabar/berita/d-7067204/jabar-hari-ini-pilu-nenek-dan-cucu-tewas-tertimbun-longsor",
+          "https://bandung.kompas.com/image/2023/12/01/130244478/hendak-mengungsi-nenek-dan-cucu-malah-tewas-tertimbun-longsor-di-ciamis"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.80469,
+          -6.86791
+        ]
+      },
+      "properties": {
+        "no": 21,
+        "kabupaten": "Kabupaten Sukabumi",
+        "kecamatan": "Nagrak",
+        "desa": "Desa Cisarua",
+        "kampung": "-",
+        "tanggal": "2023-12-03",
+        "tahun": 2023,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor saat hujan deras di Kampung Pamuruyan merobohkan rumah di tepi sungai; seorang ibu tewas, satu warga lain selamat.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA; detik.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/3855513/longsor-di-sukabumi-timbun-dua-warga",
+          "https://www.detik.com/jabar/berita/d-7070486/encop-tewas-terhimpit-tiang-beton-saat-rumahnya-ambruk"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -223,9 +551,11 @@
         "kode_wilayah": "32.13.26.2002",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://www.bnpb.go.id/berita/update-tanah-longsor-subang-dua-warga-meninggal-dan-80-orang-lainnya-mengungsi"
+          "https://www.bnpb.go.id/berita/update-tanah-longsor-subang-dua-warga-meninggal-dan-80-orang-lainnya-mengungsi",
+          "https://www.detik.com/jabar/berita/d-7130029/tim-sar-kembali-temukan-korban-tewas-longsor-subang",
+          "https://www.cnnindonesia.com/nasional/20240108141057-22-1046732/foto-longsor-terjang-objek-wisata-mata-air-cipondok-subang-2-tewas"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
       }
     },
     {
@@ -245,16 +575,77 @@
         "kampung": "Kp. Gintung (RT 03/04)",
         "tanggal": "2024-03-24",
         "tahun": 2024,
-        "korban_meninggal": null,
+        "korban_meninggal": 7,
         "keterangan": "Bukit ±100 m longsor menimbun permukiman; ≥8 jenazah teridentifikasi, beberapa hilang — angka akhir perlu dicek di DIBI",
         "jenis_koordinat": "Pusat desa (perkiraan)",
         "kode_wilayah": "32.17.12.2006",
         "sumber": "detikJabar; Metro TV; ANTARA Jabar",
         "tautan_sumber": [
           "https://www.detik.com/jabar/berita/d-7260245/detik-detik-bukit-100-meter-di-bandung-barat-longsor-terjang-permukiman",
-          "https://www.metrotvnews.com/read/K5nCLRJv-8-korban-longsor-di-cipongkor-bandung-barat-teridentifikasi"
+          "https://www.metrotvnews.com/read/K5nCLRJv-8-korban-longsor-di-cipongkor-bandung-barat-teridentifikasi",
+          "https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+          "https://www.detik.com/jabar/berita/d-7271298/pelukan-ibu-anak-hingga-akhir-hayat-kala-longsor-terjang-cipongkor",
+          "https://www.antaranews.com/video/4037187/tim-sar-gabungan-hentikan-operasi-pencarian-korban-longsor-cipongkor"
         ],
-        "status_verifikasi": "Kejadian terverifikasi; jumlah korban belum final"
+        "status_verifikasi": "Terverifikasi (5 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.79833,
+          -6.58569
+        ]
+      },
+      "properties": {
+        "no": 22,
+        "kabupaten": "Kota Bogor",
+        "kecamatan": "Bogor Tengah",
+        "desa": "Desa Sempur",
+        "kampung": "-",
+        "tanggal": "2024-03-24",
+        "tahun": 2024,
+        "korban_meninggal": 2,
+        "keterangan": "Longsor malam hari saat hujan deras menimpa lima rumah di Kampung Lebak Kantin; dua warga perempuan lansia tewas tertimbun.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "kompas.com (mengutip BPBD Kota Bogor); detik.com",
+        "tautan_sumber": [
+          "https://megapolitan.kompas.com/read/2024/03/25/08042661/2-orang-tewas-akibat-longsor-di-sempur-bogor",
+          "https://news.detik.com/berita/d-7259567/korban-longsor-di-sempur-bogor-bertambah-total-2-orang-meninggal"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.85057,
+          -6.51884
+        ]
+      },
+      "properties": {
+        "no": 23,
+        "kabupaten": "Kabupaten Bogor",
+        "kecamatan": "Babakan Madang",
+        "desa": "Desa Sentul",
+        "kampung": "-",
+        "tanggal": "2024-03-24",
+        "tahun": 2024,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing setinggi sekitar 25 m longsor menimpa rumah; seorang lansia terseret material hingga Sungai Cikeas dan ditemukan meninggal lima hari kemudian.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "BNPB; detik.com (mengutip BPBD Kab. Bogor)",
+        "tautan_sumber": [
+          "https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
+          "https://news.detik.com/berita/d-7268730/lansia-korban-longsor-di-sentul-ditemukan-tewas-di-sungai-cikeas"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -280,9 +671,187 @@
         "kode_wilayah": "32.05.23.2002",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut"
+          "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+          "https://www.antaranews.com/berita/4077000/tim-sar-temukan-tiga-korban-longsor-di-banjarwangi-garut",
+          "https://www.liputan6.com/regional/read/5582588/cerita-tim-sar-evakuasi-jenazah-ibu-dan-2-anak-korban-longsor-di-banjarwangi-garut"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.08659,
+          -7.44655
+        ]
+      },
+      "properties": {
+        "no": 24,
+        "kabupaten": "Kabupaten Cianjur",
+        "kecamatan": "Sindangbarang",
+        "desa": "Desa Talagasari",
+        "kampung": "-",
+        "tanggal": "2024-12-03",
+        "tahun": 2024,
+        "korban_meninggal": 2,
+        "keterangan": "Hujan lebat memicu longsor yang menimbun rumah di Kampung Citiwu; seorang ibu dan anaknya yang berusia satu tahun meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "BNPB; kompas.com",
+        "tautan_sumber": [
+          "https://bnpb.go.id/berita/dua-orang-meninggal-tertimbun-longsor-di-cianjur",
+          "https://regional.kompas.com/read/2024/12/03/134540878/longsor-cianjur-ibu-dan-anak-tewas-tertimbun"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.56015,
+          -7.02969
+        ]
+      },
+      "properties": {
+        "no": 25,
+        "kabupaten": "Kabupaten Sukabumi",
+        "kecamatan": "Simpenan",
+        "desa": "Desa Loji",
+        "kampung": "-",
+        "tanggal": "2024-12-04",
+        "tahun": 2024,
+        "korban_meninggal": 5,
+        "keterangan": "Longsor dini hari saat bencana hidrometeorologi besar Sukabumi menimbun satu rumah di Kampung Cisarakan; lima penghuni, mayoritas anak, meninggal.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA; detik.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/4515573/satu-keluarga-di-simpenan-tertimbun-longsor-dua-korban-ditemukan",
+          "https://news.detik.com/foto-news/d-7675770/5-orang-tewas-tertimbun-longsor-di-kampung-cisarakan-sukabumi"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.65301,
+          -6.67382
+        ]
+      },
+      "properties": {
+        "no": 26,
+        "kabupaten": "Kabupaten Subang",
+        "kecamatan": "Sagalaherang",
+        "desa": "Desa Dayeuhkolot",
+        "kampung": "-",
+        "tanggal": "2025-04-11",
+        "tahun": 2025,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing longsor setelah hujan deras menimbun warga yang sedang memperbaiki pipa air; jasadnya ditemukan setelah sekitar enam hari pencarian.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip BNPB); kompas.com (mengutip BPBD Subang)",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/4769505/bnpb-seorang-warga-subang-hilang-tertimbun-longsor-saat-perbaiki-pipa",
+          "https://bandung.kompas.com/read/2025/04/17/174702078/tim-gabungan-evakuasi-petugas-pengairan-yang-tewas-tertimbun-longsor-di"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.39884,
+          -6.75461
+        ]
+      },
+      "properties": {
+        "no": 39,
+        "kabupaten": "Kabupaten Cirebon",
+        "kecamatan": "Dukupuntang",
+        "desa": "Desa Cipanas",
+        "kampung": "-",
+        "tanggal": "2025-05-30",
+        "tahun": 2025,
+        "korban_meninggal": 21,
+        "keterangan": "Lereng tambang batu galian C Gunung Kuda longsor menimbun pekerja dan kendaraan; 21 jenazah dievakuasi, empat tidak ditemukan saat pencarian dihentikan.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA; detik.com; kontan.co.id (mengutip BNPB)",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/4881593/pemkab-cirebon-resmi-hentikan-pencarian-korban-di-gunung-kuda",
+          "https://megapolitan.antaranews.com/berita/401097/korban-tewas-akibat-longsor-tambang-galian-c-di-gunung-kuda-bertambah-jadi-20-orang",
+          "https://www.detik.com/jabar/cirebon-raya/d-7942895/korban-longsor-tambang-gunung-kuda-bertambah-total-19-orang-tewas",
+          "https://nasional.kontan.co.id/news/bnpb-sebut-longsor-tambang-gunung-kuda-cirebon-tewaskan-10-orang"
+        ],
+        "status_verifikasi": "Terverifikasi (4 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.54219,
+          -7.33288
+        ]
+      },
+      "properties": {
+        "no": 27,
+        "kabupaten": "Kabupaten Garut",
+        "kecamatan": "Cisewu",
+        "desa": "Desa Girimukti",
+        "kampung": "-",
+        "tanggal": "2025-06-25",
+        "tahun": 2025,
+        "korban_meninggal": 4,
+        "keterangan": "Tebing di pinggir jalan ambrol saat hujan lama dan menimpa rumah di Kampung Kiararambay; empat anggota satu keluarga meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "liputan6.com (mengutip BPBD Jabar); detik.com",
+        "tautan_sumber": [
+          "https://www.liputan6.com/regional/read/6090805/longsor-di-cisewu-garut-4-orang-ditemukan-meninggal-dunia",
+          "https://www.detik.com/jabar/berita/d-7984037/fakta-fakta-longsor-di-garut-tewaskan-sekeluarga"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.94839,
+          -7.33443
+        ]
+      },
+      "properties": {
+        "no": 40,
+        "kabupaten": "Kabupaten Tasikmalaya",
+        "kecamatan": "Salawu",
+        "desa": "Desa Tenjowaringin",
+        "kampung": "-",
+        "tanggal": "2025-06-29",
+        "tahun": 2025,
+        "korban_meninggal": 0,
+        "keterangan": "Tebing sangat tinggi longsor menutup persawahan Kampung Ciomas setelah hujan deras; dua petani tertimbun dan dinyatakan hilang.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA; detik.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/4939113/tim-sar-masih-terus-cari-dua-petani-korban-longsor-di-tasikmalaya",
+          "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -308,9 +877,97 @@
         "kode_wilayah": "32.17.01.2004",
         "sumber": "BNPB",
         "tautan_sumber": [
-          "https://bnpb.go.id/berita/tanah-longsor-terjang-kabupaten-bandung-barat-satu-orang-meninggal"
+          "https://www.bnpb.go.id/berita/perkembangan-situasi-dan-penanganan-bencana-6-juli-2025",
+          "https://www.detik.com/jabar/berita/d-7998278/nahas-nasib-pemuda-lembang-tertimbun-longsor-saat-sedang-tidur"
         ],
-        "status_verifikasi": "Terverifikasi (BNPB)"
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.97725,
+          -6.68522
+        ]
+      },
+      "properties": {
+        "no": 28,
+        "kabupaten": "Kabupaten Bogor",
+        "kecamatan": "Cisarua",
+        "desa": "Desa Tugu Utara",
+        "kampung": "-",
+        "tanggal": "2025-07-05",
+        "tahun": 2025,
+        "korban_meninggal": 2,
+        "keterangan": "Tebing sekitar 17 m di belakang vila di Kampung Sukatani longsor saat hujan lebat; lima orang tertimbun, dua meninggal.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "liputan6.com (mengutip BPBD Kab. Bogor); kompas.com (mengutip BPBD Kab. Bogor)",
+        "tautan_sumber": [
+          "https://www.liputan6.com/news/read/6097719/vila-di-puncak-bogor-diterjang-tanah-longsor-dua-orang-tewas-dan-tiga-selamat",
+          "https://bandung.kompas.com/read/2025/07/06/134621778/longsor-di-kawasan-puncak-bogor-7-orang-tertimbun-3-tewas-dan-4-selamat"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.03188,
+          -7.35258
+        ]
+      },
+      "properties": {
+        "no": 29,
+        "kabupaten": "Kabupaten Tasikmalaya",
+        "kecamatan": "Cigalontang",
+        "desa": "Desa Cidugaleun",
+        "kampung": "-",
+        "tanggal": "2025-08-03",
+        "tahun": 2025,
+        "korban_meninggal": 1,
+        "keterangan": "Hujan lebat malam hari memicu longsor yang merobohkan dinding rumah di Kampung Ciburaleng; seorang anak tewas, anggota keluarga lain luka.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip Tagana Kab. Tasikmalaya); kompas.com",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/5013817/longsor-tasikmalaya-seorang-anak-tewas-tertimbun-dan-enam-luka-luka",
+          "https://bandung.kompas.com/read/2025/08/04/124109678/longsor-dan-banjir-terjang-tasikmalaya-seorang-anak-tewas-dan-2-warga-luka"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.83609,
+          -7.40822
+        ]
+      },
+      "properties": {
+        "no": 30,
+        "kabupaten": "Kabupaten Garut",
+        "kecamatan": "Banjarwangi",
+        "desa": "Desa Tanjungjaya",
+        "kampung": "-",
+        "tanggal": "2025-08-04",
+        "tahun": 2025,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing sekitar 7 m di belakang rumah Kampung Cipongpok runtuh setelah hujan sejak sore; anak perempuan 10 tahun tewas, ibunya selamat.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip BPBD Kab. Garut); detik.com",
+        "tautan_sumber": [
+          "https://jabar.antaranews.com/berita/633129/korban-longsor-banjarwangi-garut-dapat-bantuan-dari-bpbd",
+          "https://www.detik.com/jabar/berita/d-8044081/malang-bocah-10-tahun-di-garut-tewas-tertimbun-longsor-saat-tidur"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -336,9 +993,40 @@
         "kode_wilayah": "32.17.13.2006",
         "sumber": "Koran Jakarta (data BNPB)",
         "tautan_sumber": [
-          "https://koran-jakarta.com/2025-10-27/cuaca-ekstrem-tanah-longsor-timpa-pesantren-at-thohiriyah-di-bandung-1-orang-meninggal"
+          "https://koran-jakarta.com/2025-10-27/cuaca-ekstrem-tanah-longsor-timpa-pesantren-at-thohiriyah-di-bandung-1-orang-meninggal",
+          "https://www.antaranews.com/berita/5201209/cuaca-ekstrem-pesantren-di-bandung-barat-roboh-dan-satu-meninggal",
+          "https://regional.kompas.com/read/2025/10/26/224527578/longsor-terjang-ponpes-di-bandung-barat-santriwati-tewas-tertimpa-bangunan"
         ],
-        "status_verifikasi": "1 sumber berita — cocokkan dengan DIBI"
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.41743,
+          -6.53069
+        ]
+      },
+      "properties": {
+        "no": 31,
+        "kabupaten": "Kabupaten Purwakarta",
+        "kecamatan": "Jatiluhur",
+        "desa": "Desa Mekargalih",
+        "kampung": "-",
+        "tanggal": "2025-12-28",
+        "tahun": 2025,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing sekitar 8 m di belakang rumah Kampung Sulukuning longsor saat hujan deras; pemilik rumah tertimbun tanah dan beton, ditemukan meninggal.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com; kompas.com",
+        "tautan_sumber": [
+          "https://www.detik.com/jabar/berita/d-8281430/korban-tertimbun-longsor-di-purwakarta-ditemukan",
+          "https://regional.kompas.com/read/2025/12/28/230101578/tebing-perumahan-di-jatiluhur-purwakarta-longsor-seorang-warga-meninggal"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
       }
     },
     {
@@ -375,6 +1063,94 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          107.57113,
+          -7.1767
+        ]
+      },
+      "properties": {
+        "no": 32,
+        "kabupaten": "Kabupaten Bandung",
+        "kecamatan": "Pangalengan",
+        "desa": "Desa Tribakti Mulya",
+        "kampung": "-",
+        "tanggal": "2026-02-01",
+        "tahun": 2026,
+        "korban_meninggal": 2,
+        "keterangan": "Longsoran tebing sekitar 15 m menjebol dinding dapur rumah di Kampung Mekarsari; dua balita kakak-adik tewas.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip BPBD Kab. Bandung); detik.com; cnnindonesia.com",
+        "tautan_sumber": [
+          "https://jabar.antaranews.com/berita/675006/longsor-pangalengan-tewaskan-dua-balita-kakak-adik",
+          "https://www.detik.com/jabar/berita/d-8335781/longsor-di-pangalengan-renggut-nyawa-bayi-3-bulan-dan-kakaknya",
+          "https://www.cnnindonesia.com/nasional/20260201201020-20-1323433/longsor-di-pangalengan-bandung-2-anak-dilaporkan-tewas"
+        ],
+        "status_verifikasi": "Terverifikasi (3 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.20673,
+          -7.27878
+        ]
+      },
+      "properties": {
+        "no": 33,
+        "kabupaten": "Kabupaten Ciamis",
+        "kecamatan": "Sindangkasih",
+        "desa": "Desa Sukamanah",
+        "kampung": "-",
+        "tanggal": "2026-02-03",
+        "tahun": 2026,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing kolam ikan longsor saat hujan deras dan menimbun rumah di Dusun Gunungbangka; seorang lansia perempuan tewas.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com (mengutip BPBD Kab. Ciamis); cnnindonesia.com",
+        "tautan_sumber": [
+          "https://www.detik.com/jabar/berita/d-8338324/lansia-di-ciamis-tewas-tertimbun-longsor-tebing-kolam-ikan",
+          "https://www.cnnindonesia.com/nasional/20260203150804-20-1324114/lansia-di-ciamis-tewas-tertimbun-longsor-saat-hujan-deras"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.51576,
+          -6.93567
+        ]
+      },
+      "properties": {
+        "no": 41,
+        "kabupaten": "Kabupaten Sukabumi",
+        "kecamatan": "Sukalarang",
+        "desa": "Desa Sukamaju",
+        "kampung": "-",
+        "tanggal": "2026-04-16",
+        "tahun": 2026,
+        "korban_meninggal": 1,
+        "keterangan": "Tebing setinggi sekitar 8 m longsor setelah hujan lama dan menimbun dua rumah di Kampung Griya Sukamaju; seorang perempuan tewas.",
+        "jenis_koordinat": "Pusat desa (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "detik.com (mengutip BPBD Kab. Sukabumi); kompas.com (mengutip BPBD Kab. Sukabumi)",
+        "tautan_sumber": [
+          "https://www.detik.com/jabar/berita/d-8447805/longsor-timbun-2-rumah-di-sukabumi-satu-wanita-tewas",
+          "https://bandung.kompas.com/read/2026/04/16/211833678/longsor-di-sukabumi-rumah-warga-tertimbun-tebing-8-meter-dan-1-korban-tewas"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           106.72399,
           -6.61449
         ]
@@ -395,6 +1171,35 @@
         "tautan_sumber": [
           "https://www.antaranews.com/berita/5556776/bnpb-dua-korban-longsor-di-kabupaten-bogor-dan-cianjur-ditemukan",
           "https://koran-jakarta.com/2026-05-06/bpbd-bogor-longsor-di-dramaga-sebabkan-satu-warga-meninggal/amp"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.76434,
+          -6.71663
+        ]
+      },
+      "properties": {
+        "no": 34,
+        "kabupaten": "Kabupaten Subang",
+        "kecamatan": "Cisalak",
+        "desa": "Desa Mayang",
+        "kampung": "-",
+        "tanggal": "2026-05-15",
+        "tahun": 2026,
+        "korban_meninggal": 2,
+        "keterangan": "Longsor saat hujan deras menimpa jalur setapak menuju Curug Cileat; dua wisatawan asal Karawang tertimbun dan ditemukan meninggal keesokan hari.",
+        "jenis_koordinat": "Pusat kecamatan (perkiraan); geocoding OSM",
+        "kode_wilayah": "-",
+        "sumber": "ANTARA (mengutip Basarnas); detik.com (mengutip BPBD Subang)",
+        "tautan_sumber": [
+          "https://www.antaranews.com/berita/5569653/dua-korban-tanah-longsor-di-subang-ditemukan-meninggal-dunia",
+          "https://www.detik.com/jabar/berita/d-8491209/2-korban-longsor-curug-cileat-subang-ditemukan-tewas-berdekatan"
         ],
         "status_verifikasi": "Terverifikasi (2 sumber)"
       }

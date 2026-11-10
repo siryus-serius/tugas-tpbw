@@ -11,7 +11,8 @@ import fs from 'fs';
 import path from 'path';
 import { INSAR, LICSAR, PATHS } from '../config.js';
 import { pool } from '../lib/http.js';
-import { chainForYear, listPairs, readFrameDem, readPairTif } from '../lib/licsar.js';
+import { chainForYear, listPairs, readFrameDem, readFrameGeometry, readPairTif } from '../lib/licsar.js';
+import { circularMean, downslopeProjection } from '../lib/motion.js';
 import {
   anomalyClusters,
   anomalyGrid,
@@ -19,7 +20,7 @@ import {
   makeGrid,
   overlayBounds,
   pairDisplacement,
-  slopeFromDem,
+  terrainFromDem,
 } from '../lib/raster.js';
 import { renderDeltaPNG } from '../lib/png.js';
 import { distKm, findRegion, round } from '../lib/geo.js';
@@ -115,21 +116,28 @@ async function yearlyVelocity(frame, pairs, year, ctx, { maxPairs, log }) {
 }
 
 /** Satu klaster piksel → Feature GeoJSON pin anomali (atau null bila di luar Jabar). */
-function clusterToFeature(px, { frame, grid, Y, years, delta, z, base, slope, adm, events }) {
+function clusterToFeature(px, { frame, grid, Y, years, delta, z, base, terrain, geometry, adm, events }) {
   let peak = px[0];
   let sumD = 0;
   let sumB = 0;
-  let sumS = 0;
-  let nS = 0;
+  const slopes = [];
+  const aspects = [];
   for (const i of px) {
     if (Math.abs(delta[i]) > Math.abs(delta[peak])) peak = i;
     sumD += delta[i];
     sumB += base[i];
-    if (slope && !Number.isNaN(slope[i])) {
-      sumS += slope[i];
-      nS++;
+    if (terrain && !Number.isNaN(terrain.slope[i]) && !Number.isNaN(terrain.aspect[i])) {
+      slopes.push(terrain.slope[i]);
+      aspects.push(terrain.aspect[i]);
     }
   }
+  const meanSlope = slopes.length ? slopes.reduce((a, b) => a + b, 0) / slopes.length : null;
+  const meanAspect = slopes.length ? circularMean(aspects, slopes) : null; // bobot = kemiringan
+  const velocity = years[Y].v[peak];
+  // Asumsi gerak searah lereng turun → proyeksi ke LOS & kecepatan searah lereng
+  const proj =
+    meanSlope !== null && geometry ? downslopeProjection(meanAspect, meanSlope, geometry) : null;
+  const usable = proj !== null && Math.abs(proj) >= 0.2; // geometri terlalu tegak lurus → tak bisa diinversi
   const [lng, lat] = cellCenter(grid, peak);
   const wilayah = findRegion(adm, lng, lat);
   if (!wilayah) return null;
@@ -158,7 +166,14 @@ function clusterToFeature(px, { frame, grid, Y, years, delta, z, base, slope, ad
         baseline_mm_yr: round(sumB / px.length),
         z_score: round(z[peak]),
         area_ha: Math.round(px.length * pxKm2 * 100),
-        slope_deg: nS ? round(sumS / nS) : null,
+        slope_deg: meanSlope === null ? null : round(meanSlope),
+        aspect_deg: meanAspect === null ? null : Math.round(meanAspect),
+        los_heading: geometry ? round(geometry.heading) : null,
+        los_incidence: geometry ? round(geometry.incidence) : null,
+        downslope_projection: proj === null ? null : round(proj, 2),
+        // konsisten bila tanda LOS sama dengan tanda proyeksi gerak searah lereng
+        konsisten_lereng: usable ? Math.sign(velocity) === Math.sign(proj) : null,
+        v_downslope_mm_yr: usable && Math.sign(velocity) === Math.sign(proj) ? round(velocity / proj) : null,
         severity: severity(meanD),
         arah: meanD < 0 ? 'menjauhi satelit (penurunan / gerakan lereng)' : 'mendekati satelit (pengangkatan)',
         periode: `${years[Y].meta.first} s.d. ${years[Y].meta.last}`,
@@ -205,8 +220,9 @@ export async function runInsar({ frames: frameIds, yearFrom, yearTo, maxPairs = 
     });
     const { grid } = ctx;
     if (!grid) continue;
-    const slope = await readFrameDem(frame).then(
-      (dem) => slopeFromDem(dem, grid),
+    const geometry = await readFrameGeometry(frame).catch(() => null);
+    const terrain = await readFrameDem(frame).then(
+      (dem) => terrainFromDem(dem, grid),
       (err) => (log(`    [-] DEM tidak terbaca: ${err.message}`), null)
     );
 
@@ -220,8 +236,8 @@ export async function runInsar({ frames: frameIds, yearFrom, yearTo, maxPairs = 
       fs.writeFileSync(path.join(PATHS.insarOut, png), renderDeltaPNG(grid, delta, INSAR.minDelta));
       summary.overlays.push({ frame: frame.id, orbit: frame.orbit, year: Y, url: `data/insar/${png}`, bounds: overlayBounds(grid) });
 
-      for (const px of anomalyClusters(grid, delta, z, slope)) {
-        const c = clusterToFeature(px, { frame, grid, Y, years, delta, z, base, slope, adm, events });
+      for (const px of anomalyClusters(grid, delta, z, terrain?.slope)) {
+        const c = clusterToFeature(px, { frame, grid, Y, years, delta, z, base, terrain, geometry, adm, events });
         if (c) candidates.push(c);
       }
     }
@@ -237,7 +253,7 @@ export async function runInsar({ frames: frameIds, yearFrom, yearTo, maxPairs = 
   const features = [...byYear.values()].flat();
   log(`\n[*] ${features.length} pin anomali; mencari citra Sentinel-2 pembanding...`);
   await pool(features, 4, async (f) => {
-    const bbox = bboxAround(...f.geometry.coordinates, 0.01);
+    const bbox = bboxAround(...f.geometry.coordinates, 0.017);
     const Y = f.properties.year;
     const [pre, post] = await Promise.all([bestSentinel2OfYear(bbox, Y - 1), bestSentinel2OfYear(bbox, Y)]).catch(() => []);
     f.properties.s2_pre = pre?.id ?? null;

@@ -1,0 +1,168 @@
+{
+ "generated_at": "2026-11-10T10:11:40.751Z",
+ "data_month": "2026-11",
+ "totals": {
+  "events": 41,
+  "anomalies": 63,
+  "quakes": 257
+ },
+ "summary": {
+  "pass": 11,
+  "warn": 4,
+  "fail": 0,
+  "info": 1
+ },
+ "checks": [
+  {
+   "id": "ev-schema",
+   "group": "Kejadian longsor",
+   "title": "Kolom wajib terisi",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-date",
+   "group": "Kejadian longsor",
+   "title": "Tanggal valid (2021 s.d. hari ini) & cocok dengan kolom tahun",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-inside",
+   "group": "Kejadian longsor",
+   "title": "Koordinat berada di dalam Jawa Barat",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-kab",
+   "group": "Kejadian longsor",
+   "title": "Koordinat jatuh di kabupaten/kota yang tercatat",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-dup",
+   "group": "Kejadian longsor",
+   "title": "Tidak ada kejadian ganda",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-src2",
+   "group": "Kejadian longsor",
+   "title": "Minimal 2 sumber independen",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ev-official",
+   "group": "Kejadian longsor",
+   "title": "Ada sumber resmi (BNPB/BPBD/pemerintah/ANTARA)",
+   "status": "warn",
+   "detail": "13 temuan",
+   "items": [
+    "#35 Ibun (2021-04-11)",
+    "#15 Parongpong (2021-05-08)",
+    "#16 Pangalengan (2022-01-15)",
+    "#37 Sukaresmi (2022-02-06)",
+    "#18 Cisompet (2022-09-22)",
+    "#38 Cihaurbeuti (2023-12-01)",
+    "#22 Bogor Tengah (2024-03-24)",
+    "#27 Cisewu (2025-06-25)",
+    "#28 Cisarua (2025-07-05)",
+    "#31 Jatiluhur (2025-12-28)",
+    "#13 Cisarua (2026-01-24)",
+    "#33 Sindangkasih (2026-02-03)",
+    "#41 Sukalarang (2026-04-16)"
+   ]
+  },
+  {
+   "id": "ev-links",
+   "group": "Kejadian longsor",
+   "title": "Tautan sumber dapat diakses",
+   "status": "warn",
+   "detail": "1 temuan",
+   "items": [
+    "#23 Babakan Madang (2024-03-24): 404 https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor"
+   ]
+  },
+  {
+   "id": "sc-s2",
+   "group": "Citra Sentinel",
+   "title": "Sentinel-2 sebelum & sesudah, awan ≤ 40%",
+   "status": "warn",
+   "detail": "2 temuan",
+   "items": [
+    "#26 Sagalaherang (2025-04-11): scene S2 sebelum tidak ada/tidak valid",
+    "#12 Rongga (2025-10-26): scene S2 sesudah tidak ada/tidak valid"
+   ]
+  },
+  {
+   "id": "sc-s1",
+   "group": "Citra Sentinel",
+   "title": "Pasangan Sentinel-1 orbit sama mengapit tanggal kejadian",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "sc-terrain",
+   "group": "Citra Sentinel",
+   "title": "Kemiringan & arah lereng tersedia",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "in-files",
+   "group": "InSAR",
+   "title": "Ringkasan & seluruh overlay tersedia",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "in-anom",
+   "group": "InSAR",
+   "title": "Pin anomali memenuhi kriteria (di Jabar, lereng, ambang Δv, ID unik)",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "in-consistency",
+   "group": "InSAR",
+   "title": "Konsistensi arah sinyal dengan gerak searah lereng",
+   "status": "info",
+   "detail": "27 konsisten · 20 tidak konsisten · 16 tak dapat dipastikan (dari 63)",
+   "items": []
+  },
+  {
+   "id": "in-coverage",
+   "group": "InSAR",
+   "title": "Cakupan data per frame & tahun",
+   "status": "warn",
+   "detail": "3 celah data",
+   "items": [
+    "098A_09673_121312 (ascending): 2026 tidak tersedia/terlalu pendek",
+    "047D_09652_111009 (descending): 2023 tidak tersedia/terlalu pendek",
+    "047D_09652_111009 (descending): 2024 tidak tersedia/terlalu pendek"
+   ]
+  },
+  {
+   "id": "eq-catalog",
+   "group": "Gempa",
+   "title": "Katalog gempa USGS valid (257 gempa)",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  }
+ ]
+}

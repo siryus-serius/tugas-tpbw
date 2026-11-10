@@ -2,7 +2,7 @@
 
 export const round = (x, d = 1) => Math.round(x * 10 ** d) / 10 ** d;
 
-function pointInRing(x, y, ring) {
+export function pointInRing(x, y, ring) {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const [xi, yi] = ring[i];
@@ -30,4 +30,11 @@ export function distKm([lng1, lat1], [lng2, lat2]) {
   const r = Math.PI / 180;
   const dx = (lng1 - lng2) * r * Math.cos(((lat1 + lat2) / 2) * r);
   return 6371 * Math.hypot(dx, (lat1 - lat2) * r);
+}
+
+/** True bila keempat sudut bbox berada di dalam geometri (Polygon/MultiPolygon) GeoJSON. */
+export function geometryCoversBbox(geom, [minX, minY, maxX, maxY]) {
+  const polys = geom.type === 'Polygon' ? [geom.coordinates] : geom.type === 'MultiPolygon' ? geom.coordinates : [];
+  const corners = [[minX, minY], [maxX, minY], [maxX, maxY], [minX, maxY]];
+  return corners.every(([x, y]) => polys.some((poly) => pointInRing(x, y, poly[0])));
 }

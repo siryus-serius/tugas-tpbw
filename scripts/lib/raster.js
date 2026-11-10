@@ -104,8 +104,10 @@ export function pairDisplacement(unw, cc, grid) {
   return hp;
 }
 
-/** Kemiringan (derajat) pada grid multilook dari DEM frame. */
-export function slopeFromDem(dem, grid) {
+/**
+ * Kemiringan (°) dan aspek (arah lereng turun, ° dari utara searah jarum jam) pada grid multilook.
+ */
+export function terrainFromDem(dem, grid) {
   const z = new Float32Array(grid.w * grid.h).fill(NaN);
   for (let i = 0; i < z.length; i++) {
     const [lng, lat] = cellCenter(grid, i);
@@ -117,15 +119,17 @@ export function slopeFromDem(dem, grid) {
   const mx = Math.abs(grid.dlon) * 111320 * Math.cos((lat * Math.PI) / 180);
   const my = Math.abs(grid.dlat) * 110570;
   const slope = new Float32Array(grid.w * grid.h).fill(NaN);
+  const aspect = new Float32Array(grid.w * grid.h).fill(NaN);
   for (let y = 1; y < grid.h - 1; y++) {
     for (let x = 1; x < grid.w - 1; x++) {
       const i = y * grid.w + x;
-      const gx = (z[i + 1] - z[i - 1]) / (2 * mx);
-      const gy = (z[i + grid.w] - z[i - grid.w]) / (2 * my);
-      slope[i] = (Math.atan(Math.hypot(gx, gy)) * 180) / Math.PI;
+      const dzE = (z[i + 1] - z[i - 1]) / (2 * mx);
+      const dzN = (z[i - grid.w] - z[i + grid.w]) / (2 * my); // baris bertambah ke selatan
+      slope[i] = (Math.atan(Math.hypot(dzE, dzN)) * 180) / Math.PI;
+      aspect[i] = ((Math.atan2(-dzE, -dzN) * 180) / Math.PI + 360) % 360; // arah gradien turun
     }
   }
-  return slope;
+  return { slope, aspect };
 }
 
 /** Δv = v(target) − rata-rata baseline; z = Δv / max(σ, sdFloor). */

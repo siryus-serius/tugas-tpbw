@@ -1,19 +1,19 @@
 {
- "generated_at": "2026-11-10T08:44:01.915Z",
+ "generated_at": "2026-11-10T10:10:19.391Z",
  "window_days": 120,
  "max_cloud": 40,
  "events": {
   "1": {
    "s2": {
     "pre": {
-     "id": "S2A_MSIL2A_20200923T024551_R132_T48MYT_20200926T113354",
+     "id": "S2A_MSIL2A_20200923T024551_R132_T48MZT_20200926T113806",
      "datetime": "2020-09-23T02:45:51.024000Z",
-     "cloud": 5.2
+     "cloud": 12.3
     },
     "post": {
-     "id": "S2A_MSIL2A_20210421T024541_R132_T48MYT_20210422T052611",
+     "id": "S2A_MSIL2A_20210421T024541_R132_T48MZT_20210422T054956",
      "datetime": "2021-04-21T02:45:41.024000Z",
-     "cloud": 0.2
+     "cloud": 1
     }
    },
    "s1": {
@@ -31,6 +31,7 @@
    },
    "terrain": {
     "slope_deg": 11.2,
+    "aspect_deg": 196,
     "elevation_m": 680
    }
   },
@@ -62,6 +63,7 @@
    },
    "terrain": {
     "slope_deg": 18.4,
+    "aspect_deg": 320,
     "elevation_m": 506
    }
   },
@@ -93,6 +95,7 @@
    },
    "terrain": {
     "slope_deg": 10.7,
+    "aspect_deg": 120,
     "elevation_m": 649
    }
   },
@@ -124,6 +127,7 @@
    },
    "terrain": {
     "slope_deg": 25.3,
+    "aspect_deg": 297,
     "elevation_m": 599
    }
   },
@@ -135,9 +139,9 @@
      "cloud": 7.8
     },
     "post": {
-     "id": "S2A_MSIL2A_20230114T030051_R032_T48MXT_20230114T152029",
+     "id": "S2A_MSIL2A_20230114T030051_R032_T48MYT_20230114T153422",
      "datetime": "2023-01-14T03:00:51.024000Z",
-     "cloud": 9.5
+     "cloud": 12.1
     }
    },
    "s1": {
@@ -155,6 +159,7 @@
    },
    "terrain": {
     "slope_deg": 11.2,
+    "aspect_deg": 266,
     "elevation_m": 966
    }
   },
@@ -186,6 +191,7 @@
    },
    "terrain": {
     "slope_deg": 7.1,
+    "aspect_deg": 158,
     "elevation_m": 87
    }
   },
@@ -217,6 +223,7 @@
    },
    "terrain": {
     "slope_deg": 8.6,
+    "aspect_deg": 46,
     "elevation_m": 331
    }
   },
@@ -248,6 +255,7 @@
    },
    "terrain": {
     "slope_deg": 11.5,
+    "aspect_deg": 75,
     "elevation_m": 447
    }
   },
@@ -279,6 +287,7 @@
    },
    "terrain": {
     "slope_deg": 18.5,
+    "aspect_deg": 123,
     "elevation_m": 805
    }
   },
@@ -310,20 +319,21 @@
    },
    "terrain": {
     "slope_deg": 14,
+    "aspect_deg": 144,
     "elevation_m": 895
    }
   },
   "11": {
    "s2": {
     "pre": {
-     "id": "S2B_MSIL2A_20250604T024529_R132_T48MYT_20250604T053007",
-     "datetime": "2025-06-04T02:45:29.024000Z",
-     "cloud": 0.8
+     "id": "S2B_MSIL2A_20250607T025529_R032_T48MYT_20250607T063705",
+     "datetime": "2025-06-07T02:55:29.024000Z",
+     "cloud": 20.5
     },
     "post": {
-     "id": "S2C_MSIL2A_20250709T024611_R132_T48MYT_20250709T062615",
-     "datetime": "2025-07-09T02:46:11.025000Z",
-     "cloud": 1.3
+     "id": "S2B_MSIL2A_20250826T025529_R032_T48MYT_20250826T063629",
+     "datetime": "2025-08-26T02:55:29.024000Z",
+     "cloud": 1.4
     }
    },
    "s1": {
@@ -341,6 +351,7 @@
    },
    "terrain": {
     "slope_deg": 15.3,
+    "aspect_deg": 166,
     "elevation_m": 1209
    }
   },
@@ -368,6 +379,7 @@
    },
    "terrain": {
     "slope_deg": 18.4,
+    "aspect_deg": 84,
     "elevation_m": 972
    }
   },
@@ -399,6 +411,7 @@
    },
    "terrain": {
     "slope_deg": 10.3,
+    "aspect_deg": 254,
     "elevation_m": 1128
    }
   },
@@ -430,7 +443,868 @@
    },
    "terrain": {
     "slope_deg": 8.6,
+    "aspect_deg": 46,
     "elevation_m": 331
+   }
+  },
+  "15": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20210424T025541_R032_T48MYT_20210425T142337",
+     "datetime": "2021-04-24T02:55:41.024000Z",
+     "cloud": 2.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20210728T025549_R032_T48MYT_20210728T181717",
+     "datetime": "2021-07-28T02:55:49.024000Z",
+     "cloud": 1.2
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20210429T222541_20210429T222606_037671_0471D2_rtc",
+     "datetime": "2021-04-29T22:25:54.015997Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20210511T222542_20210511T222607_037846_047780_rtc",
+     "datetime": "2021-05-11T22:25:54.801494Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 17.1,
+    "aspect_deg": 198,
+    "elevation_m": 1336
+   }
+  },
+  "16": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20211125T030029_R032_T48MYT_20211125T143925",
+     "datetime": "2021-11-25T03:00:29.024000Z",
+     "cloud": 20.1
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20220414T025539_R032_T48MYT_20240606T110746",
+     "datetime": "2022-04-14T02:55:39.024000Z",
+     "cloud": 26.9
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20220103T111458_20220103T111527_041295_04E8A3_rtc",
+     "datetime": "2022-01-03T11:15:13.104478Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20220115T111458_20220115T111527_041470_04EE6C_rtc",
+     "datetime": "2022-01-15T11:15:12.718864Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 5.7,
+    "aspect_deg": 342,
+    "elevation_m": 1407
+   }
+  },
+  "17": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20220414T025539_R032_T48MXT_20240606T110746",
+     "datetime": "2022-04-14T02:55:39.024000Z",
+     "cloud": 19.2
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20220708T025541_R032_T48MXT_20220708T182814",
+     "datetime": "2022-07-08T02:55:41.024000Z",
+     "cloud": 14.7
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20220620T111459_20220620T111528_043745_05390D_rtc",
+     "datetime": "2022-06-20T11:15:13.813264Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20220702T111526_20220702T111551_043920_053E47_rtc",
+     "datetime": "2022-07-02T11:15:38.748333Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 16.5,
+    "aspect_deg": 12,
+    "elevation_m": 657
+   }
+  },
+  "18": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20220705T024541_R132_T48MZS_20240630T200503",
+     "datetime": "2022-07-05T02:45:41.024000Z",
+     "cloud": 15.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20221217T025129_R132_T48MZS_20221217T200448",
+     "datetime": "2022-12-17T02:51:29.024000Z",
+     "cloud": 18.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20220915T222620_20220915T222647_045021_056102_rtc",
+     "datetime": "2022-09-15T22:26:34.109437Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20220927T222620_20220927T222647_045196_0566E7_rtc",
+     "datetime": "2022-09-27T22:26:34.336220Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 12.8,
+    "aspect_deg": 347,
+    "elevation_m": 352
+   }
+  },
+  "19": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20220708T025541_R032_T48MXT_20220708T182814",
+     "datetime": "2022-07-08T02:55:41.024000Z",
+     "cloud": 14.7
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20230114T030051_R032_T48MXT_20230114T152029",
+     "datetime": "2023-01-14T03:00:51.024000Z",
+     "cloud": 9.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20221006T111506_20221006T111535_045320_056B1C_rtc",
+     "datetime": "2022-10-06T11:15:21.428532Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20221018T111507_20221018T111536_045495_05709D_rtc",
+     "datetime": "2022-10-18T11:15:21.752240Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 5.7,
+    "aspect_deg": 225,
+    "elevation_m": 245
+   }
+  },
+  "20": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20230114T030051_R032_T48MXT_20230114T152029",
+     "datetime": "2023-01-14T03:00:51.024000Z",
+     "cloud": 9.5
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20230424T025521_R032_T48MXT_20240807T074249",
+     "datetime": "2023-04-24T02:55:21.024000Z",
+     "cloud": 10.2
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20230311T111502_20230311T111531_047595_05B74B_rtc",
+     "datetime": "2023-03-11T11:15:17.328414Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20230323T111502_20230323T111531_047770_05BD30_rtc",
+     "datetime": "2023-03-23T11:15:17.347224Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 5.7,
+    "aspect_deg": 251,
+    "elevation_m": 276
+   }
+  },
+  "21": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20230901T025531_R032_T48MXT_20241106T095925",
+     "datetime": "2023-09-01T02:55:31.024000Z",
+     "cloud": 1.6
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20231220T030131_R032_T48MXT_20231222T010146",
+     "datetime": "2023-12-20T03:01:31.024000Z",
+     "cloud": 1.9
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 24,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20231118T111511_20231118T111540_051270_062F7E_rtc",
+     "datetime": "2023-11-18T11:15:26.139204Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20231212T111510_20231212T111539_051620_063BA5_rtc",
+     "datetime": "2023-12-12T11:15:25.232109Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 10.3,
+    "aspect_deg": 85,
+    "elevation_m": 492
+   }
+  },
+  "22": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20231220T030131_R032_T48MXT_20231222T010146",
+     "datetime": "2023-12-20T03:01:31.024000Z",
+     "cloud": 1.9
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20240712T025529_R032_T48MXT_20240712T095108",
+     "datetime": "2024-07-12T02:55:29.024000Z",
+     "cloud": 10.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20240317T111508_20240317T111537_053020_066B71_rtc",
+     "datetime": "2024-03-17T11:15:22.688022Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20240329T111508_20240329T111537_053195_06721D_rtc",
+     "datetime": "2024-03-29T11:15:23.045455Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 6.5,
+    "aspect_deg": 297,
+    "elevation_m": 223
+   }
+  },
+  "23": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20231220T030131_R032_T48MXT_20231222T010146",
+     "datetime": "2023-12-20T03:01:31.024000Z",
+     "cloud": 1.9
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20240617T025531_R032_T48MYT_20240617T091025",
+     "datetime": "2024-06-17T02:55:31.024000Z",
+     "cloud": 5.8
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20240317T111508_20240317T111537_053020_066B71_rtc",
+     "datetime": "2024-03-17T11:15:22.688022Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20240329T111508_20240329T111537_053195_06721D_rtc",
+     "datetime": "2024-03-29T11:15:23.045455Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 2.1,
+    "aspect_deg": 75,
+    "elevation_m": 155
+   }
+  },
+  "24": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20240821T025529_R032_T48MYS_20240821T083420",
+     "datetime": "2024-08-21T02:55:29.024000Z",
+     "cloud": 0.1
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20250103T030121_R032_T48MYS_20250103T060750",
+     "datetime": "2025-01-03T03:01:21.024000Z",
+     "cloud": 22.6
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 24,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20241127T222620_20241127T222648_056746_06F6E7_rtc",
+     "datetime": "2024-11-27T22:26:34.340143Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20241221T222618_20241221T222645_057096_0704C8_rtc",
+     "datetime": "2024-12-21T22:26:32.214973Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 7.4,
+    "aspect_deg": 218,
+    "elevation_m": 20
+   }
+  },
+  "25": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20240821T025529_R032_T48MXT_20240821T083420",
+     "datetime": "2024-08-21T02:55:29.024000Z",
+     "cloud": 6
+    },
+    "post": {
+     "id": "S2C_MSIL2A_20250314T025551_R032_T48MXT_20250314T073313",
+     "datetime": "2025-03-14T02:55:51.025000Z",
+     "cloud": 30.6
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 24,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20241124T111507_20241124T111536_056695_06F4F0_rtc",
+     "datetime": "2024-11-24T11:15:21.620959Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20241218T111504_20241218T111533_057045_0702CD_rtc",
+     "datetime": "2024-12-18T11:15:19.295391Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 11.6,
+    "aspect_deg": 215,
+    "elevation_m": 43
+   }
+  },
+  "26": {
+   "s2": {
+    "pre": null,
+    "post": {
+     "id": "S2C_MSIL2A_20250801T025611_R032_T48MYT_20250801T064714",
+     "datetime": "2025-08-01T02:56:11.025000Z",
+     "cloud": 4.4
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250408T222550_20250408T222615_058671_0743CA_rtc",
+     "datetime": "2025-04-08T22:26:02.690102Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250420T222550_20250420T222615_058846_rtc",
+     "datetime": "2025-04-20T22:26:02.943484Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 4.6,
+    "aspect_deg": 349,
+    "elevation_m": 548
+   }
+  },
+  "27": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20250408T025529_R032_T48MYS_20250408T063157",
+     "datetime": "2025-04-08T02:55:29.024000Z",
+     "cloud": 9
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20250806T025529_R032_T48MYS_20250806T063848",
+     "datetime": "2025-08-06T02:55:29.024000Z",
+     "cloud": 6.9
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250619T222613_20250619T222640_059721_076A83_rtc",
+     "datetime": "2025-06-19T22:26:27.057438Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250701T222612_20250701T222640_059896_0770A2_rtc",
+     "datetime": "2025-07-01T22:26:26.511710Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 17.3,
+    "aspect_deg": 316,
+    "elevation_m": 1047
+   }
+  },
+  "28": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20250607T025529_R032_T48MYT_20250607T063705",
+     "datetime": "2025-06-07T02:55:29.024000Z",
+     "cloud": 20.5
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20250826T025529_R032_T48MYT_20250826T063629",
+     "datetime": "2025-08-26T02:55:29.024000Z",
+     "cloud": 1.4
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250628T111459_20250628T111528_059845_076EDB_rtc",
+     "datetime": "2025-06-28T11:15:13.922237Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250710T111458_20250710T111527_060020_rtc",
+     "datetime": "2025-07-10T11:15:13.242135Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 22.2,
+    "aspect_deg": 222,
+    "elevation_m": 1264
+   }
+  },
+  "29": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20250604T024529_R132_T48MZS_20250604T053007",
+     "datetime": "2025-06-04T02:45:29.024000Z",
+     "cloud": 6.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20250823T024529_R132_T48MZS_20250823T052951",
+     "datetime": "2025-08-23T02:45:29.024000Z",
+     "cloud": 9.4
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250722T111458_20250722T111527_060195_rtc",
+     "datetime": "2025-07-22T11:15:12.630144Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250803T111457_20250803T111526_060370_rtc",
+     "datetime": "2025-08-03T11:15:12.488319Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 13.7,
+    "aspect_deg": 233,
+    "elevation_m": 594
+   }
+  },
+  "30": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20250604T024529_R132_T48MZS_20250604T053007",
+     "datetime": "2025-06-04T02:45:29.024000Z",
+     "cloud": 6.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20250823T024529_R132_T48MZS_20250823T052951",
+     "datetime": "2025-08-23T02:45:29.024000Z",
+     "cloud": 9.4
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250803T111457_20250803T111526_060370_rtc",
+     "datetime": "2025-08-03T11:15:12.488319Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250815T111457_20250815T111526_060545_0787A1_rtc",
+     "datetime": "2025-08-15T11:15:12.419487Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 15.8,
+    "aspect_deg": 136,
+    "elevation_m": 1308
+   }
+  },
+  "31": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20251012T030151_R032_T48MYT_20251012T070218",
+     "datetime": "2025-10-12T03:01:51.024000Z",
+     "cloud": 7.4
+    },
+    "post": {
+     "id": "S2C_MSIL2A_20260319T025531_R032_T48MYT_20260319T073910",
+     "datetime": "2026-03-19T02:55:31.024000Z",
+     "cloud": 9
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20251225T111454_20251225T111523_062470_07D3B8_rtc",
+     "datetime": "2025-12-25T11:15:08.541963Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20260106T111452_20260106T111521_062645_07DA7C_rtc",
+     "datetime": "2026-01-06T11:15:07.396472Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 13.5,
+    "aspect_deg": 62,
+    "elevation_m": 116
+   }
+  },
+  "32": {
+   "s2": {
+    "pre": {
+     "id": "S2C_MSIL2A_20251010T025641_R032_T48MYT_20251010T071112",
+     "datetime": "2025-10-10T02:56:41.025000Z",
+     "cloud": 15.6
+    },
+    "post": {
+     "id": "S2C_MSIL2A_20260319T025531_R032_T48MYT_20260319T073910",
+     "datetime": "2026-03-19T02:55:31.024000Z",
+     "cloud": 9
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20260130T111451_20260130T111520_062995_07E780_rtc",
+     "datetime": "2026-01-30T11:15:05.937517Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20260211T111450_20260211T111519_063170_07EE07_rtc",
+     "datetime": "2026-02-11T11:15:05.101657Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 5.7,
+    "aspect_deg": 342,
+    "elevation_m": 1407
+   }
+  },
+  "33": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20251009T025151_R132_T48MZT_20251009T082015",
+     "datetime": "2025-10-09T02:51:51.024000Z",
+     "cloud": 18.1
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20260520T024519_R132_T48MZS_20260520T062209",
+     "datetime": "2026-05-20T02:45:19.024000Z",
+     "cloud": 9.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20260130T111451_20260130T111520_062995_07E780_rtc",
+     "datetime": "2026-01-30T11:15:05.937517Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20260211T111450_20260211T111519_063170_07EE07_rtc",
+     "datetime": "2026-02-11T11:15:05.101657Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 8.2,
+    "aspect_deg": 175,
+    "elevation_m": 402
+   }
+  },
+  "34": {
+   "s2": {
+    "pre": {
+     "id": "S2C_MSIL2A_20260425T024531_R132_T48MYT_20260425T072414",
+     "datetime": "2026-04-25T02:45:31.025000Z",
+     "cloud": 8.5
+    },
+    "post": {
+     "id": "S2C_MSIL2A_20260905T025521_R032_T48MZT_20260905T071511",
+     "datetime": "2026-09-05T02:55:21.025000Z",
+     "cloud": 0
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20260506T111449_20260506T111518_064395_081BF3_rtc",
+     "datetime": "2026-05-06T11:15:04.318897Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20260518T111449_20260518T111518_064570_082221_rtc",
+     "datetime": "2026-05-18T11:15:04.021168Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 5.3,
+    "aspect_deg": 128,
+    "elevation_m": 368
+   }
+  },
+  "35": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20210317T024549_R132_T48MYT_20210318T135107",
+     "datetime": "2021-03-17T02:45:49.024000Z",
+     "cloud": 20.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20210725T024549_R132_T48MYT_20210725T122041",
+     "datetime": "2021-07-25T02:45:49.024000Z",
+     "cloud": 0.1
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20210405T222540_20210405T222605_037321_0465B3_rtc",
+     "datetime": "2021-04-05T22:25:53.195849Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20210417T222541_20210417T222606_037496_046BB9_rtc",
+     "datetime": "2021-04-17T22:25:53.710810Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 2.8,
+    "aspect_deg": 6,
+    "elevation_m": 778
+   }
+  },
+  "36": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20210812T025551_R032_T48MYT_20210812T122832",
+     "datetime": "2021-08-12T02:55:51.024000Z",
+     "cloud": 3.1
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20220104T030119_R032_T48MYT_20220104T161227",
+     "datetime": "2022-01-04T03:01:19.024000Z",
+     "cloud": 28.9
+    }
+   },
+   "s1": {
+    "relative_orbit": 149,
+    "orbit_state": "descending",
+    "gap_days": 24,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20211107T222549_20211107T222614_040471_04CC78_rtc",
+     "datetime": "2021-11-07T22:26:02.108770Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20211201T222548_20211201T222613_040821_04D89A_rtc",
+     "datetime": "2021-12-01T22:26:01.371480Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 8.9,
+    "aspect_deg": 332,
+    "elevation_m": 997
+   }
+  },
+  "37": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20211125T030029_R032_T48MYT_20211125T143925",
+     "datetime": "2021-11-25T03:00:29.024000Z",
+     "cloud": 20.1
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20220414T025539_R032_T48MYT_20240606T110746",
+     "datetime": "2022-04-14T02:55:39.024000Z",
+     "cloud": 26.9
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20220127T111457_20220127T111526_041645_04F44B_rtc",
+     "datetime": "2022-01-27T11:15:12.158719Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20220208T111457_20220208T111526_041820_04FA67_rtc",
+     "datetime": "2022-02-08T11:15:11.775456Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 4.9,
+    "aspect_deg": 105,
+    "elevation_m": 564
+   }
+  },
+  "38": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20230829T024531_R132_T49MBM_20240913T105727",
+     "datetime": "2023-08-29T02:45:31.024000Z",
+     "cloud": 6.8
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20231222T025129_R132_T49MBM_20231222T062023",
+     "datetime": "2023-12-22T02:51:29.024000Z",
+     "cloud": 12.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 25,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20231125T110650_20231125T110719_051372_06330C_rtc",
+     "datetime": "2023-11-25T11:07:05.392976Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20231207T110650_20231207T110719_051547_06390D_rtc",
+     "datetime": "2023-12-07T11:07:05.263513Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 6,
+    "aspect_deg": 200,
+    "elevation_m": 175
+   }
+  },
+  "39": {
+   "s2": {
+    "pre": {
+     "id": "S2A_MSIL2A_20250502T025151_R132_T48MZT_20250502T091011",
+     "datetime": "2025-05-02T02:51:51.024000Z",
+     "cloud": 17.5
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20250721T025201_R132_T49MBN_20250721T074614",
+     "datetime": "2025-07-21T02:52:01.024000Z",
+     "cloud": 2.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 25,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250518T110710_20250518T110738_059247_075A33_rtc",
+     "datetime": "2025-05-18T11:07:24.571465Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250530T110709_20250530T110721_059422_rtc",
+     "datetime": "2025-05-30T11:07:15.897175Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 8.6,
+    "aspect_deg": 91,
+    "elevation_m": 101
+   }
+  },
+  "40": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20250604T024529_R132_T48MZS_20250604T053007",
+     "datetime": "2025-06-04T02:45:29.024000Z",
+     "cloud": 6.6
+    },
+    "post": {
+     "id": "S2B_MSIL2A_20250823T024529_R132_T48MZS_20250823T052951",
+     "datetime": "2025-08-23T02:45:29.024000Z",
+     "cloud": 9.4
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20250628T111459_20250628T111528_059845_076EDB_rtc",
+     "datetime": "2025-06-28T11:15:13.922237Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20250710T111458_20250710T111527_060020_rtc",
+     "datetime": "2025-07-10T11:15:13.242135Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 14.4,
+    "aspect_deg": 116,
+    "elevation_m": 795
+   }
+  },
+  "41": {
+   "s2": {
+    "pre": {
+     "id": "S2B_MSIL2A_20260413T025519_R032_T48MXT_20260413T064351",
+     "datetime": "2026-04-13T02:55:19.024000Z",
+     "cloud": 3.4
+    },
+    "post": {
+     "id": "S2A_MSIL2A_20260709T030151_R032_T48MXT_20260709T110608",
+     "datetime": "2026-07-09T03:01:51.024000Z",
+     "cloud": 0.5
+    }
+   },
+   "s1": {
+    "relative_orbit": 98,
+    "orbit_state": "ascending",
+    "gap_days": 12,
+    "pre": {
+     "id": "S1A_IW_GRDH_1SDV_20260412T111450_20260412T111519_064045_080EEC_rtc",
+     "datetime": "2026-04-12T11:15:04.757892Z"
+    },
+    "post": {
+     "id": "S1A_IW_GRDH_1SDV_20260424T111450_20260424T111519_064220_081579_rtc",
+     "datetime": "2026-04-24T11:15:04.932763Z"
+    }
+   },
+   "terrain": {
+    "slope_deg": 11.6,
+    "aspect_deg": 258,
+    "elevation_m": 234
    }
   }
  }

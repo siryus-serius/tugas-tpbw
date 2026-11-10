@@ -29,3 +29,8 @@ Thumbs.db
 
 # Cache kecepatan InSAR per tahun (biner besar; disimpan via actions/cache)
 data/insar/cache/
+
+# Kredensial (jangan pernah di-commit)
+*key*.json
+*credentials*.json
+.env*

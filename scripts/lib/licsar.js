@@ -54,6 +54,13 @@ export async function readPairTif(frame, pairId, suffix) {
   }
 }
 
+/** Geometri akuisisi frame dari metadata.txt: heading (°) & sudut datang rata-rata (°). */
+export async function readFrameGeometry(frame) {
+  const txt = await fetchRetry(`${LICSAR.list}/${frame.track}/${frame.id}/metadata/metadata.txt`, { as: 'text' });
+  const get = (k) => Number(txt.match(new RegExp(`^${k}=([-0-9.]+)`, 'm'))?.[1]);
+  return { heading: get('heading'), incidence: get('avg_incidence_angle') };
+}
+
 /** DEM frame (metadata/<frame>.geo.hgt.tif). */
 export async function readFrameDem(frame) {
   const url = `${LICSAR.list}/${frame.track}/${frame.id}/metadata/${frame.id}.geo.hgt.tif`;

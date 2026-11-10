@@ -23,6 +23,7 @@
   "author": "TPBW Geospatial Team",
   "license": "MIT",
   "dependencies": {
+    "@google/earthengine": "^1.6.4",
     "geotiff": "^2.1.3"
   }
 }
