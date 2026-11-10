@@ -1,5 +1,6 @@
 import { compassName, movementInfo } from '../../utils/direction';
 import { signed } from '../../utils/format';
+import CompareButton from './CompareButton';
 import PrePostImagery from './PrePostImagery';
 import RiskCard from './RiskCard';
 import StabilityCard from './StabilityCard';
@@ -8,6 +9,10 @@ export default function AnomalyDetail({ feature, stability, risk, params }) {
   const p = feature.properties;
   const coord = feature.geometry.coordinates;
   const movement = movementInfo({ type: 'anomaly', feature });
+  const compare = {
+    scenes: { s2: { pre: p.s2_pre, post: p.s2_post }, s1: {} },
+    period: { before: `${p.year}-01-01`, after: `${p.year}-01-01` },
+  };
 
   return (
     <>
@@ -58,6 +63,7 @@ export default function AnomalyDetail({ feature, stability, risk, params }) {
         )}
       </dl>
 
+      <CompareButton title={`Anomali ${p.wilayah} ${p.year}`} coord={coord} compare={compare} movement={movement} />
       <RiskCard risk={risk} />
       <StabilityCard result={stability} params={params} slopeSource="rata-rata klaster, DEM LiCSAR" />
 
@@ -69,6 +75,7 @@ export default function AnomalyDetail({ feature, stability, risk, params }) {
         coord={coord}
         delta={0.01}
         movement={movement}
+        compare={compare}
       />
       <PrePostImagery
         title="Sentinel-2 · NDVI"
@@ -78,6 +85,7 @@ export default function AnomalyDetail({ feature, stability, risk, params }) {
         coord={coord}
         delta={0.01}
         movement={movement}
+        compare={compare}
       />
       <p className="muted small">
         Anomali = kecepatan pergeseran tahun {p.year} menyimpang signifikan dari rata-rata tahun sebelumnya (InSAR stacking,

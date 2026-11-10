@@ -1,6 +1,7 @@
 import { compassName, movementInfo } from '../../utils/direction';
 import { dateId } from '../../utils/format';
 import { TRIGGER, possibleTriggers } from '../../utils/seismic';
+import CompareButton from './CompareButton';
 import PrePostImagery from './PrePostImagery';
 import RiskCard from './RiskCard';
 import StabilityCard from './StabilityCard';
@@ -10,6 +11,10 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
   const coord = feature.geometry.coordinates;
   const movement = movementInfo({ type: 'event', feature, scenes });
   const triggers = possibleTriggers(feature, quakes);
+  const compare = {
+    scenes: { s2: scenes?.s2 ?? {}, s1: scenes?.s1 ?? {} },
+    period: { before: p.tanggal, after: p.tanggal },
+  };
   const triggerText = triggers.length
     ? triggers
         .slice(0, 2)
@@ -56,6 +61,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
         </dd>
       </dl>
 
+      <CompareButton title={`${p.kecamatan}, ${p.tanggal}`} coord={coord} compare={compare} movement={movement} />
       <RiskCard risk={risk} />
       <StabilityCard result={stability} params={params} slopeSource="P90 ±400 m, DEM Copernicus 90 m" />
 
@@ -68,6 +74,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
             post={scenes.s2.post}
             coord={coord}
             movement={movement}
+            compare={compare}
             note={`Scene paling sedikit awan ±120 hari dari kejadian (awan ${scenes.s2.pre?.cloud ?? '–'}% / ${scenes.s2.post?.cloud ?? '–'}%).`}
           />
           <PrePostImagery
@@ -77,6 +84,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
             post={scenes.s2.post}
             coord={coord}
             movement={movement}
+            compare={compare}
             note="Bekas longsoran tampak sebagai vegetasi yang hilang (hijau → kuning/merah)."
           />
           <PrePostImagery
@@ -86,6 +94,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
             post={scenes.s1?.post}
             coord={coord}
             movement={movement}
+            compare={compare}
             note={
               scenes.s1 &&
               `Orbit ${scenes.s1.relative_orbit} (${scenes.s1.orbit_state}), jeda ${scenes.s1.gap_days} hari. Radar menembus awan; perubahan tekstur/kecerahan menandai perubahan permukaan.`

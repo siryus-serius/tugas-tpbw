@@ -151,3 +151,10 @@ export function sceneDate(itemId) {
 }
 
 export const PC_DATA_URL = PC_DATA;
+
+/** Template tile XYZ satu scene (bisa digeser & di-zoom). */
+export function itemTileUrl(presetKey, itemId) {
+  const p = PRESET_BY_KEY[presetKey];
+  if (!itemId || !p) return null;
+  return `${PC_DATA}/item/tiles/WebMercatorQuad/{z}/{x}/{y}@1x?collection=${p.collection}&item=${encodeURIComponent(itemId)}&${p.params}`;
+}

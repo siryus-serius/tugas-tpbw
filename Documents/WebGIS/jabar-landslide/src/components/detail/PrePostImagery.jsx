@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PRESET_BY_KEY, cropUrl, sceneDate } from '../../utils/sentinelImagery';
+import CompareViewer from '../compare/CompareViewer';
 import DirectionOverlay from './DirectionOverlay';
-import ImageCompareModal from './ImageCompareModal';
 
 function SceneThumb({ src, label, sub, onOpen, children }) {
   const [failed, setFailed] = useState(false);
@@ -24,21 +24,20 @@ function SceneThumb({ src, label, sub, onOpen, children }) {
 }
 
 /**
- * Perbandingan citra sebelum/sesudah (thumbnail). Klik → tampilan besar dengan geser/berdampingan,
- * pilihan produk Sentinel, dan panah arah geseran.
- * `pre`/`post`: objek scene {id} atau string ID. `preset`: kunci PRESETS.
+ * Thumbnail sebelum/sesudah. Klik → penampil perbandingan (geser/zoom, Wayback resolusi tinggi,
+ * semua produk Sentinel, sorotan kehilangan vegetasi, panah arah).
+ * compare: { scenes: {s2, s1}, period: {before, after} }
  */
-export default function PrePostImagery({ title, preset, pre, post, coord, delta = 0.015, note, movement }) {
+export default function PrePostImagery({ title, preset, pre, post, coord, delta = 0.015, note, movement, compare }) {
   const [open, setOpen] = useState(false);
   const preId = pre?.id ?? pre;
   const postId = post?.id ?? post;
-  const sensor = PRESET_BY_KEY[preset].sensor;
   const arrows = <DirectionOverlay movement={movement} />;
 
   return (
     <div className="prepost">
       <h3>
-        {title} <span className="muted small">· klik gambar untuk memperbesar</span>
+        {title} <span className="muted small">· klik untuk memperbesar</span>
       </h3>
       <div className="pair">
         <SceneThumb src={cropUrl(preset, preId, coord, delta)} label="Sebelum" sub={sceneDate(preId)} onOpen={() => setOpen(true)}>
@@ -50,15 +49,13 @@ export default function PrePostImagery({ title, preset, pre, post, coord, delta 
       </div>
       {note && <p className="muted small">{note}</p>}
       {open && (
-        <ImageCompareModal
+        <CompareViewer
           title={title}
-          sensor={sensor}
-          initialPreset={preset}
-          pre={preId}
-          post={postId}
           coord={coord}
-          delta={delta}
+          scenes={compare.scenes}
+          period={compare.period}
           movement={movement}
+          initialSource={PRESET_BY_KEY[preset] ? preset : undefined}
           onClose={() => setOpen(false)}
         />
       )}

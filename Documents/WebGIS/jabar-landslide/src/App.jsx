@@ -3,7 +3,6 @@ import ImageryControls from './components/controls/ImageryControls';
 import LayerControls from './components/controls/LayerControls';
 import StabilityControls from './components/controls/StabilityControls';
 import ValidationMenu from './components/controls/ValidationMenu';
-import YearFilter from './components/controls/YearFilter';
 import InfoPanel from './components/layout/InfoPanel';
 import TopBar from './components/layout/TopBar';
 import MapView from './components/map/MapView';
@@ -42,14 +41,13 @@ export default function App() {
   }, [quakesLive, filters.year]);
 
   const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly' | 'quake', feature }
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const [openMenu, setOpenMenu] = useState(null);
 
   const ctx = useMemo(
     () => ({ year: filters.year, colorMode: filters.colorMode, stability: stability.byId, risk }),
     [filters.year, filters.colorMode, stability.byId, risk]
   );
-  const hasAnalysis = data.insar?.anomaly_years?.includes(filters.year) ?? false;
   const visibleIds = [
     ...(filters.layers.events ? data.events.map((f) => f.id) : []),
     ...(filters.layers.anomalies ? filters.yearAnomalies.map((f) => f.id) : []),
@@ -59,28 +57,20 @@ export default function App() {
 
   const menus = [
     {
-      key: 'tahun',
-      label: `Tahun ${filters.year ?? ''}`,
+      key: 'peta',
+      icon: '🗺️',
+      label: 'Peta & Citra',
       content: (
-        <YearFilter
-          years={filters.years}
-          year={filters.year}
-          onYear={(y) => {
-            filters.setYear(y);
-            setOpenMenu(null);
-          }}
-          eventCount={data.events.filter((f) => f.properties.tahun === filters.year).length}
-          anomalyCount={filters.yearAnomalies.length}
-          hasAnalysis={hasAnalysis}
-          baseline={filters.yearAnomalies[0]?.properties.baseline_years}
-        />
+        <>
+          <LayerControls filters={filters} />
+          <ImageryControls filters={filters} imagery={imagery} />
+        </>
       ),
     },
-    { key: 'lapisan', label: 'Lapisan', content: <LayerControls filters={filters} /> },
-    { key: 'citra', label: 'Citra Sentinel', content: <ImageryControls filters={filters} imagery={imagery} /> },
     {
-      key: 'stabilitas',
-      label: 'Stabilitas & Prediksi',
+      key: 'analisis',
+      icon: '📊',
+      label: 'Analisis',
       content: (
         <StabilityControls
           colorMode={filters.colorMode}
@@ -92,7 +82,8 @@ export default function App() {
     },
     {
       key: 'validasi',
-      label: 'Validasi data',
+      icon: '✅',
+      label: 'Validasi',
       badge: data.validation && (
         <span className={`val-badge ${valFail ? 'fail' : valWarn ? 'warn' : 'pass'}`}>
           {valFail ? '✗' : valWarn ? '!' : '✓'}
@@ -107,6 +98,9 @@ export default function App() {
       <TopBar
         panelOpen={panelOpen}
         onTogglePanel={() => setPanelOpen((o) => !o)}
+        years={filters.years}
+        year={filters.year}
+        setYear={filters.setYear}
         menus={menus}
         openKey={openMenu}
         setOpenKey={setOpenMenu}
