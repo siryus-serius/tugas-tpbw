@@ -1,41 +1,70 @@
-# WebGIS Pemetaan Daerah Rawan Longsor Jawa Barat (2021–2025)
+# WebGIS Longsor & Pergeseran Tanah Jawa Barat
 
-Repository untuk proyek tugas TPBW (Teknologi Penginderaan Jauh & WebGIS):
-**"Pemetaan Daerah Rawan Longsor di Provinsi Jawa Barat Periode 2021–2025"**
+Proyek tugas TPBW: peta kejadian longsor terverifikasi Jawa Barat (2021–2026) dan **deteksi otomatis anomali pergeseran tanah** dari Sentinel-1 InSAR, dilengkapi citra Sentinel-2 dan Sentinel-1 sebelum/sesudah kejadian.
 
----
+## Fitur
+- **Filter tahun**: menampilkan kejadian longsor, pin anomali, dan peta warna untuk tahun terpilih.
+- **Pin anomali otomatis**: muncul bila kecepatan pergeseran tahun terpilih menyimpang signifikan dari rata-rata tahun-tahun sebelumnya, khusus area lereng (≥ 8°).
+- **Peta warna Δ kecepatan (InSAR)**: merah berarti menjauhi satelit (turun/gerak lereng), biru berarti mendekati.
+- **Panel detail kejadian**: Sentinel-2 warna asli dan NDVI, serta Sentinel-1 radar VV, sebelum dan sesudah kejadian.
+- **Mosaik Sentinel-2 tahunan** (EOX cloudless 2019–2025).
+- **Faktor Keamanan (FK) lereng dinamis**: kelembapan tanah terkini + prakiraan 72 jam (Open-Meteo) → model lereng tak hingga → warna titik Labil/Kritis/Stabil (Bowles 1989). Parameter tanah (c', φ', γ, z, n) bisa diubah dan FK dihitung ulang seketika.
 
-## 📌 Deskripsi Proyek
-Website WebGIS interaktif berbasis React dan Leaflet untuk visualisasi spasial serta penginderaan jauh dalam memetakan kerawanan bencana longsor di Provinsi Jawa Barat menggunakan data temporal 2021–2025.
+## Arsitektur
 
-### Fitur Utama:
-- 🗺️ **Peta Interaktif Jawa Barat**: Batas administrasi 27 kabupaten/kota.
-- 🛰️ **Citra Satelit & Indeks**: Sentinel-1 SAR, Sentinel-2 Optical, NDVI.
-- 🏔️ **Topografi & Medan**: Model Elevasi Digital (SRTM DEM) dan Kemiringan Lereng (*Slope*).
-- 🌧️ **Klimatologi**: Ringkasan curah hujan historis (CHIRPS).
-- 📅 **Filter Temporal**: Pemilih tahun 2021, 2022, 2023, 2024, dan 2025.
-- 🎛️ **Kontrol Layer & Legenda**: Panel HUD terapung modern dengan pengaturan opasitas dan legenda dinamis.
+```
+.github/workflows/pipeline.yml   satu pipeline: data (mingguan) → lint + build → deploy GitHub Pages
+scripts/
+  pipeline.js                    entrypoint: node scripts/pipeline.js [events|insar|all]
+  config.js                      path, frame LiCSAR, seluruh parameter metode
+  stages/events.js               scene S1/S2 + kemiringan lereng per kejadian → sentinel_events.json
+  stages/insar.js                anomali pergeseran tanah → insar/{anomalies.geojson, summary.json, *.png}
+  lib/                           http, stac, licsar, raster, png, geo, terrain (modul murni & I/O terpisah)
+Documents/WebGIS/jabar-landslide/src/
+  App.jsx                        komposisi saja: data → filter → kelembapan → FK → tampilan
+  config/constants.js            konstanta tampilan & domain
+  services/                      dataApi (JSON statis), soilMoistureApi (Open-Meteo)
+  hooks/                         useWebgisData, useMapFilters, useMonitoringPoints, useSoilMoisture, useSlopeStability
+  utils/                         factorOfSafety (rumus FK & klasifikasi), sentinelImagery, markerColors, format
+  components/map|sidebar|detail/ sub-komponen presentasi
+```
 
----
+Tidak ada server, database, maupun secret. Semua sumber data publik **tanpa login**:
 
-## 🛠️ Arsitektur & Teknologi
-- **Frontend**: React 19, Vite, Leaflet, React-Leaflet
-- **Data Spasial**: GeoJSON Jawa Barat, Earth Engine raster tile services
-- **Styling**: Modern dark glassmorphic CSS, responsive UI
-- **AI Custom Skills**: Antigravity UI/UX & Architecture Customization
+| Data | Sumber |
+|---|---|
+| Kejadian longsor | BNPB / BPBD (dikurasi manual, `longsor_jabar_2021_2026.geojson`) |
+| Interferogram Sentinel-1 | [COMET-LiCSAR](https://comet.nerc.ac.uk/comet-lics-portal/) (JASMIN + arsip CEDA) |
+| Scene & render Sentinel-1 RTC / Sentinel-2 L2A | [Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/) |
+| Mosaik Sentinel-2 cloudless | [EOX s2maps.eu](https://s2maps.eu) (CC BY-NC-SA 4.0) |
+| Kelembapan tanah 27–81 cm (live, per jam) & DEM Copernicus 90 m | [Open-Meteo](https://open-meteo.com/) |
 
----
+## Metode anomali pergeseran (ringkas)
+1. Tiga frame LiCSAR mencakup Jabar: `098A_09673_121312` (asc), `047D_09652_111009` dan `149D_09700_081210` (desc).
+2. Per tahun dipilih rantai interferogram berurutan 6–24 hari. Setiap interferogram di-multilook 2×2 (±220 m), dimasker koherensi ≥ 0,3, lalu di-*high-pass* ±2,6 km untuk membuang atmosfer dan ramp.
+3. Kecepatan LOS tahunan dihitung dengan stacking: Σ pergeseran / Σ waktu. Piksel harus valid di ≥ 50% interferogram dan |v| ≤ 200 mm/thn.
+4. Δv = v(tahun) − rata-rata tahun sebelumnya (baseline mulai 2019). Piksel dianggap anomali bila |Δv| ≥ 15 mm/thn, |z| ≥ 2,5, dan pencilan spasial (≥ 3×MAD).
+5. Kelompok ≥ 3 piksel di lereng ≥ 8° menjadi satu pin.
 
-## 🚀 Memulai Proyek Lokal
+**Keterbatasan:** C-band cepat kehilangan koherensi di lereng bervegetasi lebat, sehingga banyak lokasi longsor tidak punya piksel InSAR yang valid. Resolusi ±220 m hanya menangkap gerakan lambat yang luas. Pin adalah indikasi awal untuk dicek lapangan, bukan konfirmasi longsor.
+
+## Faktor Keamanan lereng
+
+FK = [c' + (γ − m·γw)·z·cos²β·tan φ'] / [γ·z·sin β·cos β] (lereng tak hingga), dengan m = θ / n dari kelembapan tanah. Kemiringan β: kejadian = persentil-90 lereng ±400 m (DEM Copernicus 90 m); anomali = rata-rata klaster (DEM LiCSAR). Indikator memakai **FK minimum 72 jam** (skenario terbasah). Kelembapan berasal dari model beresolusi ±10–25 km, jadi FK adalah indikator regional, bukan pengganti uji geoteknik.
+
+## Menjalankan
 
 ```bash
-# Masuk ke folder aplikasi
+# Data (Node ≥ 22.2)
+npm ci
+npm run pipeline            # semua tahap; atau pipeline:events / pipeline:insar
+                            # InSAR pertama kali ±30–40 menit, selanjutnya pakai cache data/insar/cache
+
+# Web
 cd Documents/WebGIS/jabar-landslide
-
-# Instal dependensi
-npm install
-
-# Jalankan server pengembangan
+npm ci
+npm run lint && npm run build
 npm run dev
 ```
-Buka browser pada tautan yang diberikan terminal (biasanya `http://localhost:5173`).
+
+Untuk deploy GitHub Pages, aktifkan sekali di **Settings → Pages → Source: GitHub Actions**.

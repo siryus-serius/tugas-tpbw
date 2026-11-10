@@ -1,0 +1,131 @@
+name: Pipeline WebGIS Longsor Jabar
+
+# Satu pipeline untuk seluruh otomatisasi:
+#   data   → (jadwal mingguan / manual) jalankan scripts/pipeline.js, commit JSON/PNG hasil
+#   build  → lint + build frontend (setiap push/PR, dan setelah data diperbarui)
+#   deploy → GitHub Pages (main saja)
+#
+# Anti-konflik commit:
+#   - satu grup concurrency untuk main → tidak ada dua run yang menulis bersamaan
+#   - hanya job "data" yang commit, dengan pull --rebase + retry sebelum push
+#   - commit bot memakai GITHUB_TOKEN sehingga tidak memicu run baru (tidak ada loop)
+# Kelembapan tanah diambil langsung oleh browser (Open-Meteo) → tidak ada commit data harian.
+# Prasyarat sekali saja: Settings → Pages → Source: "GitHub Actions". Tidak perlu secret.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Documents/WebGIS/jabar-landslide/**'
+      - 'scripts/**'
+      - 'package*.json'
+      - '.github/workflows/pipeline.yml'
+  pull_request:
+    paths:
+      - 'Documents/WebGIS/jabar-landslide/**'
+      - 'scripts/**'
+  schedule:
+    - cron: '0 20 * * 0' # Senin 03:00 WIB
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Tahap pipeline data (kosongkan untuk lewati)'
+        type: choice
+        options: [all, events, insar, none]
+        default: all
+
+concurrency:
+  group: pipeline-${{ github.event_name == 'pull_request' && github.head_ref || 'main' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  APP_DIR: Documents/WebGIS/jabar-landslide
+
+jobs:
+  data:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.stage != 'none')
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pulihkan cache kecepatan InSAR per tahun
+        uses: actions/cache@v4
+        with:
+          path: data/insar/cache
+          key: insar-cache-${{ github.run_id }}
+          restore-keys: insar-cache-
+
+      - name: Jalankan pipeline data
+        run: node scripts/pipeline.js ${{ inputs.stage || 'all' }}
+
+      - name: Commit hasil (hanya JSON/PNG kecil)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$APP_DIR/public/data/sentinel_events.json" "$APP_DIR/public/data/insar"
+          if git diff --cached --quiet; then
+            echo "Tidak ada perubahan data."
+            exit 0
+          fi
+          git commit -m "chore(data): perbarui data Sentinel & anomali InSAR"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i * 10))
+          done
+          echo "Gagal push setelah 3 percobaan" && exit 1
+
+  build:
+    needs: data
+    # Tetap jalan bila job data dilewati (push/PR), tapi tidak bila data gagal
+    if: always() && needs.data.result != 'failure' && needs.data.result != 'cancelled'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.APP_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Setelah job data, ambil main terbaru agar commit data ikut ter-build
+          ref: ${{ github.event_name == 'pull_request' && github.sha || 'main' }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ env.APP_DIR }}/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: ${{ env.APP_DIR }}/dist
+
+  deploy:
+    needs: build
+    if: always() && needs.build.result == 'success' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
