@@ -1,88 +1,44 @@
-import React, { useState } from 'react';
-import Navbar from './components/layout/Navbar';
-import HeroSection from './components/home/HeroSection';
-import FeatureGrid from './components/home/FeatureGrid';
-import AutomationBlock from './components/home/AutomationBlock';
-import BentoGrid from './components/home/BentoGrid';
-import WebGISMap from './components/map/WebGISMap';
-import StatsPanel from './components/panels/StatsPanel';
-import DatabasePanel from './components/panels/DatabasePanel';
+import { useState } from 'react';
+import DetailPanel from './components/detail/DetailPanel';
+import MapView from './components/map/MapView';
+import Sidebar from './components/sidebar/Sidebar';
+import useMapFilters from './hooks/useMapFilters';
+import useMonitoringPoints from './hooks/useMonitoringPoints';
+import useSlopeStability from './hooks/useSlopeStability';
+import useSoilMoisture from './hooks/useSoilMoisture';
+import useWebgisData from './hooks/useWebgisData';
 
+/** Komposisi: data → filter → kelembapan tanah → Faktor Keamanan → tampilan. */
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'map' | 'stats' | 'database'
-  const [selectedInitialLayer, setSelectedInitialLayer] = useState(null);
+  const data = useWebgisData();
+  const filters = useMapFilters(data);
+  const points = useMonitoringPoints(data);
+  const moisture = useSoilMoisture(points);
+  const stability = useSlopeStability(points, moisture.byId);
 
-  const handleTabChange = (tabId) => {
-    if (tabId === 'terkini') {
-      setSelectedInitialLayer('terkini');
-      setActiveTab('map');
-    } else {
-      if (tabId === 'map' && selectedInitialLayer === 'terkini') {
-        setSelectedInitialLayer(null);
-      }
-      setActiveTab(tabId);
-    }
-  };
-
-  const handleOpenMapWithLayer = (layerId) => {
-    setSelectedInitialLayer(layerId);
-    setActiveTab('map');
-  };
+  const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly', feature }
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="min-h-screen bg-black text-white relative flex flex-col font-sans selection:bg-emerald-400 selection:text-black">
-      {/* Subtle Grain Overlay for texture depth */}
-      <div className="grain-overlay" />
-
-      {/* Floating Glass Navbar */}
-      <Navbar activeTab={selectedInitialLayer === 'terkini' && activeTab === 'map' ? 'terkini' : activeTab} setActiveTab={handleTabChange} />
-
-      {/* Main Content Area */}
-      <main className="flex-1 w-full flex flex-col">
-        {activeTab === 'home' && (
-          <div className="w-full flex flex-col animate-fade-in-up">
-            <HeroSection onExploreMap={(mode) => {
-              if (mode === 'terkini') {
-                setSelectedInitialLayer('terkini');
-              } else {
-                setSelectedInitialLayer(null);
-              }
-              setActiveTab('map');
-            }} />
-            <FeatureGrid onOpenMapWithLayer={handleOpenMapWithLayer} />
-            <AutomationBlock />
-            <BentoGrid onOpenStats={() => setActiveTab('stats')} />
-
-            {/* Footer Section */}
-            <footer className="w-full max-w-[1600px] mx-auto py-12 px-6 lg:px-12 border-t border-white/10 mt-12 flex flex-col sm:flex-row items-center justify-between text-zinc-400 text-xs gap-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Proyek Tugas TPBW &bull; Sistem Informasi Geografis & Peringatan Dini Longsor Jawa Barat</span>
-              </div>
-              <div className="flex items-center gap-6">
-                <span>Data: Google Earth Engine, ESA Copernicus, BMKG, BNPB</span>
-                <span>Tahun 2021–2025</span>
-              </div>
-            </footer>
-          </div>
-        )}
-
-        {activeTab === 'map' && (
-          <div className="w-full h-full animate-fade-in-up">
-            <WebGISMap initialLayer={selectedInitialLayer} />
-          </div>
-        )}
-
-        {/* Modal Panels */}
-        {activeTab === 'stats' && (
-          <StatsPanel onClose={() => setActiveTab('home')} />
-        )}
-
-        {activeTab === 'database' && (
-          <DatabasePanel onClose={() => setActiveTab('home')} />
-        )}
-      </main>
-
+    <div className={`app ${sidebarOpen ? '' : 'sidebar-closed'}`}>
+      <Sidebar
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen((o) => !o)}
+        data={data}
+        filters={filters}
+        stability={stability}
+        moisture={moisture}
+        onSelect={setSelected}
+      />
+      <MapView data={data} filters={filters} stability={stability.byId} selected={selected} onSelect={setSelected} />
+      {selected && (
+        <DetailPanel
+          selected={selected}
+          sentinel={data.sentinel}
+          stability={stability}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </div>
   );
 }

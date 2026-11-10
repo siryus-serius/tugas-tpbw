@@ -1,12 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
+// base './' → hasil build bisa di-host di subfolder (mis. GitHub Pages)
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    react(),
-  ],
+  base: './',
+  plugins: [react()],
 })
-
