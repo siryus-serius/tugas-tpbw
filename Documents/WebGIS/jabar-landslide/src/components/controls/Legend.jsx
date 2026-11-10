@@ -1,5 +1,6 @@
-import { EVENT_COLOR, SEVERITY, UNKNOWN_COLOR } from '../../config/constants';
+import { EVENT_COLOR, QUAKE_COLOR, SEVERITY, UNKNOWN_COLOR } from '../../config/constants';
 import { FS_CLASSES } from '../../utils/factorOfSafety';
+import { RISK_CLASSES } from '../../utils/susceptibility';
 
 const Dot = ({ color, small }) => <span className={`dot${small ? ' small' : ''}`} style={{ background: color }} />;
 const Pin = ({ color }) => <span className="anomaly-pin static" style={{ '--c': color }} />;
@@ -8,7 +9,19 @@ export default function Legend({ colorMode }) {
   return (
     <section>
       <h2>Legenda</h2>
-      {colorMode === 'stabilitas' ? (
+      {colorMode === 'kerawanan' && (
+        <>
+          {RISK_CLASSES.map((c) => (
+            <div key={c.key} className="legend-row">
+              <Dot color={c.color} /> Kerawanan {c.label.toLowerCase()}
+            </div>
+          ))}
+          <div className="legend-row">
+            <Dot color={UNKNOWN_COLOR} /> Data belum cukup
+          </div>
+        </>
+      )}
+      {colorMode === 'stabilitas' && (
         <>
           {FS_CLASSES.map((c) => (
             <div key={c.key} className="legend-row">
@@ -19,11 +32,12 @@ export default function Legend({ colorMode }) {
             </div>
           ))}
           <div className="legend-row">
-            <Dot color={UNKNOWN_COLOR} /> Data lereng/kelembapan belum ada
+            <Dot color={UNKNOWN_COLOR} /> Data kemiringan lereng belum ada
           </div>
           <p className="muted small">Bulat = kejadian longsor, berdenyut = anomali InSAR. Klasifikasi Bowles (1989).</p>
         </>
-      ) : (
+      )}
+      {colorMode === 'kategori' && (
         <>
           <div className="legend-row">
             <Dot color={EVENT_COLOR.current} /> Kejadian longsor tahun terpilih
@@ -38,6 +52,12 @@ export default function Legend({ colorMode }) {
           ))}
         </>
       )}
+      <div className="legend-row">
+        <span className="ring" style={{ borderColor: QUAKE_COLOR.BMKG }} /> Gempa BMKG terkini
+      </div>
+      <div className="legend-row">
+        <span className="ring" style={{ borderColor: QUAKE_COLOR.USGS }} /> Gempa riwayat USGS (tahun terpilih), ukuran ∝ magnitudo
+      </div>
       <div className="ramp" />
       <div className="ramp-labels muted small">
         <span>menjauhi satelit (turun)</span>

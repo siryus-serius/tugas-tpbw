@@ -19,16 +19,16 @@ export const LAYERS = {
   anomalies: 'Pin anomali pergeseran (otomatis)',
   insar: 'Peta warna perubahan kecepatan (InSAR)',
   events: 'Kejadian longsor terverifikasi',
-  s2: 'Mosaik Sentinel-2 tahun terpilih',
+  quakes: 'Gempa bumi (BMKG terkini + riwayat USGS)',
   adm: 'Batas kabupaten/kota',
 };
 
-export const DEFAULT_LAYERS = { events: true, anomalies: true, insar: true, s2: false, adm: true };
+export const DEFAULT_LAYERS = { events: true, anomalies: true, insar: true, quakes: true, s2: false, adm: true };
 
 export const ORBITS = { ascending: 'Ascending', descending: 'Descending' };
 
 /** Mode pewarnaan titik: kategori (tahun/tingkat anomali) atau Faktor Keamanan lereng. */
-export const COLOR_MODES = { kategori: 'Kategori', stabilitas: 'Faktor Keamanan' };
+export const COLOR_MODES = { kategori: 'Kategori', stabilitas: 'FK', kerawanan: 'Kerawanan' };
 
 export const SEVERITY = {
   sedang: { color: '#eab308', range: '15–30 mm/thn' },
@@ -38,6 +38,6 @@ export const SEVERITY = {
 
 export const EVENT_COLOR = { current: '#7c3aed', other: '#94a3b8' };
 export const UNKNOWN_COLOR = '#64748b';
+export const QUAKE_COLOR = { BMKG: '#e11d48', USGS: '#0ea5e9' };
 
-// Mosaik tahunan Sentinel-2 cloudless (EOX), CC BY-NC-SA 4.0
-export const S2_MOSAIC_YEARS = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];

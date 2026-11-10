@@ -1,12 +1,12 @@
 import { COLOR_MODES } from '../../config/constants';
-import { FS_CLASSES, SOIL_PARAM_FIELDS } from '../../utils/factorOfSafety';
+import { FS_CLASSES, SATURATION_SCENARIOS, SOIL_PARAM_FIELDS } from '../../utils/factorOfSafety';
 import Segmented from './Segmented';
 
 /**
- * Kontrol stabilitas lereng: mode pewarnaan titik, ringkasan kelas FK titik yang tampil,
- * status kelembapan tanah, dan parameter tanah (FK dihitung ulang langsung).
+ * Kontrol stabilitas & prediksi: mode warna titik, skenario kejenuhan, ringkasan kelas FK,
+ * dan parameter tanah (FK dihitung ulang langsung).
  */
-export default function StabilityControls({ colorMode, setColorMode, visibleIds, stability, moisture }) {
+export default function StabilityControls({ colorMode, setColorMode, visibleIds, stability }) {
   const { byId, params, updateParam, resetParams } = stability;
 
   const counts = Object.fromEntries(FS_CLASSES.map((c) => [c.key, 0]));
@@ -19,19 +19,19 @@ export default function StabilityControls({ colorMode, setColorMode, visibleIds,
 
   return (
     <section>
-      <h2>Stabilitas lereng (FK)</h2>
+      <h2>Stabilitas lereng (FK) &amp; prediksi</h2>
       <div className="row">
         <span className="muted small">Warna titik</span>
         <Segmented options={COLOR_MODES} value={colorMode} onChange={setColorMode} />
       </div>
-
-      <p className="muted small">
-        Kelembapan tanah 27–81 cm (Open-Meteo):{' '}
-        {moisture.status === 'loading' && 'memuat…'}
-        {moisture.status === 'error' && <span className="error">gagal ({moisture.error})</span>}
-        {moisture.status === 'ready' &&
-          `diperbarui ${moisture.updatedAt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`}
-      </p>
+      <div className="row">
+        <span className="muted small">Skenario air tanah</span>
+        <Segmented
+          options={SATURATION_SCENARIOS}
+          value={String(params.saturation)}
+          onChange={(v) => updateParam('saturation', Number(v))}
+        />
+      </div>
 
       <div className="fs-summary">
         {FS_CLASSES.map((c) => (
@@ -45,7 +45,9 @@ export default function StabilityControls({ colorMode, setColorMode, visibleIds,
           <span>Tanpa data</span>
         </div>
       </div>
-      <p className="muted small">FK minimum 72 jam ke depan untuk titik yang tampil.</p>
+      <p className="muted small">
+        FK titik yang tampil untuk skenario terpilih. &quot;Jenuh&quot; = kondisi terburuk musim hujan.
+      </p>
 
       <details className="params">
         <summary>Parameter tanah</summary>

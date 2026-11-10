@@ -9,11 +9,15 @@ export default function useMonitoringPoints({ events, anomalies, sentinel }) {
     () => [
       ...events.map((f) => ({
         id: f.id,
+        kind: 'event',
+        feature: f,
         coord: f.geometry.coordinates,
         slopeDeg: sentinel[f.properties.no]?.terrain?.slope_deg ?? null,
       })),
       ...anomalies.map((f) => ({
         id: f.id,
+        kind: 'anomaly',
+        feature: f,
         coord: f.geometry.coordinates,
         slopeDeg: f.properties.slope_deg ?? null,
       })),

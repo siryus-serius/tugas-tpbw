@@ -36,8 +36,15 @@ a {
 }
 
 .app {
-  position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace {
+  position: relative;
+  flex: 1;
+  min-height: 0;
   display: flex;
 }
 
@@ -59,63 +66,187 @@ a {
   font-size: 13px;
 }
 
-/* ---------- Sidebar ---------- */
-.sidebar {
+/* ---------- Bilah menu atas ---------- */
+.topbar {
   position: relative;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  font-size: 18px;
+}
+
+.icon-btn.active {
+  border-color: var(--accent);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.brand strong {
+  font-size: 15px;
+}
+
+.menus {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  overflow-x: auto;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.menu-btn:hover,
+.menu-btn.active {
+  background: var(--panel-2);
+  border-color: var(--line);
+}
+
+.caret {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.dropdown {
+  position: fixed;
+  top: 56px;
+  right: 12px;
+  width: min(380px, calc(100vw - 24px));
+  max-height: calc(100vh - 72px);
+  overflow-y: auto;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+}
+
+.dropdown section + section {
+  margin-top: 14px;
+}
+
+.val-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------- Panel informasi kiri ---------- */
+.info-panel {
+  position: relative;
+  z-index: 1000;
   width: var(--sidebar-w);
   flex-shrink: 0;
+  margin-left: calc(-1 * var(--sidebar-w));
   background: var(--panel);
   border-right: 1px solid var(--line);
-  transition: margin-left 0.2s;
-  z-index: 1000;
+  transition: margin-left 0.25s ease;
 }
 
-.sidebar-closed .sidebar {
-  margin-left: calc(-1 * var(--sidebar-w));
+.info-panel.open {
+  margin-left: 0;
 }
 
-.sidebar-body {
+.info-scroll {
   height: 100%;
   overflow-y: auto;
-  padding: 16px;
+  padding: 14px 16px;
 }
 
-.sidebar-toggle {
-  position: absolute;
-  top: 12px;
-  right: -32px;
-  width: 32px;
-  height: 40px;
-  border: 1px solid var(--line);
-  border-left: 0;
-  border-radius: 0 6px 6px 0;
-  background: var(--panel);
-  font-size: 20px;
-}
-
-.sidebar h1 {
-  font-size: 18px;
-  line-height: 1.3;
-  margin: 0 0 4px;
-}
-
-.sidebar header p {
-  margin: 0;
-  font-size: 13px;
-}
-
-.sidebar section {
-  margin-top: 18px;
+.info-panel section + section {
+  margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid var(--line);
 }
 
-.sidebar h2 {
+.info-panel h2,
+.dropdown h2,
+.validation h4 {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--muted);
   margin: 0 0 10px;
+}
+
+.info-panel footer {
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.stat-grid div {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--panel-2);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.stat-grid strong {
+  font-size: 20px;
+  color: var(--text);
+}
+
+.ring {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  z-index: 3000;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #7f1d1d;
 }
 
 .chips {
@@ -318,11 +449,6 @@ a {
   background: var(--panel-2);
 }
 
-.sidebar footer {
-  margin-top: 20px;
-  line-height: 1.5;
-}
-
 /* ---------- Pin anomali ---------- */
 .anomaly-pin {
   display: block;
@@ -361,35 +487,34 @@ a {
   image-rendering: pixelated;
 }
 
-/* ---------- Panel detail ---------- */
-.detail {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: var(--detail-w);
-  max-width: 100%;
-  overflow-y: auto;
-  padding: 18px;
+/* ---------- Popup info di peta ---------- */
+.info-popup .leaflet-popup-content-wrapper,
+.info-popup .leaflet-popup-tip {
   background: var(--panel);
-  border-left: 1px solid var(--line);
-  z-index: 1000;
+  color: var(--text);
+  border: 1px solid var(--line);
 }
 
-.detail .close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  border: 0;
-  background: none;
-  font-size: 24px;
+.info-popup .leaflet-popup-content {
+  margin: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.info-popup a.leaflet-popup-close-button {
   color: var(--muted);
 }
 
-.detail h2 {
-  font-size: 18px;
+.popup-body {
+  max-height: min(60vh, 520px);
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.popup-body h2 {
+  font-size: 17px;
   margin: 2px 0 10px;
-  padding-right: 24px;
+  padding-right: 18px;
 }
 
 .eyebrow {
@@ -400,20 +525,136 @@ a {
   letter-spacing: 0.05em;
 }
 
-.detail dl {
+.popup-body dl {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 6px 10px;
-  font-size: 13px;
+  grid-template-columns: 110px 1fr;
+  gap: 5px 10px;
   margin: 0 0 12px;
 }
 
-.detail dt {
+.popup-body dt {
   color: var(--muted);
 }
 
-.detail dd {
+.popup-body dd {
   margin: 0;
+}
+
+.bars {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+.bars li {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+
+.bar {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+}
+
+.shakemap {
+  width: 100%;
+  border-radius: 6px;
+}
+
+/* ---------- Validasi ---------- */
+.val-summary {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.val-chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--panel-2);
+}
+
+.val-chip.pass,
+.val-icon.pass,
+.val-badge.pass {
+  color: #4ade80;
+}
+
+.val-chip.warn,
+.val-icon.warn,
+.val-badge.warn {
+  color: #facc15;
+}
+
+.val-chip.fail,
+.val-icon.fail,
+.val-badge.fail {
+  color: #f87171;
+}
+
+.val-icon.info {
+  color: #60a5fa;
+}
+
+.validation h4 {
+  margin-top: 12px;
+}
+
+.val-list,
+.val-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.val-row {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 2px 8px;
+  width: 100%;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  text-align: left;
+  font-size: 13px;
+}
+
+.val-row:not(:disabled):hover {
+  background: var(--panel-2);
+}
+
+.val-row:disabled {
+  cursor: default;
+}
+
+.val-row .small {
+  grid-column: 2;
+}
+
+.val-icon {
+  font-weight: 700;
+}
+
+.val-items {
+  margin: 2px 0 6px 26px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.val-items li {
+  padding: 2px 0;
+  overflow-wrap: anywhere;
 }
 
 .badge {
@@ -480,19 +721,196 @@ a {
     --sidebar-w: min(320px, 85vw);
   }
 
-  .sidebar {
+  .brand span {
+    display: none;
+  }
+
+  .info-panel {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
   }
+}
 
-  .detail {
-    top: auto;
-    left: 0;
-    width: 100%;
-    max-height: 60%;
-    border-left: 0;
-    border-top: 1px solid var(--line);
+/* ---------- Citra Sentinel: kontrol, thumbnail, perbandingan ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 5px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.ok {
+  color: #4ade80;
+}
+
+.thumb-btn {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.thumb-btn:hover img {
+  outline: 2px solid var(--accent);
+}
+
+.direction-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 0.75);
+}
+
+.modal {
+  position: relative;
+  width: min(980px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.modal-head p {
+  margin: 2px 0 0;
+}
+
+.modal .close {
+  border: 0;
+  background: none;
+  font-size: 26px;
+  color: var(--muted);
+}
+
+.modal-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.modal-tools select {
+  width: auto;
+  max-width: 100%;
+  flex: 1 1 240px;
+}
+
+.swipe input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.swipe-stage {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--panel-2);
+}
+
+.swipe .swipe-stage {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.swipe-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swipe-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 4px #000;
+}
+
+.swipe-tag {
+  position: absolute;
+  top: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.swipe-tag.left {
+  left: 8px;
+}
+
+.swipe-tag.right {
+  right: 8px;
+}
+
+.side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.side figcaption {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.modal-foot p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .side {
+    grid-template-columns: 1fr;
   }
 }

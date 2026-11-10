@@ -1,44 +1,138 @@
-import { useState } from 'react';
-import DetailPanel from './components/detail/DetailPanel';
+import { useMemo, useState } from 'react';
+import ImageryControls from './components/controls/ImageryControls';
+import LayerControls from './components/controls/LayerControls';
+import StabilityControls from './components/controls/StabilityControls';
+import ValidationMenu from './components/controls/ValidationMenu';
+import YearFilter from './components/controls/YearFilter';
+import InfoPanel from './components/layout/InfoPanel';
+import TopBar from './components/layout/TopBar';
 import MapView from './components/map/MapView';
-import Sidebar from './components/sidebar/Sidebar';
+import useEarthquakes from './hooks/useEarthquakes';
 import useMapFilters from './hooks/useMapFilters';
 import useMonitoringPoints from './hooks/useMonitoringPoints';
+import useSentinelMosaic from './hooks/useSentinelMosaic';
 import useSlopeStability from './hooks/useSlopeStability';
-import useSoilMoisture from './hooks/useSoilMoisture';
+import useSusceptibility from './hooks/useSusceptibility';
 import useWebgisData from './hooks/useWebgisData';
 
-/** Komposisi: data → filter → kelembapan tanah → Faktor Keamanan → tampilan. */
+/** Komposisi: data → filter → gempa → FK (skenario) → kerawanan → tampilan. */
 export default function App() {
   const data = useWebgisData();
   const filters = useMapFilters(data);
+  const quakesLive = useEarthquakes(data.quakes);
   const points = useMonitoringPoints(data);
-  const moisture = useSoilMoisture(points);
-  const stability = useSlopeStability(points, moisture.byId);
+  const stability = useSlopeStability(points);
+  const risk = useSusceptibility(points, {
+    stability: stability.byId,
+    yearAnomalies: filters.yearAnomalies,
+    quakes: quakesLive.all,
+  });
+  const imagery = useSentinelMosaic({
+    enabled: filters.layers.s2,
+    presetKey: filters.imageryPreset,
+    year: filters.year,
+    month: filters.imageryMonth,
+  });
 
-  const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly', feature }
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Di peta: gempa riwayat tahun aktif + seluruh gempa BMKG terkini di sekitar Jabar
+  const quakes = useMemo(() => {
+    const yr = String(filters.year);
+    const visible = quakesLive.all.filter((q) => q.properties.source === 'BMKG' || q.properties.time.startsWith(yr));
+    return { ...quakesLive, visible };
+  }, [quakesLive, filters.year]);
+
+  const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly' | 'quake', feature }
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const ctx = useMemo(
+    () => ({ year: filters.year, colorMode: filters.colorMode, stability: stability.byId, risk }),
+    [filters.year, filters.colorMode, stability.byId, risk]
+  );
+  const hasAnalysis = data.insar?.anomaly_years?.includes(filters.year) ?? false;
+  const visibleIds = [
+    ...(filters.layers.events ? data.events.map((f) => f.id) : []),
+    ...(filters.layers.anomalies ? filters.yearAnomalies.map((f) => f.id) : []),
+  ];
+  const valFail = data.validation?.summary.fail ?? 0;
+  const valWarn = data.validation?.summary.warn ?? 0;
+
+  const menus = [
+    {
+      key: 'tahun',
+      label: `Tahun ${filters.year ?? ''}`,
+      content: (
+        <YearFilter
+          years={filters.years}
+          year={filters.year}
+          onYear={(y) => {
+            filters.setYear(y);
+            setOpenMenu(null);
+          }}
+          eventCount={data.events.filter((f) => f.properties.tahun === filters.year).length}
+          anomalyCount={filters.yearAnomalies.length}
+          hasAnalysis={hasAnalysis}
+          baseline={filters.yearAnomalies[0]?.properties.baseline_years}
+        />
+      ),
+    },
+    { key: 'lapisan', label: 'Lapisan', content: <LayerControls filters={filters} /> },
+    { key: 'citra', label: 'Citra Sentinel', content: <ImageryControls filters={filters} imagery={imagery} /> },
+    {
+      key: 'stabilitas',
+      label: 'Stabilitas & Prediksi',
+      content: (
+        <StabilityControls
+          colorMode={filters.colorMode}
+          setColorMode={filters.setColorMode}
+          visibleIds={visibleIds}
+          stability={stability}
+        />
+      ),
+    },
+    {
+      key: 'validasi',
+      label: 'Validasi data',
+      badge: data.validation && (
+        <span className={`val-badge ${valFail ? 'fail' : valWarn ? 'warn' : 'pass'}`}>
+          {valFail ? '✗' : valWarn ? '!' : '✓'}
+        </span>
+      ),
+      content: <ValidationMenu validation={data.validation} />,
+    },
+  ];
 
   return (
-    <div className={`app ${sidebarOpen ? '' : 'sidebar-closed'}`}>
-      <Sidebar
-        open={sidebarOpen}
-        onToggle={() => setSidebarOpen((o) => !o)}
-        data={data}
-        filters={filters}
-        stability={stability}
-        moisture={moisture}
-        onSelect={setSelected}
+    <div className="app">
+      <TopBar
+        panelOpen={panelOpen}
+        onTogglePanel={() => setPanelOpen((o) => !o)}
+        menus={menus}
+        openKey={openMenu}
+        setOpenKey={setOpenMenu}
       />
-      <MapView data={data} filters={filters} stability={stability.byId} selected={selected} onSelect={setSelected} />
-      {selected && (
-        <DetailPanel
-          selected={selected}
-          sentinel={data.sentinel}
-          stability={stability}
-          onClose={() => setSelected(null)}
+      <div className="workspace">
+        <InfoPanel
+          open={panelOpen}
+          data={data}
+          filters={filters}
+          ctx={ctx}
+          risk={risk}
+          quakes={quakes}
+          onSelect={setSelected}
         />
-      )}
+        <MapView
+          data={data}
+          filters={filters}
+          imagery={imagery}
+          stability={stability}
+          risk={risk}
+          quakes={quakes}
+          selected={selected}
+          onSelect={setSelected}
+        />
+      </div>
+      {data.error && <div className="toast error">Gagal memuat data: {data.error}</div>}
     </div>
   );
 }

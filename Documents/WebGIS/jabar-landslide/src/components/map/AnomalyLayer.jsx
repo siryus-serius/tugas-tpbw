@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import L from 'leaflet';
 import { Marker, Tooltip } from 'react-leaflet';
 import { signed } from '../../utils/format';
-import { formatFS } from '../../utils/factorOfSafety';
 import { anomalyColor } from '../../utils/markerColors';
 
 const icon = (color, active) =>
@@ -13,19 +12,15 @@ const icon = (color, active) =>
     iconAnchor: [11, 11],
   });
 
-export default function AnomalyLayer({ anomalies, colorMode, stability, selectedId, onSelect }) {
+export default function AnomalyLayer({ anomalies, ctx, selectedId, onSelect }) {
   // divIcon dibuat ulang hanya bila warna/seleksi berubah
   const icons = useMemo(
-    () =>
-      new Map(
-        anomalies.map((f) => [f.id, icon(anomalyColor(f, { colorMode, stability }), f.id === selectedId)])
-      ),
-    [anomalies, colorMode, stability, selectedId]
+    () => new Map(anomalies.map((f) => [f.id, icon(anomalyColor(f, ctx), f.id === selectedId)])),
+    [anomalies, ctx, selectedId]
   );
 
   return anomalies.map((f) => {
     const [lng, lat] = f.geometry.coordinates;
-    const p = f.properties;
     return (
       <Marker
         key={f.id}
@@ -34,8 +29,7 @@ export default function AnomalyLayer({ anomalies, colorMode, stability, selected
         eventHandlers={{ click: () => onSelect({ type: 'anomaly', feature: f }) }}
       >
         <Tooltip direction="top">
-          Anomali {signed(p.delta_mm_yr)} mm/thn — {p.wilayah}
-          {colorMode === 'stabilitas' && ` · FK ${formatFS(stability.get(f.id)?.fsMin)}`}
+          Anomali pergeseran {signed(f.properties.delta_mm_yr)} mm/thn — {f.properties.wilayah}
         </Tooltip>
       </Marker>
     );

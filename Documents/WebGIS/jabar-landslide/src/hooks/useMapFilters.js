@@ -10,6 +10,8 @@ export default function useMapFilters({ events, anomalies, insar }) {
   const [basemap, setBasemap] = useState('osm');
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [colorMode, setColorMode] = useState('kategori');
+  const [imageryPreset, setImageryPreset] = useState('s2_true');
+  const [imageryMonth, setImageryMonth] = useState(0); // 0 = sepanjang tahun
 
   const years = useMemo(() => {
     const ys = new Set(events.map((f) => f.properties.tahun));
@@ -52,6 +54,10 @@ export default function useMapFilters({ events, anomalies, insar }) {
     toggleLayer,
     colorMode,
     setColorMode,
+    imageryPreset,
+    setImageryPreset,
+    imageryMonth,
+    setImageryMonth,
     yearAnomalies,
     overlays,
   };

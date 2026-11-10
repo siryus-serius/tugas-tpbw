@@ -1,14 +1,12 @@
 import { CircleMarker, Tooltip } from 'react-leaflet';
 import { shortKab } from '../../utils/format';
-import { formatFS } from '../../utils/factorOfSafety';
 import { eventColor } from '../../utils/markerColors';
 
-export default function EventLayer({ events, year, colorMode, stability, selectedId, onSelect }) {
+export default function EventLayer({ events, ctx, selectedId, onSelect }) {
   return events.map((f) => {
     const [lng, lat] = f.geometry.coordinates;
     const p = f.properties;
-    const current = p.tahun === year;
-    const fs = stability.get(f.id);
+    const current = p.tahun === ctx.year;
     return (
       <CircleMarker
         key={f.id}
@@ -17,15 +15,14 @@ export default function EventLayer({ events, year, colorMode, stability, selecte
         pathOptions={{
           color: '#fff',
           weight: 2,
-          fillColor: eventColor(f, { year, colorMode, stability }),
-          fillOpacity: current || colorMode === 'stabilitas' ? 0.95 : 0.7,
+          fillColor: eventColor(f, ctx),
+          fillOpacity: current || ctx.colorMode !== 'kategori' ? 0.95 : 0.7,
           dashArray: p.jenis_koordinat?.includes('perkiraan') ? '3 3' : null,
         }}
         eventHandlers={{ click: () => onSelect({ type: 'event', feature: f }) }}
       >
         <Tooltip direction="top">
-          {p.kecamatan}, {shortKab(p.kabupaten)} — {p.tanggal}
-          {colorMode === 'stabilitas' && ` · FK ${formatFS(fs?.fsMin)}`}
+          Longsor · {p.kecamatan}, {shortKab(p.kabupaten)} — {p.tanggal}
         </Tooltip>
       </CircleMarker>
     );

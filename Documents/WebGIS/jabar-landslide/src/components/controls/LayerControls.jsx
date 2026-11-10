@@ -1,4 +1,4 @@
-import { BASEMAPS, LAYERS, ORBITS, S2_MOSAIC_YEARS } from '../../config/constants';
+import { BASEMAPS, LAYERS, ORBITS } from '../../config/constants';
 import Segmented from './Segmented';
 
 export default function LayerControls({ filters }) {
@@ -12,9 +12,6 @@ export default function LayerControls({ filters }) {
         <label key={key} className="toggle">
           <input type="checkbox" checked={layers[key]} onChange={() => toggleLayer(key)} />
           <span>{label}</span>
-          {key === 's2' && layers.s2 && !S2_MOSAIC_YEARS.includes(year) && (
-            <em className="muted small"> (tidak tersedia untuk {year})</em>
-          )}
         </label>
       ))}
       <div className="row">
