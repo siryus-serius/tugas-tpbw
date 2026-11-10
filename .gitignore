@@ -26,3 +26,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Cache kecepatan InSAR per tahun (biner besar; disimpan via actions/cache)
+data/insar/cache/

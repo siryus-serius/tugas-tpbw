@@ -1,21 +1,28 @@
 {
-  "name": "jabar-landslide-ews",
-  "version": "1.0.0",
-  "description": "Sistem Informasi Geografis & Peringatan Dini Longsor Jawa Barat (WebGIS EWS 2021-2026)",
+  "name": "jabar-landslide-data",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Pipeline data kejadian longsor & anomali pergeseran tanah Jawa Barat (Sentinel-1 InSAR & Sentinel-2)",
   "type": "module",
+  "engines": {
+    "node": ">=22.2"
+  },
   "scripts": {
-    "fetch": "node scripts/fetch-apis.js",
-    "fetch-apis": "node scripts/fetch-apis.js",
-    "fetch-data": "node scripts/github_machine_fetcher.js"
+    "pipeline": "node scripts/pipeline.js all",
+    "pipeline:events": "node scripts/pipeline.js events",
+    "pipeline:insar": "node scripts/pipeline.js insar"
   },
   "keywords": [
     "webgis",
     "landslide",
-    "ews",
-    "bmkg",
-    "himawari-9",
+    "insar",
+    "sentinel-1",
+    "sentinel-2",
     "west-java"
   ],
   "author": "TPBW Geospatial Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "geotiff": "^2.1.3"
+  }
 }
