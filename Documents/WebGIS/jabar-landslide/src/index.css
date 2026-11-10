@@ -107,7 +107,7 @@ a {
   display: flex;
   gap: 4px;
   margin-left: auto;
-  overflow-x: auto;
+  /* jangan pakai overflow di sini: memotong dropdown yang diposisikan absolute */
 }
 
 .menu {
