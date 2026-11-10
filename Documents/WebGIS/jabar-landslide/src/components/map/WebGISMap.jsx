@@ -54,6 +54,30 @@ const createHistoricalQuakeIcon = (mag, isHighlighted = false) => {
   });
 };
 
+// Warna marker kejadian longsor per tahun (data terverifikasi BNPB/BPBD 2021–2026)
+const LANDSLIDE_YEAR_COLORS = {
+  2021: '#f59e0b',
+  2022: '#f97316',
+  2023: '#ef4444',
+  2024: '#d946ef',
+  2025: '#8b5cf6',
+  2026: '#22d3ee',
+};
+
+// Custom Icon untuk Titik Kejadian Longsor (garis putus-putus = koordinat pusat desa / perkiraan)
+const createLandslideIcon = (year, isHighlighted = false, isApprox = true) => {
+  const color = LANDSLIDE_YEAR_COLORS[year] || '#f59e0b';
+  const size = isHighlighted ? 22 : 16;
+  return new L.DivIcon({
+    className: 'custom-landslide-marker',
+    html: `
+      <div style="width: ${size}px; height: ${size}px; transform: rotate(45deg); background: ${color}; border: 2px ${isApprox ? 'dashed' : 'solid'} #ffffff; border-radius: 3px; box-shadow: 0 0 ${isHighlighted ? '16px' : '8px'} ${color}; opacity: ${isHighlighted ? 1 : 0.8};"></div>
+    `,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+};
+
 // Custom Icon untuk Stasiun Cuaca & Sensor Terkini
 const createWeatherStationIcon = (stationName, rainStatus) => {
   const isSevere = rainStatus && (rainStatus.includes('Lebat') || rainStatus.includes('Awas') || rainStatus.includes('Siaga'));
@@ -459,6 +483,8 @@ export default function WebGISMap({ initialLayer }) {
   const [showGempa, setShowGempa] = useState(true);
   const [showFaults, setShowFaults] = useState(true);
   const [showHistoricalQuakes, setShowHistoricalQuakes] = useState(true);
+  const [showLandslides, setShowLandslides] = useState(true);
+  const [landslideData, setLandslideData] = useState(null);
   const [showSoilLayer, setShowSoilLayer] = useState(false);
   const [showEmergencyLayer, setShowEmergencyLayer] = useState(true);
   const [emergencyTypeFilter, setEmergencyTypeFilter] = useState('all'); // 'all' | 'bpbd' | 'sar' | 'puskesmas'
@@ -522,6 +548,14 @@ export default function WebGISMap({ initialLayer }) {
       .then(res => res.json())
       .then(data => setSeismicData(data))
       .catch(err => console.error('Gagal mengambil data seismik BNPB:', err));
+  }, []);
+
+  // 4b. Ambil Data Kejadian Longsor Terverifikasi (BNPB/BPBD 2021–2026)
+  useEffect(() => {
+    fetch('/data/longsor_jabar_2021_2026.geojson')
+      .then(res => res.json())
+      .then(data => setLandslideData(data))
+      .catch(err => console.error('Gagal mengambil data kejadian longsor:', err));
   }, []);
 
   // 5. Ambil Data Klasifikasi Jenis Tanah (27 Kab/Kota)
@@ -931,6 +965,54 @@ export default function WebGISMap({ initialLayer }) {
                     <span className="text-[10px] text-zinc-600">Klik untuk rincian kerusakan BNPB</span>
                   </div>
                 </Tooltip>
+              </Marker>
+            );
+          })}
+
+        {/* 9b. Marker Kejadian Longsor Terverifikasi (BNPB/BPBD - Sinkronisasi Tahun) */}
+        {showLandslides && landslideData?.features
+          ?.filter((f) => f.properties.tahun <= selectedYearNum)
+          .map((f) => {
+            const p = f.properties;
+            const [lng, lat] = f.geometry.coordinates;
+            const isHighlighted = p.tahun === selectedYearNum;
+            const isApprox = p.jenis_koordinat?.startsWith('Pusat');
+            return (
+              <Marker
+                key={`longsor-${p.no}-${selectedYearNum}`}
+                position={[lat, lng]}
+                icon={createLandslideIcon(p.tahun, isHighlighted, isApprox)}
+              >
+                <Tooltip direction="top" offset={[0, -8]}>
+                  <div className="font-sans text-xs">
+                    <span className="font-bold text-amber-600 block">Longsor {p.desa}</span>
+                    <span className="text-[10px] text-zinc-600">{p.tanggal} • {p.korban_meninggal ?? '?'} korban meninggal</span>
+                  </div>
+                </Tooltip>
+                <Popup>
+                  <div className="p-1 font-sans text-xs space-y-1 text-zinc-900 max-w-xs">
+                    <div className="flex items-center gap-1.5 text-amber-600 font-bold">
+                      <Mountain className="w-4 h-4 text-amber-600" />
+                      <span>KEJADIAN TANAH LONGSOR</span>
+                    </div>
+                    <div className="font-bold text-sm">{p.desa}, Kec. {p.kecamatan}</div>
+                    <div className="text-zinc-600">{p.kabupaten}{p.kampung && p.kampung !== '-' ? ` • ${p.kampung}` : ''}</div>
+                    <div><b>Tanggal:</b> {p.tanggal}</div>
+                    <div><b>Korban meninggal:</b> {p.korban_meninggal ?? 'Belum final'}</div>
+                    <div className="text-zinc-700">{p.keterangan}</div>
+                    <div className="text-[10px] text-zinc-500">
+                      Koordinat: {lat.toFixed(4)}, {lng.toFixed(4)} ({p.jenis_koordinat})
+                    </div>
+                    <div className="text-[10px] text-zinc-500">
+                      Sumber: {p.sumber} •{' '}
+                      {p.tautan_sumber?.map((url, i) => (
+                        <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline mr-1">
+                          [{i + 1}]
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </Popup>
               </Marker>
             );
           })}
@@ -1535,6 +1617,25 @@ export default function WebGISMap({ initialLayer }) {
                 checked={showHistoricalQuakes}
                 onChange={(e) => setShowHistoricalQuakes(e.target.checked)}
                 className="accent-rose-500 w-4 h-4 cursor-pointer"
+              />
+            </div>
+
+            {/* Kejadian Longsor Terverifikasi (BNPB/BPBD) */}
+            <div className="p-3 rounded-2xl bg-amber-950/20 border border-amber-500/20 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rotate-45 bg-amber-500"></span>
+                <div>
+                  <span className="text-xs font-semibold text-white block">Kejadian Longsor BNPB/BPBD (2021–2026)</span>
+                  <span className="text-[10px] text-zinc-400">
+                    {landslideData?.features?.length ?? 0} kejadian • garis putus-putus = pusat desa
+                  </span>
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked={showLandslides}
+                onChange={(e) => setShowLandslides(e.target.checked)}
+                className="accent-amber-500 w-4 h-4 cursor-pointer"
               />
             </div>
 
