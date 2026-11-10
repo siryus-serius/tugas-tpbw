@@ -4,6 +4,7 @@ import { ImageOverlay, MapContainer, Pane, TileLayer } from 'react-leaflet';
 import { computeVegetationLoss } from '../../services/changeApi';
 import { waybackPair } from '../../services/waybackApi';
 import { PRESET_BY_KEY, itemTileUrl, presetsFor, rawTifUrl, sceneDate } from '../../utils/sentinelImagery';
+import Checkbox from '../ui/Checkbox';
 import { DirectionMarker, SwipeClip, SyncView } from './mapParts';
 
 const WAYBACK = 'wayback';
@@ -144,14 +145,14 @@ export default function CompareViewer({ title, coord, scenes, period, movement, 
             </button>
           </div>
           {movement && (
-            <label className="toggle small">
-              <input type="checkbox" checked={showArrows} onChange={() => setShowArrows((v) => !v)} /> Panah arah
-            </label>
+            <Checkbox checked={showArrows} onChange={() => setShowArrows((v) => !v)}>
+              Panah arah
+            </Checkbox>
           )}
           {s2pre && s2post && (
-            <label className="toggle small">
-              <input type="checkbox" checked={showLoss} onChange={toggleLoss} /> Sorot kehilangan vegetasi
-            </label>
+            <Checkbox checked={showLoss} onChange={toggleLoss}>
+              Sorot kehilangan vegetasi
+            </Checkbox>
           )}
         </div>
 

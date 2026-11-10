@@ -1,5 +1,6 @@
 import { MONTHS } from '../../config/constants';
 import { PRESET_BY_KEY, PRESETS } from '../../utils/sentinelImagery';
+import Checkbox from '../ui/Checkbox';
 
 const GROUPS = [...new Set(PRESETS.map((p) => p.group))];
 
@@ -11,10 +12,9 @@ export default function ImageryControls({ filters, imagery }) {
   return (
     <section>
       <h2>Citra Sentinel</h2>
-      <label className="toggle">
-        <input type="checkbox" checked={layers.s2} onChange={() => toggleLayer('s2')} />
-        <span>Tampilkan di peta</span>
-      </label>
+      <Checkbox checked={layers.s2} onChange={() => toggleLayer('s2')}>
+        Tampilkan citra di peta
+      </Checkbox>
       <label className="field">
         <span className="muted small">Produk</span>
         <select value={imageryPreset} onChange={(e) => setImageryPreset(e.target.value)}>

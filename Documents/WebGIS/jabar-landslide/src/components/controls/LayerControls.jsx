@@ -1,4 +1,5 @@
 import { BASEMAPS, LAYERS, ORBITS } from '../../config/constants';
+import Checkbox from '../ui/Checkbox';
 import Segmented from './Segmented';
 
 export default function LayerControls({ filters }) {
@@ -9,10 +10,9 @@ export default function LayerControls({ filters }) {
     <section>
       <h2>Lapisan</h2>
       {Object.entries(LAYERS).map(([key, label]) => (
-        <label key={key} className="toggle">
-          <input type="checkbox" checked={layers[key]} onChange={() => toggleLayer(key)} />
-          <span>{label}</span>
-        </label>
+        <Checkbox key={key} checked={layers[key]} onChange={() => toggleLayer(key)}>
+          {label}
+        </Checkbox>
       ))}
       <div className="row">
         <span className="muted small">Geometri InSAR</span>

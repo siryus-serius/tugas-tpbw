@@ -12,7 +12,7 @@ import SelectedPopup from './SelectedPopup';
 
 const ADM_STYLE = { color: '#64748b', weight: 1, fillOpacity: 0, interactive: false };
 
-export default function MapView({ data, filters, imagery, stability, risk, quakes, selected, onSelect }) {
+export default function MapView({ data, filters, imagery, stability, risk, quakes, selected, onSelect, theme }) {
   const { basemap, layers, year, overlays, yearAnomalies, colorMode } = filters;
   const bm = BASEMAPS[basemap];
   const selectedId = selected?.feature.id;
@@ -21,7 +21,12 @@ export default function MapView({ data, filters, imagery, stability, risk, quake
   return (
     <MapContainer className="map" center={MAP_CENTER} zoom={8} minZoom={7} preferCanvas zoomControl={false}>
       <ZoomControl position="bottomright" />
-      <TileLayer key={basemap} url={bm.url} attribution={bm.attribution} />
+      <TileLayer
+        key={`${basemap}-${theme}`}
+        url={bm.url}
+        attribution={bm.attribution}
+        className={bm.themed ? `tiles-themed tiles-${theme}` : undefined}
+      />
 
       {imagery.url && (
         <TileLayer

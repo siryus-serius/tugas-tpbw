@@ -7,6 +7,7 @@ export const BASEMAPS = {
     label: 'Jalan',
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     attribution: '&copy; OpenStreetMap contributors',
+    themed: true, // diberi filter warna retro sesuai tema (lihat .tiles-themed di index.css)
   },
   imagery: {
     label: 'Citra',
