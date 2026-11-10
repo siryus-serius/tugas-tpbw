@@ -61,7 +61,7 @@ export default function App() {
               </div>
               <div className="flex items-center gap-6">
                 <span>Data: Google Earth Engine, ESA Copernicus, BMKG, BNPB</span>
-                <span>Tahun 2021–2025</span>
+                <span>Tahun 2021–2026</span>
               </div>
             </footer>
           </div>
