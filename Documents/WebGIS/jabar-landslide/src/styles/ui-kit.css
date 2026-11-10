@@ -338,3 +338,24 @@
 .theme-toggle .ui-toggle .cont-icon {
   height: 26px;
 }
+
+/* Toggle tema di mode terang: track & tombol ikut terang (kertas + tinta) */
+:root[data-theme='light'] .ui-toggle {
+  --dark: var(--panel-2);
+  --gray: var(--panel);
+  --light: var(--ink);
+}
+
+:root[data-theme='light'] .ui-toggle .toggle-track {
+  border-color: var(--line);
+}
+
+:root[data-theme='light'] .ui-toggle .toggle-track::after {
+  background-image: radial-gradient(circle at 50% -100%, rgb(var(--ink-rgb) / 0.12) 0%, var(--panel-2) 80%);
+}
+
+:root[data-theme='light'] .ui-toggle .cont-icon {
+  background-image: radial-gradient(circle at 50% 0%, #fff 0%, var(--panel-2) 100%);
+  border-color: var(--line);
+  box-shadow: inset 0 -0.15rem 0.15rem rgb(var(--ink-rgb) / 0.25);
+}

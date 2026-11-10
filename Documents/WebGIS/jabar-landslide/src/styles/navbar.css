@@ -143,3 +143,21 @@
   font-weight: 700;
   background: var(--panel-2);
 }
+
+/* Pemilih tahun & tombol menu mengikuti tema (terang di mode terang, gelap di mode gelap) */
+.year-pill {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.year-pill button,
+.year-pill select {
+  color: var(--text);
+}
+
+.menu-toggle {
+  background: var(--panel);
+  color: var(--text);
+}

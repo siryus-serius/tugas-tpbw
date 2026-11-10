@@ -57,7 +57,7 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
   ];
 
   return (
-    <div className={`lp ${leaving ? 'lp-leaving' : ''}`}>
+    <div className={`lp ${target ? 'lp-focusing' : ''} ${leaving ? 'lp-leaving' : ''}`}>
       <header className="lp-header">
         <button className="lp-brand" onClick={() => scrollTo('top')} aria-label="Longsor Jabar, kembali ke atas">
           <span className="lp-brand-mark" />
@@ -79,39 +79,30 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
       </header>
 
       <section className="lp-hero" id="top">
-        <div className="lp-hero-copy">
-          <div className="lp-eyebrow">
-            <span>Edisi {year}</span>
-            <span>Bandung / Jawa Barat</span>
-          </div>
-          <h1>
-            Lereng dalam
-            <span>pantauan.</span>
-          </h1>
-          <div className="lp-hero-bottom">
-            <p>
-              Peta kejadian longsor, pergeseran tanah dari satelit, dan gempa bumi di Jawa Barat — {deaths || '…'} korban
-              jiwa tercatat sejak 2021, agar lereng berisiko terbaca lebih awal.
-            </p>
-            <button className="lp-primary-button" onClick={() => enter('peta')}>
-              Masuk ke peta <ArrowIcon />
-            </button>
-          </div>
+        <CloudField />
+
+        <div className="lp-eyebrow lp-fade">
+          <span>Edisi {year}</span>
+          <span>Bandung / Jawa Barat</span>
         </div>
 
-        <div className="lp-hero-visual">
-          <CloudField />
-          <div className="lp-edition-stamp">
-            <span>JABAR</span>
-            <strong>’{String(year).slice(2)}</strong>
-          </div>
+        {/* Globe = objek utama di tengah; judul mengapit tepinya */}
+        <div className="lp-stage">
+          <h1 className="lp-title lp-fade">
+            <span className="lp-title-a">Lereng dalam</span>
+            <span className="lp-title-b">pantauan.</span>
+          </h1>
           <div className="lp-globe-wrap" aria-label="Globe berputar dengan lintasan satelit Sentinel di atas Jawa Barat">
-            <div className="lp-orbit lp-orbit-one" />
-            <div className="lp-orbit lp-orbit-two" />
+            <div className="lp-orbit lp-orbit-one lp-fade" />
+            <div className="lp-orbit lp-orbit-two lp-fade" />
             <RetroGlobe events={data.events} theme={theme} focus={Boolean(target)} onArrive={arrive} />
-            <div className="lp-coordinate lp-coordinate-top">{fmt(JABAR.lat, 'N', 'S')}</div>
-            <div className="lp-coordinate lp-coordinate-bottom">{fmt(JABAR.lon, 'E', 'W')}</div>
-            <div className="lp-route-legend">
+            <div className="lp-edition-stamp lp-fade">
+              <span>JABAR</span>
+              <strong>’{String(year).slice(2)}</strong>
+            </div>
+            <div className="lp-coordinate lp-coordinate-top lp-fade">{fmt(JABAR.lat, 'N', 'S')}</div>
+            <div className="lp-coordinate lp-coordinate-bottom lp-fade">{fmt(JABAR.lon, 'E', 'W')}</div>
+            <div className="lp-route-legend lp-fade">
               <span>
                 <i className="lp-route-key lp-route-key-s1" />
                 Sentinel-1
@@ -126,14 +117,25 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
               </span>
             </div>
           </div>
-          <p className="lp-visual-note">
-            Gerakkan kursor
-            <br />
-            untuk mengubah orbit
-          </p>
         </div>
 
-        <div className="lp-scroll-line">
+        <div className="lp-hero-bottom lp-fade">
+          <p>
+            Peta kejadian longsor, pergeseran tanah dari satelit, dan gempa bumi di Jawa Barat — {deaths || '…'} korban jiwa
+            tercatat sejak 2021, agar lereng berisiko terbaca lebih awal.
+          </p>
+          <button className="lp-primary-button" onClick={() => enter('peta')}>
+            Masuk ke peta <ArrowIcon />
+          </button>
+        </div>
+
+        <p className="lp-visual-note lp-fade">
+          Gerakkan kursor
+          <br />
+          untuk mengubah orbit
+        </p>
+
+        <div className="lp-scroll-line lp-fade">
           <span>GULIR UNTUK MENGENAL</span>
         </div>
       </section>

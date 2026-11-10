@@ -147,13 +147,14 @@
   transform: translateX(4px);
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: globe di tengah sebagai objek utama ---------- */
 .lp-hero {
   position: relative;
   display: grid;
-  grid-template-columns: 48% 52%;
+  place-items: center;
   min-height: 100svh;
-  padding-top: 78px;
+  padding: 78px 3.5vw 0;
+  overflow: hidden;
 }
 
 .lp-hero::before {
@@ -166,57 +167,73 @@
   pointer-events: none;
 }
 
-.lp-hero-copy {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 8vh 3.5vw 9vh;
-  border-right: 1px solid var(--lp-line);
-}
-
 .lp-eyebrow {
+  position: absolute;
+  top: calc(78px + 3.5vh);
+  right: 3.5vw;
+  left: 3.5vw;
+  z-index: 5;
   display: flex;
   justify-content: space-between;
-  max-width: 550px;
-  margin-bottom: clamp(3rem, 8vh, 6rem);
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.lp-hero h1 {
-  margin-left: -0.07em;
-  font-size: clamp(4.2rem, 8.7vw, 9rem);
+.lp-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.lp-title {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  margin: 0;
+  font-size: clamp(3.4rem, 8vw, 8.6rem);
   font-weight: 400;
   letter-spacing: -0.075em;
-  line-height: 0.8;
+  line-height: 0.85;
+  pointer-events: none;
+}
+
+.lp-title-a,
+.lp-title-b {
+  position: absolute;
   white-space: nowrap;
 }
 
-.lp-hero h1 span {
-  display: block;
-  margin-left: 0.42em;
+/* "Lereng dalam" menimpa tepi kiri-atas globe, "pantauan." tepi kanan-bawah */
+.lp-title-a {
+  top: 14%;
+  left: 0;
+}
+
+.lp-title-b {
+  right: 0;
+  bottom: 16%;
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 400;
   letter-spacing: -0.08em;
 }
 
 .lp-hero-bottom {
+  position: absolute;
+  bottom: 5.5vh;
+  left: 3.5vw;
+  z-index: 5;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  max-width: 590px;
-  margin-top: clamp(3rem, 9vh, 7rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1rem;
+  max-width: 320px;
 }
 
 .lp-hero-bottom p {
-  max-width: 290px;
-  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
   line-height: 1.7;
 }
 
@@ -243,19 +260,28 @@
   color: var(--ink) !important;
 }
 
-.lp-hero-visual {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 600px;
-  overflow: hidden;
+/* Transisi masuk ke peta: semua selain globe memudar dulu, lalu globe membesar */
+.lp-fade,
+.lp-cloud-field {
+  transition: opacity 0.45s ease;
+}
+
+.lp-focusing .lp-fade,
+.lp-focusing .lp-cloud-field,
+.lp-focusing .lp-header,
+.lp-focusing .lp-hero::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lp-header {
+  transition: opacity 0.45s ease;
 }
 
 /* ---------- Awan ---------- */
 .lp-cloud-field {
   position: absolute;
-  inset: 0;
+  inset: 78px 0 0;
   pointer-events: none;
 }
 
@@ -333,8 +359,8 @@
 /* ---------- Globe ---------- */
 .lp-globe-wrap {
   position: relative;
-  width: min(48vw, 78vh);
-  max-width: 710px;
+  width: min(84vh, 62vw);
+  max-width: 860px;
   aspect-ratio: 1;
 }
 
@@ -423,6 +449,7 @@
 
 .lp-route-legend span {
   display: flex;
+  white-space: nowrap;
   align-items: center;
   gap: 0.45rem;
 }
@@ -451,8 +478,8 @@
 
 .lp-edition-stamp {
   position: absolute;
-  top: 8%;
-  left: 7%;
+  top: 4%;
+  right: 2%;
   z-index: 4;
   display: flex;
   flex-direction: column;
@@ -482,8 +509,10 @@
 
 .lp-visual-note {
   position: absolute;
-  right: 6%;
-  bottom: 5%;
+  right: 3.5vw;
+  bottom: 5.5vh;
+  z-index: 5;
+  text-align: right;
   font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.08em;
@@ -493,13 +522,12 @@
 
 .lp-scroll-line {
   position: absolute;
-  bottom: 0;
-  left: calc(48% - 1px);
+  bottom: 1.4vh;
+  left: 50%;
   z-index: 5;
   display: flex;
   align-items: center;
-  transform: rotate(-90deg);
-  transform-origin: bottom left;
+  transform: translateX(-50%);
 }
 
 .lp-scroll-line::before {
@@ -688,27 +716,53 @@
   }
 
   .lp-hero {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 96px 1.25rem 3rem;
   }
 
-  .lp-hero-copy {
-    min-height: 70svh;
-    padding-top: 6rem;
-    border-right: 0;
-    border-bottom: 1px solid var(--lp-line);
+  .lp-eyebrow,
+  .lp-hero-bottom,
+  .lp-visual-note {
+    position: static;
   }
 
-  .lp-hero h1 {
-    font-size: clamp(3.8rem, 15vw, 7rem);
+  .lp-eyebrow {
+    align-self: stretch;
+    gap: 1rem;
+  }
+
+  .lp-title {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    font-size: clamp(3rem, 13vw, 6rem);
+  }
+
+  .lp-title-a,
+  .lp-title-b {
+    position: static;
     white-space: normal;
   }
 
-  .lp-hero-visual {
-    min-height: 75svh;
+  .lp-title-b {
+    align-self: flex-end;
+  }
+
+  .lp-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .lp-globe-wrap {
-    width: min(94vw, 70vh);
+    width: min(94vw, 62vh);
+  }
+
+  .lp-hero-bottom {
+    max-width: none;
   }
 
   .lp-scroll-line {
@@ -742,15 +796,6 @@
     font-size: 0.58rem;
   }
 
-  .lp-hero {
-    padding-top: 68px;
-  }
-
-  .lp-hero-copy {
-    min-height: 72svh;
-    padding: 4rem 1.25rem 3rem;
-  }
-
   .lp-eyebrow {
     margin-bottom: 4rem;
   }
@@ -759,32 +804,9 @@
     display: none;
   }
 
-  .lp-hero h1 {
-    font-size: clamp(3.25rem, 17vw, 5rem);
-    line-height: 0.88;
-  }
-
-  .lp-hero h1 span {
-    margin-left: 0.08em;
-  }
-
-  .lp-hero-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 4rem;
-  }
-
-  .lp-hero-visual {
-    min-height: 65svh;
-  }
-
   .lp-edition-stamp {
     width: 64px;
     height: 64px;
-  }
-
-  .lp-visual-note {
-    bottom: 2rem;
   }
 
   .lp-manifesto {

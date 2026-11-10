@@ -150,7 +150,7 @@ export default function RetroGlobe({ events = [], theme, focus = false, onArrive
         const dY = ((((TARGET_Y - f.fromY) % (2 * Math.PI)) + 3 * Math.PI) % (2 * Math.PI)) - Math.PI;
         rotY = f.fromY + dY * k;
         rotX = f.fromX + (TARGET_X - f.fromX) * k;
-        radius *= 1 + 2.4 * k * k;
+        radius *= 1 + 5.5 * k * k * k; // membesar hingga menutupi layar
         if (t >= 1 && !f.arrived) {
           f.arrived = true;
           arriveRef.current?.();
