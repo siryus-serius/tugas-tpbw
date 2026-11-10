@@ -1,0 +1,340 @@
+/* =========================================================================
+ * UI kit — diadaptasi dari Uiverse.io (lisensi MIT):
+ *   checkbox kaca (Shammy2002), radio orbit (risabbir), toggle sparkle (MuhammadHasann).
+ * Ukuran diseragamkan (18 px) agar rapi & simetris; varian warna radio:
+ * biru (#00a6ff), magenta (#e900ff), hijau (#00ffc2) mengikuti urutan opsi.
+ * ========================================================================= */
+
+/* ---------- Checkbox kaca ---------- */
+.ui-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ui-check input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ui-check .checkmark {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 38%;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
+  box-shadow:
+    0 4px 10px rgb(0 0 0 / 0.12),
+    inset 0 1px 2px rgb(255 255 255 / 0.5),
+    inset 0 -1px 2px rgb(0 0 0 / 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ui-check:hover input:not(:checked) ~ .checkmark {
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  border-color: color-mix(in srgb, var(--text) 50%, transparent);
+}
+
+.ui-check input:checked ~ .checkmark {
+  transform: scale(1.1);
+  background: linear-gradient(145deg, #004cff 0%, #0e34b3 50%, hsl(217deg 100% 25%) 100%);
+  border-color: rgb(255 255 255 / 0.45);
+  box-shadow:
+    0 6px 14px rgb(0 81 255 / 0.45),
+    inset 0 2px 4px rgb(255 255 255 / 0.6),
+    inset 0 -2px 6px rgb(255 255 255 / 0.35);
+}
+
+.ui-check .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2.5px;
+  width: 4px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  border-radius: 1px;
+  transform: rotate(45deg) scale(0.3);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ui-check input:checked ~ .checkmark::after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+
+.ui-check input:focus-visible ~ .checkmark {
+  outline: 2px solid #00a6ff;
+  outline-offset: 2px;
+}
+
+.ui-check:active input ~ .checkmark {
+  transform: scale(0.92);
+}
+
+/* ---------- Radio orbit ---------- */
+.ui-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.ui-radio {
+  --c: #00a6ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ui-radio:nth-child(3n + 2) {
+  --c: #e900ff;
+}
+
+.ui-radio:nth-child(3n + 3) {
+  --c: #00ffc2;
+}
+
+.ui-radio input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ui-radio .radio-custom {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ui-radio .radio-custom::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+  transform: scale(0);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ui-radio .radio-custom::after {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 2px solid transparent;
+  border-top-color: var(--c);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.4s ease;
+}
+
+.ui-radio:hover input:not(:checked) + .radio-custom {
+  transform: scale(1.1);
+  border-color: var(--muted);
+}
+
+.ui-radio:hover {
+  color: var(--text);
+}
+
+.ui-radio input:checked + .radio-custom {
+  border-color: var(--c);
+  transform: scale(0.9);
+}
+
+.ui-radio input:checked + .radio-custom::before {
+  transform: scale(1);
+}
+
+.ui-radio input:checked + .radio-custom::after {
+  opacity: 1;
+  transform: scale(1.15);
+  animation: ui-orbit 2.5s infinite linear;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--c) 60%, transparent);
+}
+
+.ui-radio input:checked ~ .radio-text {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.ui-radio input:disabled ~ * {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ui-radio input:focus-visible + .radio-custom {
+  outline: 2px solid var(--c);
+  outline-offset: 3px;
+}
+
+@keyframes ui-orbit {
+  to {
+    transform: scale(1.15) rotate(360deg);
+  }
+}
+
+/* ---------- Toggle sparkle (aksi utama) ---------- */
+.ui-toggle {
+  --primary: #54a8fc;
+  --light: #d9d9d9;
+  --dark: #121212;
+  --gray: #414344;
+  --gap: 4px;
+  --w: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ui-toggle .toggle-track {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 4px;
+  width: calc((var(--w) + var(--gap)) * 2);
+  height: 34px;
+  background-color: var(--dark);
+  border: 1px solid #777;
+  border-bottom: 0;
+  border-radius: 9999px;
+  box-sizing: content-box;
+  transition: all 0.3s ease-in-out;
+}
+
+.ui-toggle .toggle-track::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% -100%, rgb(58 155 252) 0%, rgb(12 12 12) 80%);
+  border-radius: 9999px;
+}
+
+.ui-toggle .cont-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--w);
+  height: 34px;
+  overflow: clip;
+  background-image: radial-gradient(circle at 50% 0%, #666 0%, var(--gray) 100%);
+  border: 1px solid #aaa;
+  border-bottom: 0;
+  border-radius: 9999px;
+  box-shadow: inset 0 -0.15rem 0.15rem var(--primary);
+  transition: transform 0.3s ease-in-out;
+}
+
+.ui-toggle .sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: calc(var(--sw) * 1px);
+  aspect-ratio: 1;
+  background-color: var(--light);
+  border-radius: 50%;
+  rotate: calc(1deg * var(--deg));
+  transform: translate(-50%, -50%);
+  animation: ui-sparkle calc(100s / var(--duration)) linear infinite;
+}
+
+.ui-toggle .icon {
+  width: 0.95rem;
+  fill: var(--light);
+}
+
+.ui-toggle input:checked + .toggle-track {
+  background-color: transparent;
+  border-color: #3d6970;
+  box-shadow: 0 1rem 2.5rem -2rem #0080ff;
+}
+
+.ui-toggle input:checked + .toggle-track .cont-icon {
+  overflow: visible;
+  background-image: radial-gradient(circle at 50% 0%, #045ab1 0%, var(--primary) 100%);
+  border-color: var(--primary);
+  transform: translateX(calc((var(--gap) * 2) + 100%)) rotate(-225deg);
+}
+
+.ui-toggle input:checked + .toggle-track .sparkle {
+  z-index: -1;
+  width: calc(var(--sw) * 1.5px);
+  background-color: #acacac;
+  animation-name: ui-sparkle-on;
+}
+
+.ui-toggle input:focus-visible + .toggle-track {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+@keyframes ui-sparkle {
+  to {
+    width: calc(var(--sw) * 0.5px);
+    transform: translate(2000%, -50%);
+  }
+}
+
+@keyframes ui-sparkle-on {
+  to {
+    width: calc(var(--sw) * 1px);
+    transform: translate(5000%, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-toggle .sparkle,
+  .ui-radio input:checked + .radio-custom::after {
+    animation: none;
+  }
+}
+
+/* Toggle tema di navbar (ringkas) */
+.theme-toggle .ui-toggle {
+  --w: 26px;
+  gap: 0;
+}
+
+.theme-toggle .ui-toggle .toggle-track,
+.theme-toggle .ui-toggle .cont-icon {
+  height: 26px;
+}

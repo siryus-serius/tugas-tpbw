@@ -1,0 +1,173 @@
+/* Kontrol peta: segmen, legenda, daftar, stabilitas lereng & prediksi. */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.seg {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.seg button {
+  border: 0;
+  background: var(--panel-2);
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.seg button.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.seg button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin: 5px 0;
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.dot.small {
+  width: 10px;
+  height: 10px;
+  margin: 0 2px;
+}
+
+/* ---------- Stabilitas lereng ---------- */
+.fs-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 8px 0 4px;
+}
+
+.fs-summary div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 2px;
+  border-radius: 6px;
+  border-top: 3px solid var(--c);
+  background: var(--panel-2);
+  font-size: 11px;
+}
+
+.fs-summary strong {
+  font-size: 18px;
+}
+
+.params summary {
+  cursor: pointer;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+.slider {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.slider input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.stability {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-left: 4px solid var(--c);
+  background: var(--panel-2);
+}
+
+.stability h3 {
+  font-size: 13px;
+  margin: 0 0 6px;
+}
+
+.stability dl {
+  margin-bottom: 6px;
+}
+
+.fs-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.fs-value strong {
+  font-size: 20px;
+  margin-left: 4px;
+}
+
+.fs-value .badge {
+  margin: 0;
+}
+
+.ramp {
+  height: 10px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #b4140c, #fa8a3c 45%, transparent 47%, transparent 53%, #5aaafa 55%, #1e50d2);
+}
+
+.ramp-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  padding: 6px;
+  font-size: 13px;
+}
+
+.list button:hover {
+  background: var(--panel-2);
+}

@@ -1,0 +1,278 @@
+/* Dashboard: bagian konten, kartu statistik, grafik, tabel kejadian, footer. */
+/* ---------- Bagian konten (dashboard, tabel, validasi) ---------- */
+.content-section {
+  width: min(1200px, calc(100% - 20px));
+  margin: 0 auto;
+  scroll-margin-top: 90px;
+}
+
+.section-head h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.section-head p {
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+.card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.card h2,
+.popover h2,
+.validation h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.stat strong {
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.stat span {
+  font-size: 13px;
+}
+
+.stat em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.callout {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--series-1);
+  border-radius: 8px;
+  background: var(--panel);
+  font-size: 14px;
+}
+
+.chart-grid,
+.panel-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.chart-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.panel-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Grafik (spesifikasi dataviz: batang ≤ 24 px, grid samar, label hanya nilai tertinggi) */
+.chart {
+  margin: 0;
+}
+
+.chart figcaption {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chart-wrap {
+  position: relative;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart .bar {
+  fill: var(--series-1);
+}
+
+.chart .grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.chart .axis {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.chart .tick,
+.chart .cat {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.chart .cat {
+  fill: var(--text);
+}
+
+.chart .val {
+  fill: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.chart .hit {
+  fill: transparent;
+  cursor: default;
+}
+
+.chart .hit:hover {
+  fill: color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+.chart-tip {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  gap: 2px;
+  min-width: 120px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  font-size: 12px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Tabel kejadian */
+.table-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.table-filters input[type='search'] {
+  flex: 1 1 260px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.table-filters select {
+  width: auto;
+  border-radius: 999px;
+  padding: 8px 12px;
+}
+
+.table-wrap {
+  max-height: 560px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.event-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--panel-2);
+  text-align: left;
+}
+
+.event-table th button {
+  padding: 10px 12px;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.event-table th:not(:has(button)) {
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.event-table td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.event-table tbody tr {
+  cursor: pointer;
+}
+
+.event-table tbody tr:hover {
+  background: var(--panel-2);
+}
+
+.event-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.event-table .nowrap {
+  white-space: nowrap;
+}
+
+.event-table .desc {
+  min-width: 220px;
+  color: var(--muted);
+}
+
+.event-table a + a {
+  margin-left: 4px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.tag::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.page-footer {
+  width: min(1200px, calc(100% - 20px));
+  margin: 0 auto;
+  line-height: 1.6;
+}

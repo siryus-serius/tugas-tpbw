@@ -1,7 +1,7 @@
 import { Popup } from 'react-leaflet';
-import AnomalyDetail from '../detail/AnomalyDetail';
-import EventDetail from '../detail/EventDetail';
-import QuakeDetail from '../detail/QuakeDetail';
+import AnomalyDetail from '../popup/AnomalyDetail';
+import EventDetail from '../popup/EventDetail';
+import QuakeDetail from '../popup/QuakeDetail';
 
 /** Popup info untuk titik terpilih (klik marker atau pilih dari daftar panel). */
 export default function SelectedPopup({ selected, data, stability, risk, quakes, onClose }) {

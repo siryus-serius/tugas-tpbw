@@ -1,0 +1,63 @@
+/*
+ * Token desain — palet retro dari desain Figma "Landing Page Globe Retro":
+ * kertas #f4f3ee & tinta #151512 (mode terang), dibalik untuk mode gelap.
+ * Seluruh aplikasi & landing memakai token ini; jangan menulis warna langsung di file lain.
+ * Tema dipasang lewat atribut <html data-theme="light|dark"> (lihat hooks/useTheme.js).
+ */
+:root {
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'Cascadia Mono', monospace;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --nav-h: 64px;
+  --radius: 14px;
+
+  /* Mode terang (bawaan) */
+  --paper: #f4f3ee;
+  --ink: #151512;
+  --paper-rgb: 244 243 238;
+  --ink-rgb: 21 21 18;
+  --bg: var(--paper);
+  --panel: #fbfaf6;
+  --panel-2: #ebe9e1;
+  --line: #cfccc1;
+  --text: var(--ink);
+  --muted: #6b6a63;
+  --accent: #b8742a;
+  --accent-ink: #fbfaf6;
+  --link: #8a4b1f;
+  --pill-bg: var(--ink);
+  --pill-ink: var(--paper);
+  --danger: #a3361f;
+  --danger-bg: #f3c9bb;
+  --series-1: #c2562d; /* terakota — lolos validasi dataviz pada permukaan #fbfaf6 */
+  color-scheme: light;
+  font-family: var(--font-sans);
+}
+
+:root[data-theme='dark'] {
+  --paper: #151512;
+  --ink: #f4f3ee;
+  --paper-rgb: 21 21 18;
+  --ink-rgb: 244 243 238;
+  --bg: var(--paper);
+  --panel: #1d1d1a;
+  --panel-2: #2a2a26;
+  --line: #3d3d38;
+  --text: var(--ink);
+  --muted: #a9a79e;
+  --accent: #d9a441;
+  --accent-ink: #151512;
+  --link: #e6b566;
+  --pill-bg: var(--ink);
+  --pill-ink: var(--paper);
+  --danger: #f0a08a;
+  --danger-bg: #7a2e1f;
+  --series-1: #d9773f; /* terakota — lolos validasi dataviz pada permukaan #1d1d1a */
+  color-scheme: dark;
+}
+
+body {
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}

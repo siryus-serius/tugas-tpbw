@@ -1,6 +1,6 @@
 import { COLOR_MODES } from '../../config/constants';
 import { FS_CLASSES, SATURATION_SCENARIOS, SOIL_PARAM_FIELDS } from '../../utils/factorOfSafety';
-import Segmented from './Segmented';
+import RadioGroup from '../ui/RadioGroup';
 
 /**
  * Kontrol stabilitas & prediksi: mode warna titik, skenario kejenuhan, ringkasan kelas FK,
@@ -22,11 +22,11 @@ export default function StabilityControls({ colorMode, setColorMode, visibleIds,
       <h2>Stabilitas lereng (FK) &amp; prediksi</h2>
       <div className="row">
         <span className="muted small">Warna titik</span>
-        <Segmented options={COLOR_MODES} value={colorMode} onChange={setColorMode} />
+        <RadioGroup options={COLOR_MODES} value={colorMode} onChange={setColorMode} />
       </div>
       <div className="row">
         <span className="muted small">Skenario air tanah</span>
-        <Segmented
+        <RadioGroup
           options={SATURATION_SCENARIOS}
           value={String(params.saturation)}
           onChange={(v) => updateParam('saturation', Number(v))}

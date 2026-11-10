@@ -1,0 +1,10 @@
+{
+  "description": "A minimalist landing page featuring an animated globe and a modern retro aesthetic, designed to showcase a brand or project with a clean, engaging visual experience.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

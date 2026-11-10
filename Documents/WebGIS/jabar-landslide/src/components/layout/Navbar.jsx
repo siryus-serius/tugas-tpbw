@@ -5,7 +5,7 @@ import SparkleToggle from '../ui/SparkleToggle';
  * Navbar "pill" menempel di atas: nama · menu pill (bagian halaman, aktif mengikuti scroll) · pemilih tahun.
  * Di HP: tombol ☰ membuka daftar menu.
  */
-export default function Navbar({ sections, active, onNavigate, years, year, setYear, validationBadge, theme, onToggleTheme }) {
+export default function Navbar({ sections, active, onNavigate, years, year, setYear, validationBadge, theme, onToggleTheme, onHome }) {
   const [open, setOpen] = useState(false);
   const i = years.indexOf(year);
   const go = (id) => {
@@ -16,7 +16,7 @@ export default function Navbar({ sections, active, onNavigate, years, year, setY
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <button className="brand-btn" onClick={() => go(sections[0].id)}>
+        <button className="brand-btn" onClick={onHome ?? (() => go(sections[0].id))} title="Kembali ke halaman pembuka">
           Longsor Jabar
         </button>
 

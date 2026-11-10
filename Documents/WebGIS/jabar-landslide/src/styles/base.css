@@ -1,0 +1,112 @@
+/* Dasar halaman: elemen, tipografi, utilitas, pesan layar terlalu kecil. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: var(--link);
+}
+
+/* ---------- Halaman ---------- */
+.page {
+  min-height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 40px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 12px;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.ring {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  z-index: 3000;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--danger-bg);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Layar terlalu kecil ---------- */
+.too-small {
+  display: none;
+}
+
+/* ---------- Terlalu kecil (< 320 px lebar atau < 360 px tinggi) ---------- */
+@media (max-width: 319px), (max-height: 359px) {
+  .too-small {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    text-align: center;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .too-small strong {
+    font-size: 20px;
+  }
+
+  .too-small span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .page {
+    display: none;
+  }
+}

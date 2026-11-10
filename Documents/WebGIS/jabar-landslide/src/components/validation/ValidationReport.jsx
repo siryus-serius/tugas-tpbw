@@ -4,7 +4,7 @@ const ICON = { pass: '✓', warn: '!', fail: '✗', info: 'i' };
 const LABEL = { pass: 'lolos', warn: 'peringatan', fail: 'gagal', info: 'info' };
 
 /** Menu "Validasi data": hasil pemeriksaan kevalidan dari pipeline bulanan (validation.json). */
-export default function ValidationMenu({ validation }) {
+export default function ValidationReport({ validation }) {
   const [openId, setOpenId] = useState(null);
   if (!validation) return <p className="muted small">Laporan validasi belum tersedia.</p>;
   const { summary, checks, data_month: month, generated_at: at, totals } = validation;

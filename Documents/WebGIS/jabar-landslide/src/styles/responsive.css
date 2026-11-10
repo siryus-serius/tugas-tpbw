@@ -1,0 +1,99 @@
+/* Penyesuaian tablet & HP (dimuat terakhir). */
+/* ---------- Tablet (≤ 1024 px) ---------- */
+@media (max-width: 1024px) {
+  .stat-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .panel-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pill {
+    padding: 6px 11px;
+  }
+}
+
+/* ---------- HP besar / tablet kecil (≤ 820 px) ---------- */
+@media (max-width: 820px) {
+  .navbar-inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .pill-nav {
+    display: none; /* diganti tombol ☰ */
+  }
+
+  .menu-toggle {
+    display: grid;
+  }
+
+  .chart-grid,
+  .panel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-stage {
+    height: 52vh;
+  }
+
+  .side {
+    grid-template-columns: 1fr;
+  }
+
+  .side .compare-stage {
+    height: 34vh;
+  }
+}
+
+/* ---------- HP (≤ 520 px) ---------- */
+@media (max-width: 520px) {
+  :root {
+    --nav-h: 56px;
+  }
+
+  .navbar-inner {
+    padding: 0 10px;
+  }
+
+  .stat-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat strong {
+    font-size: 22px;
+  }
+
+  .map-section {
+    height: calc(100svh - var(--nav-h) - 36px);
+    min-height: 420px;
+  }
+
+  .pill {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .modal-backdrop {
+    padding: 0;
+  }
+
+  .modal {
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    padding: 10px;
+  }
+
+  .info-popup .leaflet-popup-content {
+    width: min(320px, 78vw) !important;
+  }
+
+  .popup-body {
+    max-height: 48vh;
+  }
+
+  .popup-body dl {
+    grid-template-columns: 90px 1fr;
+  }
+}

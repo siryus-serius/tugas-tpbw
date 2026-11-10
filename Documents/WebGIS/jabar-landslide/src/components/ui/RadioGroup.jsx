@@ -4,7 +4,7 @@ import { useId } from 'react';
  * Grup pilihan tunggal bergaya radio orbit (adaptasi Uiverse.io/risabbir, MIT).
  * `options`: { value: label }. API sama dengan versi tombol segmen sebelumnya.
  */
-export default function Segmented({ options, value, onChange, isDisabled = () => false, disabledTitle }) {
+export default function RadioGroup({ options, value, onChange, isDisabled = () => false, disabledTitle }) {
   const name = useId();
   return (
     <div className="ui-radio-group" role="radiogroup">

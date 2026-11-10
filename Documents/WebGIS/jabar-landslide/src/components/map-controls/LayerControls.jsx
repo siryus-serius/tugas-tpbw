@@ -1,6 +1,6 @@
 import { BASEMAPS, LAYERS, ORBITS } from '../../config/constants';
 import Checkbox from '../ui/Checkbox';
-import Segmented from './Segmented';
+import RadioGroup from '../ui/RadioGroup';
 
 export default function LayerControls({ filters }) {
   const { layers, toggleLayer, year, orbit, orbitsAvailable, setOrbit, basemap, setBasemap } = filters;
@@ -16,7 +16,7 @@ export default function LayerControls({ filters }) {
       ))}
       <div className="row">
         <span className="muted small">Geometri InSAR</span>
-        <Segmented
+        <RadioGroup
           options={ORBITS}
           value={orbit}
           onChange={setOrbit}
@@ -26,7 +26,7 @@ export default function LayerControls({ filters }) {
       </div>
       <div className="row">
         <span className="muted small">Peta dasar</span>
-        <Segmented options={basemapLabels} value={basemap} onChange={setBasemap} />
+        <RadioGroup options={basemapLabels} value={basemap} onChange={setBasemap} />
       </div>
     </section>
   );

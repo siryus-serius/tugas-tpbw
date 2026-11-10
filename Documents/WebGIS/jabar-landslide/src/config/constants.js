@@ -2,6 +2,9 @@
 
 export const MAP_CENTER = [-6.9, 107.6];
 
+/** Titik acuan Jawa Barat (Bandung) untuk globe & koordinat di halaman pembuka. */
+export const JABAR = { lat: -6.9147, lon: 107.6098 };
+
 export const BASEMAPS = {
   osm: {
     label: 'Jalan',

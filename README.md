@@ -24,12 +24,24 @@ scripts/
   stages/insar.js                anomali pergeseran tanah → insar/{anomalies.geojson, summary.json, *.png}
   lib/                           http, stac, licsar, raster, png, geo, terrain (modul murni & I/O terpisah)
 Documents/WebGIS/jabar-landslide/src/
-  App.jsx                        komposisi saja: data → filter → gempa → FK → kerawanan → tampilan
+  main.jsx · App.jsx             titik masuk; App memuat data & tema lalu memilih halaman
+  pages/                         LandingPage (globe pembuka) · MapPage (peta → dashboard → kejadian → validasi)
+  components/
+    landing/                     RetroGlobe, CloudField (desain Figma "Landing Page Globe Retro")
+    layout/                      Navbar pill
+    map/                         MapView & lapisan peta (kejadian, anomali, gempa, InSAR, popup terpilih)
+    map-controls/                toolbar peta: lapisan, citra Sentinel, analisis FK, legenda
+    popup/                       isi popup: detail kejadian/anomali/gempa, kartu FK & kerawanan, citra
+    compare/                     penampil perbandingan sebelum/sesudah (Wayback, Sentinel, dNDVI)
+    dashboard/                   statistik, grafik, tabel kejadian, daftar prediksi/anomali/gempa
+    validation/                  laporan validasi data
+    ui/                          komponen dasar: Checkbox, RadioGroup, SparkleToggle (Uiverse.io, MIT)
+  hooks/                         state & data (useWebgisData, useMapFilters, useTheme, usePageScroll, …)
+  services/                      akses API: data statis, BMKG, Planetary Computer, Wayback, dNDVI
+  utils/                         kalkulasi murni: Faktor Keamanan, kerawanan, seismik, arah, statistik
   config/constants.js            konstanta tampilan & domain
-  services/                      dataApi (JSON statis), soilMoistureApi (Open-Meteo)
-  hooks/                         useWebgisData, useMapFilters, useMonitoringPoints, useSoilMoisture, useSlopeStability
-  utils/                         factorOfSafety (rumus FK & klasifikasi), sentinelImagery, markerColors, format
-  components/map|sidebar|detail/ sub-komponen presentasi
+  styles/                        tokens (tema) → base → per fitur → ui-kit → landing → responsive
+design/landing-globe-retro/      ekspor asli Figma Make (arsip acuan desain, tidak ikut di-build)
 ```
 
 Tidak ada server, database, maupun secret. Semua sumber data publik **tanpa login**:

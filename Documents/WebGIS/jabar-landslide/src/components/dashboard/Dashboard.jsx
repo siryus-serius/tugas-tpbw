@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { eventStats } from '../../utils/eventStats';
-import AnomalyList from '../controls/AnomalyList';
-import PredictionList from '../info/PredictionList';
-import QuakeList from '../info/QuakeList';
+import AnomalyList from './AnomalyList';
+import PredictionList from './PredictionList';
+import QuakeList from './QuakeList';
 import BarChart from './BarChart';
 
 function Stat({ value, label, note }) {
