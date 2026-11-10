@@ -105,8 +105,9 @@ jobs:
             exit 0
           fi
           git commit -m "chore(data): pembaruan bulanan $(TZ=Asia/Jakarta date +%Y-%m)"
+          git status --short # jejak untuk diagnosis bila gagal
           for i in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main && git push origin HEAD:main && exit 0
             sleep $((i * 10))
           done
           echo "Gagal push setelah 3 percobaan" && exit 1
