@@ -6,6 +6,7 @@ import {
   SEVERITY,
   UNKNOWN_COLOR,
 } from '../../config/constants';
+import { BIG_DEATHS } from '../../config/constants';
 import { FS_CLASSES } from '../../utils/factorOfSafety';
 import { RISK_CLASSES } from '../../utils/susceptibility';
 
@@ -86,6 +87,7 @@ export default function MapLegend({ colorMode, layers, period, region, galura })
         <Row symbol={<span className="dot dashed" style={{ background: EVENT_COLOR.current }} />}>
           Lokasi perkiraan (pusat desa)
         </Row>
+        <Row symbol={<span className="lg-big" />}>Kejadian besar (≥ {BIG_DEATHS} korban) pada tahun terpilih</Row>
       </Group>
 
       <Group no="II" title={`Jumlah kejadian per kabupaten/kota (zoom ≤ ${AGGREGATE_MAX_ZOOM})`} inactive={!layers.events}>

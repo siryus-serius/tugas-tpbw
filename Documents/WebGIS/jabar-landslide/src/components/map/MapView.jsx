@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { BASEMAPS, MAP_CENTER } from '../../config/constants';
 import { yearLabel } from '../../utils/years';
 import AnomalyLayer from './AnomalyLayer';
+import BigEventPulse from './BigEventPulse';
 import EventsByZoom from './EventsByZoom';
 import FlyToSelected from './FlyToSelected';
 import HeatLayer from './HeatLayer';
@@ -14,7 +15,7 @@ import SelectedPopup from './SelectedPopup';
 
 const ADM_STYLE = { color: '#64748b', weight: 1, fillOpacity: 0, interactive: false };
 
-export default function MapView({ data, filters, imagery, stability, risk, quakes, region, selected, onSelect, theme }) {
+export default function MapView({ data, filters, imagery, stability, risk, quakes, region, bigEvents = [], selected, onSelect, theme }) {
   const { basemap, layers, year, years, overlays, yearAnomalies, colorMode } = filters;
   const bm = BASEMAPS[basemap];
   const selectedId = selected?.feature.id;
@@ -62,6 +63,7 @@ export default function MapView({ data, filters, imagery, stability, risk, quake
           onSelect={onSelect}
         />
       )}
+      {layers.events && <BigEventPulse events={bigEvents} onSelect={onSelect} />}
       {layers.anomalies && <AnomalyLayer anomalies={yearAnomalies} ctx={ctx} selectedId={selectedId} onSelect={onSelect} />}
 
       {selected && (

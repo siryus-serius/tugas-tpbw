@@ -17,6 +17,10 @@ import useSentinelMosaic from '../hooks/useSentinelMosaic';
 import useSlopeStability from '../hooks/useSlopeStability';
 import useSusceptibility from '../hooks/useSusceptibility';
 import useRegionGroups from '../hooks/useRegionGroups';
+import useTimelinePlayer from '../hooks/useTimelinePlayer';
+import TimelinePlayer from '../components/map-controls/TimelinePlayer';
+import { BIG_DEATHS } from '../config/constants';
+import { isAllYears } from '../utils/years';
 import { yearLabel } from '../utils/years';
 
 const SECTIONS = [
@@ -48,6 +52,17 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
     month: filters.imageryMonth,
   });
   const region = useRegionGroups(data, filters);
+  const player = useTimelinePlayer(filters.years, filters.year, filters.setYear);
+  // Kejadian besar pada tahun terpilih (bukan mode semua tahun), terbesar dulu
+  const bigEvents = useMemo(
+    () =>
+      isAllYears(filters.year)
+        ? []
+        : region.periodEvents
+            .filter((f) => (f.properties.korban_meninggal ?? 0) >= BIG_DEATHS)
+            .sort((a, b) => b.properties.korban_meninggal - a.properties.korban_meninggal),
+    [region.periodEvents, filters.year]
+  );
   const { active, scrollTo } = usePageScroll(SECTION_IDS);
   const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly' | 'quake', feature }
 
@@ -143,11 +158,13 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
             risk={risk}
             quakes={quakes}
             region={region}
+            bigEvents={bigEvents}
             selected={selected}
             onSelect={setSelected}
             theme={theme}
           />
           <MapToolbar items={toolbar} />
+          <TimelinePlayer years={filters.years} year={filters.year} setYear={filters.setYear} player={player} bigEvents={bigEvents} />
         </section>
 
         <section id="dashboard" className="content-section">

@@ -366,3 +366,12 @@
   opacity: 0.35;
   cursor: not-allowed;
 }
+
+.lg-big {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #dc2626;
+  box-shadow: 0 0 0 3px rgb(220 38 38 / 0.35);
+}

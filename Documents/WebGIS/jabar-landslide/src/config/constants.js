@@ -45,6 +45,9 @@ export const EVENT_COLOR = { current: '#7c3aed', other: '#94a3b8' };
 export const UNKNOWN_COLOR = '#64748b';
 export const QUAKE_COLOR = { BMKG: '#e11d48', USGS: '#0ea5e9' };
 
+/** Ambang "kejadian longsor besar" (jumlah korban meninggal) untuk linimasa & penanda berdenyut. */
+export const BIG_DEATHS = 5;
+
 /** Pada zoom ≤ nilai ini, titik kejadian digabung menjadi angka per kabupaten/kota. */
 export const AGGREGATE_MAX_ZOOM = 8;
 
