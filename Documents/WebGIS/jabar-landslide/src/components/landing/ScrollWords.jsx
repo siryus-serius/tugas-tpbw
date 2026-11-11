@@ -14,18 +14,24 @@ export default function ScrollWords() {
   const lead = useRef(null);
   const [active, setActive] = useState(0);
   const [done, setDone] = useState(false); // sudah lewat kata terakhir → seluruh kalimat disembunyikan
+  // Desktop: saat kata terakhir aktif, awalan bergeser ke tepat di atas kata itu (tersusun 2 baris)
+  const [shift, setShift] = useState({ x: 0, y: 0 });
+  const shiftRef = useRef(shift);
 
   useEffect(() => {
     let raf = 0;
     const update = () => {
       raf = 0;
       const items = [...(list.current?.children ?? [])];
-      const ref = lead.current?.getBoundingClientRect();
-      if (!items.length || !ref) return;
+      const raw = lead.current?.getBoundingClientRect();
+      if (!items.length || !raw) return;
+      // Posisi awalan TANPA pergeseran susun (agar perhitungan tidak terpengaruh animasinya)
+      const s = shiftRef.current;
+      const ref = { top: raw.top - s.y, left: raw.left - s.x, height: raw.height };
       // HP: awalan di atas daftar (kolom) → slot kata tepat di bawah awalan
       const column = getComputedStyle(lead.current.parentElement).flexDirection === 'column';
       const lineH = items[0].getBoundingClientRect().height;
-      const y = column ? ref.bottom + lineH / 2 : ref.top + ref.height / 2;
+      const y = column ? ref.top + ref.height + lineH / 2 : ref.top + ref.height / 2;
       let best = 0;
       let bestD = Infinity;
       items.forEach((el, i) => {
@@ -34,9 +40,15 @@ export default function ScrollWords() {
         if (d < bestD) [best, bestD] = [i, d];
       });
       setActive(best);
+      const last = best === items.length - 1;
+      const next = !column && last ? { x: Math.round(list.current.getBoundingClientRect().left - ref.left), y: -Math.round(lineH) } : { x: 0, y: 0 };
+      if (next.x !== s.x || next.y !== s.y) {
+        shiftRef.current = next;
+        setShift(next);
+      }
       // Sudah paling bawah: awalan tidak lagi menempel & mulai ikut tergulir → sembunyikan seluruh kalimat
       const stickyTop = parseFloat(getComputedStyle(lead.current).top) || 0;
-      setDone(best === items.length - 1 && ref.top < stickyTop - lineH * 0.6); // beri jeda ±½ baris
+      setDone(last && ref.top < stickyTop - lineH * 0.6); // beri jeda ±½ baris
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -53,8 +65,8 @@ export default function ScrollWords() {
 
   return (
     <section className="lp-words" aria-label="Lereng bisa kita pantau, petakan, ukur, pahami, prediksi, waspadai, dan selamatkan.">
-      <div className={`lp-words-inner${done ? ' is-done' : ''}`} aria-hidden="true">
-        <h2 ref={lead} className="lp-words-lead">Lereng bisa kita</h2>
+      <div className={`lp-words-inner${done ? ' is-done' : ''}${shift.y ? ' is-stacked' : ''}`} aria-hidden="true">
+        <h2 ref={lead} className="lp-words-lead" style={{ transform: `translate(${shift.x}px, ${shift.y}px)` }}>Lereng bisa kita</h2>
         <ul ref={list} className="lp-words-list">
           {WORDS.map((w, i) => (
             <li key={w} data-i={i} className={i === active ? 'is-active' : i < active ? 'is-past' : undefined}>

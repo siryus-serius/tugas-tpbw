@@ -858,6 +858,16 @@
   color: var(--ink);
 }
 
+/* Desktop: awalan bergeser halus ke tepat di atas kata terakhir; kata sebelumnya disembunyikan
+   agar tidak tertimpa */
+.lp-words-lead {
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.lp-words-inner.is-stacked .lp-words-list li.is-past {
+  opacity: 0;
+}
+
 /* Setelah kata terakhir: seluruh kalimat (awalan + semua kata) memudar hilang */
 .lp-words-inner {
   transition:
