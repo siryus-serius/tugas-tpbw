@@ -856,6 +856,15 @@
   font: inherit;
   white-space: nowrap;
   color: var(--ink);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+/* Setelah kata terakhir: awalan memudar hilang, tidak ikut tergulir */
+.lp-words-lead.is-done {
+  opacity: 0;
+  transform: translateY(-0.2em);
 }
 
 .lp-words-list {

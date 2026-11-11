@@ -13,6 +13,7 @@ export default function ScrollWords() {
   const list = useRef(null);
   const lead = useRef(null);
   const [active, setActive] = useState(0);
+  const [done, setDone] = useState(false); // awalan sudah lepas dari posisi menempel (paling bawah)
 
   useEffect(() => {
     let raf = 0;
@@ -33,6 +34,9 @@ export default function ScrollWords() {
         if (d < bestD) [best, bestD] = [i, d];
       });
       setActive(best);
+      // Sudah paling bawah: awalan tidak lagi menempel & mulai ikut tergulir ke atas → sembunyikan
+      const stickyTop = parseFloat(getComputedStyle(lead.current).top) || 0;
+      setDone(best === items.length - 1 && ref.top < stickyTop - lineH * 0.6); // beri jeda ±½ baris
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -50,7 +54,7 @@ export default function ScrollWords() {
   return (
     <section className="lp-words" aria-label="Lereng bisa kita pantau, petakan, ukur, pahami, prediksi, waspadai, dan selamatkan.">
       <div className="lp-words-inner" aria-hidden="true">
-        <h2 ref={lead} className="lp-words-lead">Lereng bisa kita</h2>
+        <h2 ref={lead} className={`lp-words-lead${done ? ' is-done' : ''}`}>Lereng bisa kita</h2>
         <ul ref={list} className="lp-words-list">
           {WORDS.map((w, i) => (
             <li key={w} data-i={i} className={i === active ? 'is-active' : i < active ? 'is-past' : undefined}>
