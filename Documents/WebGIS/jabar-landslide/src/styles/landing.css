@@ -908,6 +908,12 @@
 
   .lp-words-lead {
     top: calc(50svh - 1.6em);
+    z-index: 1;
+  }
+
+  /* Kata yang sudah lewat memudar sebelum menabrak awalan di atasnya */
+  .lp-words-list li.is-past {
+    opacity: 0;
   }
 
   .lp-words-outro {

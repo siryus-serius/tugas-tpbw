@@ -5,8 +5,9 @@ const WORDS = ['pantau.', 'petakan.', 'ukur.', 'pahami.', 'prediksi.', 'waspadai
 /**
  * Kalimat besar dengan kata yang berganti saat digulir: "Lereng bisa kita {pantau. petakan. …}".
  * Awalan menempel di tengah layar; kata yang sedang melintasi garis tengah menyala (aksen),
- * kata lain meredup. Kata aktif = kata yang pusatnya paling dekat dengan garis awalan (dihitung
- * per frame saat digulir; tetap akurat dengan scroll halus Lenis, jalan di semua browser).
+ * kata lain meredup. Kata aktif = kata yang pusatnya paling dekat dengan "slot" kata: di samping
+ * awalan (desktop, tata letak baris) atau tepat di bawahnya (HP, tata letak kolom). Dihitung per
+ * frame saat digulir; tetap akurat dengan scroll halus Lenis, jalan di semua browser.
  */
 export default function ScrollWords() {
   const list = useRef(null);
@@ -20,7 +21,10 @@ export default function ScrollWords() {
       const items = [...(list.current?.children ?? [])];
       const ref = lead.current?.getBoundingClientRect();
       if (!items.length || !ref) return;
-      const y = ref.top + ref.height / 2;
+      // HP: awalan di atas daftar (kolom) → slot kata tepat di bawah awalan
+      const column = getComputedStyle(lead.current.parentElement).flexDirection === 'column';
+      const lineH = items[0].getBoundingClientRect().height;
+      const y = column ? ref.bottom + lineH / 2 : ref.top + ref.height / 2;
       let best = 0;
       let bestD = Infinity;
       items.forEach((el, i) => {
