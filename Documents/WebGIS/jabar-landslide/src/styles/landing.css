@@ -926,11 +926,21 @@
 
   .lp-words-inner {
     flex-direction: column;
+    gap: 0.35em; /* ruang antara awalan & kata di bawahnya */
   }
 
-  .lp-words-lead {
+  /* Awalan berhenti menempel tepat saat kata terakhir tiba di bawahnya: margin bawah = 1 baris
+     kata + jarak (0,35em) membuat batas akhir sticky maju satu baris; daftar ditarik balik
+     dengan margin negatif yang sama sehingga tata letak tidak berubah. */
+  /* Selektor 2 kelas: harus mengalahkan aturan umum ".lp h2 { margin: 0 }" */
+  .lp-words .lp-words-lead {
     top: calc(50svh - 1.6em);
     z-index: 1;
+    margin-bottom: 1.35em;
+  }
+
+  .lp-words-list {
+    margin-top: -1.35em;
   }
 
   /* Kata yang sudah lewat memudar sebelum menabrak awalan di atasnya */
