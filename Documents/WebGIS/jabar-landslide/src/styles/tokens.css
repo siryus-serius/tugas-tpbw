@@ -30,6 +30,11 @@
   --danger: #a3361f;
   --danger-bg: #f3c9bb;
   --series-1: #c2562d; /* terakota — lolos validasi dataviz pada permukaan #fbfaf6 */
+  /* Status validasi — warna tua agar terbaca di permukaan terang (kontras ≥ 4,5:1 pada #ebe9e1) */
+  --status-pass: #166534;
+  --status-warn: #854d0e;
+  --status-fail: #b91c1c;
+  --status-info: #1d4ed8;
   color-scheme: light;
   font-family: var(--font-sans);
 }
@@ -53,6 +58,10 @@
   --danger: #f0a08a;
   --danger-bg: #7a2e1f;
   --series-1: #d9773f; /* terakota — lolos validasi dataviz pada permukaan #1d1d1a */
+  --status-pass: #4ade80;
+  --status-warn: #facc15;
+  --status-fail: #f87171;
+  --status-info: #60a5fa;
   color-scheme: dark;
 }
 

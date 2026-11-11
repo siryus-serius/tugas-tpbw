@@ -10,29 +10,30 @@
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 12px;
+  font-weight: 600;
   background: var(--panel-2);
 }
 
 .val-chip.pass,
 .val-icon.pass,
 .val-badge.pass {
-  color: #4ade80;
+  color: var(--status-pass);
 }
 
 .val-chip.warn,
 .val-icon.warn,
 .val-badge.warn {
-  color: #facc15;
+  color: var(--status-warn);
 }
 
 .val-chip.fail,
 .val-icon.fail,
 .val-badge.fail {
-  color: #f87171;
+  color: var(--status-fail);
 }
 
 .val-icon.info {
-  color: #60a5fa;
+  color: var(--status-info);
 }
 
 .validation h4 {
