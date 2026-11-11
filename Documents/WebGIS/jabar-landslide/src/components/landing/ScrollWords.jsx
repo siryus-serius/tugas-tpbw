@@ -46,7 +46,7 @@ export default function ScrollWords() {
   return (
     <section className="lp-words" aria-label="Lereng bisa kita pantau, petakan, ukur, pahami, prediksi, waspadai, dan selamatkan.">
       <div className="lp-words-inner" aria-hidden="true">
-        <h2 ref={lead} className="lp-words-lead">Lereng bisa kita&nbsp;</h2>
+        <h2 ref={lead} className="lp-words-lead">Lereng bisa kita</h2>
         <ul ref={list} className="lp-words-list">
           {WORDS.map((w, i) => (
             <li key={w} data-i={i} className={i === active ? 'is-active' : i < active ? 'is-past' : undefined}>
