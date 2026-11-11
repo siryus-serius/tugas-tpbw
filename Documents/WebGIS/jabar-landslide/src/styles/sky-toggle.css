@@ -1,0 +1,211 @@
+/*
+ * Tombol tema langit (SkyToggle). Satu variabel --dark (0 → 1) menggerakkan semua lapisan:
+ * warna langit, posisi matahari/bulan, awan turun, bintang membesar. Ukuran fluid via --sky-w.
+ */
+.sky-toggle {
+  --sky-w: clamp(54px, 4vw + 40px, 74px);
+  --speed: 0.55s;
+  --ease: cubic-bezier(0.4, -0.3, 0.6, 1.3);
+  --sun: hsl(45 92% 60%);
+  --moon: hsl(212 13% 84%);
+  --crater: hsl(221 16% 66%);
+  position: relative;
+  flex-shrink: 0;
+  width: var(--sky-w);
+  aspect-ratio: 5 / 2;
+  padding: 0;
+  border: 0;
+  border-radius: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: hsl(
+    calc(204 + var(--dark, 0) * 25) calc((53 - var(--dark, 0) * 28) * 1%) calc((47 - var(--dark, 0) * 31) * 1%)
+  );
+  box-shadow:
+    0 calc(var(--sky-w) * 0.02) calc(var(--sky-w) * 0.01) calc(var(--sky-w) * -0.0025) hsl(210 10% 100% / 0.9),
+    0 calc(var(--sky-w) * -0.02) calc(var(--sky-w) * 0.01) calc(var(--sky-w) * -0.0025) hsl(210 10% 10% / 0.2);
+  transition: background var(--speed) var(--ease);
+}
+
+.sky-toggle[aria-pressed='true'] {
+  --dark: 1;
+}
+
+.sky-toggle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 calc(var(--sky-w) * -0.03) calc(var(--sky-w) * 0.03) 0 hsl(210 10% 10% / 0.18) inset,
+    0 calc(var(--sky-w) * 0.03) calc(var(--sky-w) * 0.03) 0 hsl(210 10% 10% / 0.6) inset;
+  pointer-events: none;
+}
+
+.sky-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.sky-toggle__content {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  container-type: inline-size;
+}
+
+/* ---------- Matahari / bulan ---------- */
+.sky-toggle__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  aspect-ratio: 1;
+  padding: 7%;
+  z-index: 3;
+  transition: translate var(--speed) var(--ease);
+  translate: calc(var(--dark, 0) * (100cqi - 100%)) 0;
+}
+
+.sky-toggle__glow {
+  position: absolute;
+  inset: -60%;
+  border-radius: 50%;
+  background:
+    radial-gradient(hsl(0 0% 100% / 0.22) 38%, transparent 38.5%),
+    radial-gradient(hsl(0 0% 100% / 0.16) 54%, transparent 54.5%),
+    radial-gradient(hsl(0 0% 100% / 0.1) 70%, transparent 70.5%);
+  z-index: -1;
+}
+
+.sky-sun {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--sun);
+  box-shadow:
+    calc(var(--sky-w) * 0.012) calc(var(--sky-w) * 0.012) calc(var(--sky-w) * 0.02) 0 hsl(210 10% 100% / 0.9) inset,
+    calc(var(--sky-w) * -0.012) calc(var(--sky-w) * -0.012) calc(var(--sky-w) * 0.02) 0 hsl(210 10% 20% / 0.45) inset;
+}
+
+.sky-moon {
+  position: absolute;
+  inset: -1%;
+  border-radius: 50%;
+  background: var(--moon);
+  transition: translate var(--speed) ease-in-out;
+  translate: calc((100 - var(--dark, 0) * 100) * 1%) 0;
+  box-shadow:
+    calc(var(--sky-w) * 0.012) calc(var(--sky-w) * 0.012) calc(var(--sky-w) * 0.02) 0 hsl(210 10% 100% / 0.9) inset,
+    calc(var(--sky-w) * -0.012) calc(var(--sky-w) * -0.012) calc(var(--sky-w) * 0.02) 0 hsl(210 10% 10% / 0.9) inset;
+}
+
+.sky-crater {
+  position: absolute;
+  width: calc(var(--size) * 1%);
+  aspect-ratio: 1;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  border-radius: 50%;
+  background: var(--crater);
+  box-shadow: calc(var(--sky-w) * 0.006) calc(var(--sky-w) * 0.006) calc(var(--sky-w) * 0.006) 0 hsl(210 10% 6% / 0.25) inset;
+}
+
+.sky-crater:nth-child(1) {
+  --size: 18;
+  --x: 40;
+  --y: 15;
+}
+
+.sky-crater:nth-child(2) {
+  --size: 20;
+  --x: 65;
+  --y: 58;
+}
+
+.sky-crater:nth-child(3) {
+  --size: 34;
+  --x: 18;
+  --y: 40;
+}
+
+/* ---------- Awan: di siang hari menutup bagian bawah, turun keluar saat malam ---------- */
+.sky-toggle__clouds {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70%;
+  z-index: 2;
+  transition: translate var(--speed) var(--ease);
+  translate: 0 calc(var(--dark, 0) * 110%);
+}
+
+.sky-toggle__clouds--back {
+  z-index: 1;
+  translate: 0 calc(var(--dark, 0) * 110% - 12%);
+  background:
+    radial-gradient(circle at 98% 58%, hsl(0 0% 100% / 0.55) 24%, transparent 25%),
+    radial-gradient(circle at 80% 78%, hsl(0 0% 100% / 0.55) 22%, transparent 23%),
+    radial-gradient(circle at 62% 92%, hsl(0 0% 100% / 0.55) 20%, transparent 21%),
+    radial-gradient(circle at 44% 104%, hsl(0 0% 100% / 0.55) 22%, transparent 23%);
+  background-size: 100% 100%;
+}
+
+.sky-toggle__clouds--front {
+  transition-delay: 0.05s;
+  background:
+    radial-gradient(circle at 100% 70%, #fff 22%, transparent 23%),
+    radial-gradient(circle at 84% 92%, #fff 22%, transparent 23%),
+    radial-gradient(circle at 66% 104%, #fff 20%, transparent 21%),
+    radial-gradient(circle at 46% 118%, #fff 22%, transparent 23%);
+}
+
+/* ---------- Bintang: muncul & berkelip saat malam ---------- */
+.sky-toggle__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: translate var(--speed) var(--ease);
+  translate: 0 calc((1 - var(--dark, 0)) * -100%);
+}
+
+.sky-star {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--sky-w) * 0.04 * var(--s));
+  aspect-ratio: 1;
+  background: #fff;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  scale: calc(0.25 + var(--dark, 0) * 0.75);
+  transition: scale var(--speed) calc(var(--speed) * 0.5) var(--ease);
+  animation: sky-twinkle calc(3s + var(--i) * 0.6s) calc(var(--i) * -0.7s) infinite;
+}
+
+@keyframes sky-twinkle {
+  0%,
+  40%,
+  60%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-toggle,
+  .sky-toggle * {
+    transition-duration: 0.01s !important;
+    animation: none !important;
+  }
+}

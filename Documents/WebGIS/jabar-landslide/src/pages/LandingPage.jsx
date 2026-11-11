@@ -2,7 +2,9 @@ import { useState } from 'react';
 import CloudField from '../components/landing/CloudField';
 import RetroGlobe from '../components/landing/RetroGlobe';
 import { JABAR } from '../config/constants';
-import SparkleToggle from '../components/ui/SparkleToggle';
+import GalaxyButton from '../components/ui/GalaxyButton';
+import ScrollWords from '../components/landing/ScrollWords';
+import SkyToggle from '../components/ui/SkyToggle';
 import usePageScroll from '../hooks/usePageScroll';
 
 /**
@@ -69,9 +71,7 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
           <button onClick={() => enter('dashboard')}>Dashboard</button>
         </nav>
         <div className="lp-header-right">
-          <span className="theme-toggle">
-            <SparkleToggle checked={theme === 'dark'} onChange={onToggleTheme} label="Mode gelap" />
-          </span>
+          <SkyToggle dark={theme === 'dark'} onToggle={onToggleTheme} />
           <button className="lp-nav-cta" onClick={() => enter('peta')}>
             Jelajahi <ArrowIcon />
           </button>
@@ -124,9 +124,9 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
             Peta kejadian longsor, pergeseran tanah dari satelit, dan gempa bumi di Jawa Barat — {deaths || '…'} korban jiwa
             tercatat sejak 2021, agar lereng berisiko terbaca lebih awal.
           </p>
-          <button className="lp-primary-button" onClick={() => enter('peta')}>
+          <GalaxyButton size="lg" className="lp-primary-button" onClick={() => enter('peta')}>
             Masuk ke peta <ArrowIcon />
-          </button>
+          </GalaxyButton>
         </div>
 
         <p className="lp-visual-note lp-fade">
@@ -139,6 +139,10 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
           <span>GULIR UNTUK MENGENAL</span>
         </div>
       </section>
+
+      <div className="lp-fade">
+        <ScrollWords />
+      </div>
 
       <section className="lp-manifesto" id="tentang">
         <div className="lp-kicker">Tentang proyek</div>

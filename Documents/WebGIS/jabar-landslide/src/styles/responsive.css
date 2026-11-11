@@ -53,7 +53,21 @@
   }
 
   .navbar-inner {
-    padding: 0 10px;
+    gap: 8px;
+    padding: 0 8px;
+  }
+
+  .navbar-right {
+    gap: 6px;
+  }
+
+  /* Pemilih tahun ringkas: panah disembunyikan, dropdown tetap */
+  .year-pill button {
+    display: none;
+  }
+
+  .year-pill select {
+    padding: 0 6px 0 10px;
   }
 
   .stat-row {

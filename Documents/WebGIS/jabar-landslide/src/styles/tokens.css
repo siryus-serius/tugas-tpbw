@@ -10,6 +10,10 @@
   --font-serif: Georgia, 'Times New Roman', serif;
   --nav-h: 64px;
   --radius: 14px;
+  /* Ukuran kontrol fluid: menyesuaikan lebar layar (HP → desktop) */
+  --ctl-h: clamp(32px, 0.6vw + 29px, 38px);
+  --ctl-px: clamp(9px, 0.8vw + 5px, 14px);
+  --ctl-fs: clamp(12.5px, 0.2vw + 11.8px, 14px);
 
   /* Mode terang (bawaan) */
   --paper: #f4f3ee;

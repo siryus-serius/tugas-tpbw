@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import TopoBackground from './components/ui/TopoBackground';
 import useTheme from './hooks/useTheme';
 import useWebgisData from './hooks/useWebgisData';
 import LandingPage from './pages/LandingPage';
@@ -31,9 +32,14 @@ export default function App() {
     setSection(null);
   };
 
-  return section ? (
-    <MapPage data={data} theme={theme} onToggleTheme={toggleTheme} initialSection={section} onHome={home} />
-  ) : (
-    <LandingPage data={data} theme={theme} onToggleTheme={toggleTheme} onEnter={enter} />
+  return (
+    <>
+      <TopoBackground />
+      {section ? (
+        <MapPage data={data} theme={theme} onToggleTheme={toggleTheme} initialSection={section} onHome={home} />
+      ) : (
+        <LandingPage data={data} theme={theme} onToggleTheme={toggleTheme} onEnter={enter} />
+      )}
+    </>
   );
 }

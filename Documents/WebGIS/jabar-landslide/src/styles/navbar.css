@@ -22,13 +22,10 @@
   padding: 0 16px;
 }
 
+/* Tombol brand memakai GalaxyButton (galaxy-button.css) */
 .brand-btn {
   justify-self: start;
-  border: 0;
-  background: none;
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: 0.01em;
+  min-width: 0;
 }
 
 .pill-nav,
@@ -45,11 +42,12 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  min-height: var(--ctl-h);
+  padding: 0 var(--ctl-px);
   border: 0;
   border-radius: 999px;
   background: none;
-  font-size: 14px;
+  font-size: var(--ctl-fs);
   white-space: nowrap;
   transition: background 0.2s;
 }
@@ -79,9 +77,10 @@
   box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.25);
 }
 
+/* Ukuran ikut token fluid --ctl-* */
 .year-pill button {
-  width: 30px;
-  height: 34px;
+  width: calc(var(--ctl-h) * 0.85);
+  height: var(--ctl-h);
   border: 0;
   background: none;
   color: var(--pill-ink);
@@ -99,14 +98,14 @@
   background: none;
   color: var(--pill-ink);
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--ctl-fs);
   padding: 0 2px;
 }
 
 .menu-toggle {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: var(--ctl-h);
+  height: var(--ctl-h);
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -160,4 +159,8 @@
 .menu-toggle {
   background: var(--panel);
   color: var(--text);
+}
+
+.year-pill select {
+  min-height: var(--ctl-h);
 }

@@ -1,0 +1,246 @@
+/*
+ * Tombol galaxy (GalaxyButton). Palet mengikuti token tema: latar tinta gelap, kilau & bintang
+ * beraksen amber/kertas. Ukuran fluid dengan clamp().
+ */
+:root {
+  --galaxy-bg: #151512;
+  --galaxy-edge: #3a3833;
+  --galaxy-ink: #f4f3ee;
+  --galaxy-spark: var(--accent);
+  --galaxy-star: #f4f3ee;
+}
+
+:root[data-theme='dark'] {
+  --galaxy-bg: #2a2925;
+  --galaxy-edge: #5c584e;
+  --galaxy-ink: #f4f3ee;
+}
+
+.galaxy-button {
+  --cut: 0.1em;
+  --active: 0;
+  --pad-y: clamp(0.45rem, 0.3vw + 0.38rem, 0.6rem);
+  --pad-x: clamp(0.8rem, 0.8vw + 0.6rem, 1.15rem);
+  --fs: clamp(0.8rem, 0.25vw + 0.74rem, 0.95rem);
+  position: relative;
+  display: inline-grid;
+  justify-self: start;
+  isolation: isolate;
+}
+
+.galaxy-button--lg {
+  --pad-y: clamp(0.85rem, 0.6vw + 0.7rem, 1.15rem);
+  --pad-x: clamp(1rem, 0.8vw + 0.8rem, 1.4rem);
+  --fs: clamp(0.62rem, 0.2vw + 0.58rem, 0.72rem);
+}
+
+.galaxy-button button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: var(--pad-y) var(--pad-x);
+  border: 0;
+  border-radius: 999px;
+  background: var(--galaxy-edge);
+  color: var(--galaxy-ink);
+  font-size: var(--fs);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  scale: calc(1 + var(--active) * 0.04);
+  box-shadow:
+    0 0 calc(var(--active) * 2.4em) calc(var(--active) * 0.6em) color-mix(in srgb, var(--galaxy-spark) 45%, transparent),
+    0 0.05em 0 0 color-mix(in srgb, var(--galaxy-ink) 25%, transparent) inset;
+  transition:
+    scale 0.25s ease,
+    box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.galaxy-button--lg button {
+  border-radius: 0.6rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.galaxy-button:is(:hover, :focus-within) {
+  --active: 1;
+}
+
+.galaxy-button button:focus-visible {
+  outline: 2px solid var(--galaxy-spark);
+  outline-offset: 3px;
+}
+
+.galaxy-button button:active {
+  scale: 1;
+}
+
+/* Kilau yang mengitari tepi tombol */
+.galaxy-button .spark {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  rotate: 0deg;
+}
+
+.galaxy-button .spark::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg, transparent 0 300deg, var(--galaxy-spark) 345deg, transparent 360deg);
+  animation: galaxy-spin 3.2s linear infinite;
+}
+
+.galaxy-button .backdrop {
+  position: absolute;
+  inset: var(--cut);
+  border-radius: inherit;
+  background: radial-gradient(
+      120% 100% at 50% 0%,
+      color-mix(in srgb, var(--galaxy-spark) calc(var(--active) * 22%), transparent),
+      transparent 70%
+    ),
+    var(--galaxy-bg);
+  transition: background 0.25s ease;
+}
+
+/* Bintang statis berkelip */
+.galaxy-button .galaxy__container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.galaxy-button .star--static {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 2px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--galaxy-star);
+  opacity: 0.7;
+  animation: galaxy-twinkle calc(2.4s + var(--i) * 0.7s) calc(var(--i) * -0.9s) infinite ease-in-out;
+}
+
+/* Cincin bintang yang berputar — tampak saat disorot */
+.galaxy-button .galaxy {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: calc(0.25 + var(--active) * 0.75);
+  transition: opacity 0.3s ease;
+}
+
+.galaxy-button .galaxy__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  scale: 1 0.42;
+  rotate: -18deg;
+}
+
+.galaxy-button .galaxy__ring .star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--size) * 1.4px);
+  aspect-ratio: 1;
+  margin: calc(var(--size) * -0.7px);
+  border-radius: 50%;
+  background: var(--galaxy-star);
+  box-shadow: 0 0 4px color-mix(in srgb, var(--galaxy-spark) 70%, transparent);
+  transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--distance) * 1%));
+  animation: galaxy-orbit calc(var(--duration) * 1s) linear infinite;
+  animation-play-state: paused;
+}
+
+.galaxy-button:is(:hover, :focus-within) .galaxy__ring .star {
+  animation-play-state: running;
+}
+
+.galaxy-button .text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.galaxy-button .text svg {
+  width: 1.4em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  transition: transform 0.2s ease;
+}
+
+.galaxy-button:hover .text svg {
+  transform: translateX(4px);
+}
+
+/* Cahaya lembut di bawah tombol */
+.galaxy-button .bodydrop {
+  position: absolute;
+  inset: 20% 10% -20%;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--galaxy-spark);
+  filter: blur(18px);
+  opacity: calc(var(--active) * 0.35);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+@keyframes galaxy-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes galaxy-orbit {
+  from {
+    transform: rotate(calc(var(--angle) * 1deg)) translate(calc(var(--distance) * 1%));
+  }
+
+  to {
+    transform: rotate(calc(var(--angle) * 1deg + 360deg)) translate(calc(var(--distance) * 1%));
+  }
+}
+
+@keyframes galaxy-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    scale: 0.6;
+  }
+
+  50% {
+    opacity: 0.9;
+    scale: 1.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galaxy-button *,
+  .galaxy-button *::before {
+    animation: none !important;
+  }
+}

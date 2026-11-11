@@ -6,10 +6,10 @@
 .lp {
   --lp-line: rgb(var(--ink-rgb) / 0.24);
   min-height: 100vh;
-  background: var(--paper);
+  background: transparent; /* latar kertas + kontur dari body & .topo-bg */
   color: var(--ink);
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (bukan hidden) agar position: sticky di dalamnya tetap bekerja */
   transition: opacity 0.38s ease;
 }
 
@@ -142,8 +142,7 @@
   transition: transform 250ms ease;
 }
 
-.lp-nav-cta:hover svg,
-.lp-primary-button:hover svg {
+.lp-nav-cta:hover svg {
   transform: translateX(4px);
 }
 
@@ -237,27 +236,9 @@
   line-height: 1.7;
 }
 
+/* Tombol utama memakai GalaxyButton (galaxy-button.css); di sini hanya tata letak */
 .lp-primary-button {
-  display: flex;
   flex: 0 0 auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.1rem 1.2rem !important;
-  border: 1px solid var(--ink) !important;
-  background: var(--ink) !important;
-  color: var(--paper) !important;
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  transition:
-    background 200ms ease,
-    color 200ms ease;
-}
-
-.lp-primary-button:hover {
-  background: transparent !important;
-  color: var(--ink) !important;
 }
 
 /* Transisi masuk ke peta: semua selain globe memudar dulu, lalu globe membesar */
@@ -847,5 +828,87 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Kalimat berganti kata saat digulir (di bawah globe) ---------- */
+.lp-words {
+  --words-fs: clamp(2rem, 6.4vw, 5.6rem);
+  padding: 0 3.5vw;
+  border-top: 1px solid rgb(var(--ink-rgb) / 0.12);
+}
+
+.lp-words-inner {
+  display: flex;
+  align-items: flex-start;
+  font-size: var(--words-fs);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+/* Awalan menempel di tengah layar sementara daftar kata lewat */
+.lp-words-lead {
+  position: sticky;
+  top: calc(50svh - 0.55em);
+  margin: 0;
+  font: inherit;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.lp-words-list {
+  margin: 0;
+  /* Atas: kata pertama mulai sejajar awalan. Bawah 0: awalan ikut lepas tepat saat kata terakhir sejajar */
+  padding: calc(50svh - 0.55em) 0 0;
+  list-style: none;
+}
+
+.lp-words-list li {
+  color: rgb(var(--ink-rgb) / 0.14);
+  transition:
+    color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.lp-words-list li.is-past {
+  color: rgb(var(--ink-rgb) / 0.3);
+}
+
+.lp-words-list li.is-active {
+  color: var(--accent);
+}
+
+.lp-words-outro {
+  max-width: 34ch;
+  margin: 0;
+  padding: 18vh 0 22vh;
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 0.3vw + 0.68rem, 0.9rem);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-rgb) / 0.75);
+}
+
+.lp-words-outro span {
+  color: var(--ink);
+}
+
+@media (max-width: 560px) {
+  .lp-words {
+    --words-fs: clamp(1.7rem, 9.5vw, 2.6rem);
+  }
+
+  .lp-words-inner {
+    flex-direction: column;
+  }
+
+  .lp-words-lead {
+    top: calc(50svh - 1.6em);
+  }
+
+  .lp-words-outro {
+    margin: 0;
   }
 }

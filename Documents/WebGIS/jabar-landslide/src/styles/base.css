@@ -5,10 +5,14 @@
   box-sizing: border-box;
 }
 
+/* Warna latar hanya di <html>: bila body juga berlatar, ia menutupi latar kontur (.topo-bg, z-index -1) */
+html {
+  background: var(--bg);
+}
+
 html,
 body {
   margin: 0;
-  background: var(--bg);
   color: var(--text);
 }
 
@@ -108,5 +112,32 @@ main {
 
   .page {
     display: none;
+  }
+}
+
+/* ---------- Latar ambient garis kontur (TopoBackground) ---------- */
+.topo-bg {
+  position: fixed;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  z-index: -1; /* di atas warna latar body, di bawah seluruh konten */
+  pointer-events: none;
+  animation: topo-drift 90s ease-in-out infinite alternate;
+}
+
+@keyframes topo-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(1.5%, 1.2%, 0) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topo-bg {
+    animation: none;
   }
 }

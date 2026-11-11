@@ -13,4 +13,7 @@
 @import './styles/compare.css';
 @import './styles/ui-kit.css';
 @import './styles/landing.css';
+/* Setelah landing.css: reset tombol .lp button tidak boleh menimpa komponen ini */
+@import './styles/sky-toggle.css';
+@import './styles/galaxy-button.css';
 @import './styles/responsive.css';
