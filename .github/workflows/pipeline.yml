@@ -22,6 +22,7 @@ on:
     paths:
       - 'Documents/WebGIS/jabar-landslide/**'
       - 'scripts/**'
+      - 'data/sources/**' # CSV Galura baru → build & deploy ulang otomatis
       - 'package*.json'
       - '.github/workflows/pipeline.yml'
   pull_request:
@@ -35,7 +36,7 @@ on:
       stage:
         description: 'Tahap pipeline data (kosongkan untuk lewati)'
         type: choice
-        options: [all, events, insar, quakes, validate, gee-check, none]
+        options: [all, events, insar, quakes, galura, validate, gee-check, none]
         default: all
       force:
         description: 'Paksa pembaruan walau bulan belum berganti'
@@ -131,6 +132,12 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: ${{ env.APP_DIR }}/package-lock.json
+
+      # Rekap Galura diolah ulang dari CSV yang di-commit (offline, tanpa dependensi) agar situs
+      # langsung memakai CSV terbaru begitu di-push, tanpa menunggu jadwal bulanan.
+      - name: Olah CSV Galura (data/sources/galura)
+        working-directory: ${{ github.workspace }}
+        run: node -e "import('./scripts/stages/galura.js').then((m) => m.runGalura())"
 
       - run: npm ci
       - run: npm run lint
