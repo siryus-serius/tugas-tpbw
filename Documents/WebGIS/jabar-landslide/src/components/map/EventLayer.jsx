@@ -1,12 +1,13 @@
 import { CircleMarker, Tooltip } from 'react-leaflet';
 import { shortKab } from '../../utils/format';
 import { eventColor } from '../../utils/markerColors';
+import { inYear } from '../../utils/years';
 
 export default function EventLayer({ events, ctx, selectedId, onSelect }) {
   return events.map((f) => {
     const [lng, lat] = f.geometry.coordinates;
     const p = f.properties;
-    const current = p.tahun === ctx.year;
+    const current = inYear(p.tahun, ctx.year);
     return (
       <CircleMarker
         key={f.id}

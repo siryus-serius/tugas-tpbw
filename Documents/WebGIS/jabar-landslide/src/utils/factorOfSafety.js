@@ -8,7 +8,7 @@
  *   c'  kohesi efektif (kPa)          φ'  sudut geser dalam efektif (°)
  *   γ   berat isi tanah (kN/m³)       γw  berat isi air = 9,81 kN/m³
  *   z   kedalaman bidang gelincir (m) β   kemiringan lereng (°)
- *   m   rasio muka air (0 kering … 1 jenuh penuh) — skenario yang dipilih pengguna
+ *   m   rasio muka air (0 kering … 1 jenuh penuh) — diasumsikan tetap 0,5 (lembap)
  *
  * Klasifikasi (Bowles, 1989): FK < 1,07 labil · 1,07–1,25 kritis · > 1,25 stabil.
  */
@@ -21,7 +21,7 @@ export const DEFAULT_SOIL_PARAMS = {
   frictionAngle: 28, // φ' derajat
   unitWeight: 18, // γ kN/m³
   depth: 2, // z m
-  saturation: 0.5, // m skenario: 0 kering, 0,5 lembap, 1 jenuh (musim hujan ekstrem)
+  saturation: 0.5, // m tetap: kondisi lembap
 };
 
 export const SOIL_PARAM_FIELDS = [
@@ -38,8 +38,6 @@ export const FS_CLASSES = [
 ];
 
 const rad = (deg) => (deg * Math.PI) / 180;
-
-export const SATURATION_SCENARIOS = { 0: 'Kering', 0.5: 'Lembap', 1: 'Jenuh' };
 
 /** FK lereng tak hingga. Mengembalikan Infinity untuk lereng (hampir) datar. */
 export function factorOfSafety({ slopeDeg, m, cohesion, frictionAngle, unitWeight, depth }) {

@@ -34,7 +34,7 @@ export default function PredictionList({ data, filters, risk, onSelect }) {
           </li>
         ))}
       </ul>
-      <p className="muted small">Gabungan FK lereng (skenario air tanah), anomali InSAR, dan guncangan gempa terkini.</p>
+      <p className="muted small">Gabungan FK lereng, anomali InSAR, dan guncangan gempa terkini.</p>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import ImageryControls from '../components/map-controls/ImageryControls';
 import LayerControls from '../components/map-controls/LayerControls';
-import Legend from '../components/map-controls/Legend';
+import MapLegend from '../components/map-controls/MapLegend';
 import StabilityControls from '../components/map-controls/StabilityControls';
 import ValidationReport from '../components/validation/ValidationReport';
 import Dashboard from '../components/dashboard/Dashboard';
@@ -16,6 +16,7 @@ import usePageScroll from '../hooks/usePageScroll';
 import useSentinelMosaic from '../hooks/useSentinelMosaic';
 import useSlopeStability from '../hooks/useSlopeStability';
 import useSusceptibility from '../hooks/useSusceptibility';
+import { yearLabel } from '../utils/years';
 
 const SECTIONS = [
   { id: 'peta', label: 'Peta' },
@@ -42,7 +43,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
   const imagery = useSentinelMosaic({
     enabled: filters.layers.s2,
     presetKey: filters.imageryPreset,
-    year: filters.year,
+    year: filters.imageryYear,
     month: filters.imageryMonth,
   });
   const { active, scrollTo } = usePageScroll(SECTION_IDS);
@@ -53,12 +54,14 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
     if (initialSection !== 'peta') requestAnimationFrame(() => scrollTo(initialSection, { immediate: true }));
   }, [initialSection, scrollTo]);
 
-  // Di peta: gempa riwayat tahun aktif + seluruh gempa BMKG terkini di sekitar Jabar
+  // Di peta: gempa riwayat tahun aktif (atau semua tahun) + seluruh gempa BMKG terkini di sekitar Jabar
   const quakes = useMemo(() => {
     const yr = String(filters.year);
-    const visible = quakesLive.all.filter((q) => q.properties.source === 'BMKG' || q.properties.time.startsWith(yr));
+    const visible = quakesLive.all.filter(
+      (q) => filters.allYears || q.properties.source === 'BMKG' || q.properties.time.startsWith(yr)
+    );
     return { ...quakesLive, visible };
-  }, [quakesLive, filters.year]);
+  }, [quakesLive, filters.year, filters.allYears]);
 
   const ctx = useMemo(
     () => ({ year: filters.year, colorMode: filters.colorMode, stability: stability.byId, risk }),
@@ -100,7 +103,11 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
         />
       ),
     },
-    { key: 'legenda', label: 'Legenda', content: <Legend colorMode={filters.colorMode} /> },
+    {
+      key: 'keterangan',
+      label: 'Keterangan peta',
+      content: <MapLegend colorMode={filters.colorMode} layers={filters.layers} period={yearLabel(filters.year, filters.years)} />,
+    },
   ];
 
   return (
@@ -109,7 +116,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
         sections={SECTIONS}
         active={active}
         onNavigate={scrollTo}
-        years={filters.years}
+        years={filters.yearOptions}
         year={filters.year}
         setYear={filters.setYear}
         theme={theme}

@@ -4,6 +4,7 @@ import AnomalyList from './AnomalyList';
 import PredictionList from './PredictionList';
 import QuakeList from './QuakeList';
 import BarChart from './BarChart';
+import { isAllYears, yearLabel } from '../../utils/years';
 
 function Stat({ value, label, note }) {
   return (
@@ -18,10 +19,12 @@ function Stat({ value, label, note }) {
 /** Dashboard data kejadian: angka utama, grafik, prediksi, anomali, dan gempa terkini. */
 export default function Dashboard({ data, filters, ctx, risk, quakes, onSelect }) {
   const s = useMemo(() => eventStats(data.events), [data.events]);
-  const { year, yearAnomalies } = filters;
-  const yearRow = s.perYear.find((r) => r.key === year);
+  const { year, years, yearAnomalies } = filters;
+  const all = isAllYears(year);
+  const period = yearLabel(year, years);
+  const yearRow = all ? { count: s.total, deaths: s.deaths } : s.perYear.find((r) => r.key === year);
   const quakes4 = quakes.all.filter((q) => q.properties.mag >= 4).length;
-  const hasAnalysis = data.insar?.anomaly_years?.includes(year) ?? false;
+  const hasAnalysis = all ? yearAnomalies.length > 0 : (data.insar?.anomaly_years?.includes(year) ?? false);
   const deadliest = s.deadliest?.properties;
 
   return (
@@ -38,8 +41,8 @@ export default function Dashboard({ data, filters, ctx, risk, quakes, onSelect }
         <Stat value={s.total} label="Kejadian longsor" note="2021–2026" />
         <Stat value={s.deaths} label="Korban meninggal" note="seluruh kejadian" />
         <Stat value={s.kabupaten} label="Kabupaten/kota terdampak" note="dari 27" />
-        <Stat value={yearRow?.count ?? 0} label={`Kejadian ${year}`} note={`${yearRow?.deaths ?? 0} korban meninggal`} />
-        <Stat value={yearAnomalies.length} label={`Anomali InSAR ${year}`} note="pergeseran tanah" />
+        <Stat value={yearRow?.count ?? 0} label={`Kejadian ${period}`} note={`${yearRow?.deaths ?? 0} korban meninggal`} />
+        <Stat value={yearAnomalies.length} label={`Anomali InSAR ${period}`} note="pergeseran tanah" />
         <Stat value={quakes4} label="Gempa M≥4 sekitar Jabar" note="sejak 2021" />
       </div>
 
@@ -82,10 +85,10 @@ export default function Dashboard({ data, filters, ctx, risk, quakes, onSelect }
         </div>
         <div className="card">
           {hasAnalysis ? (
-            <AnomalyList year={year} anomalies={yearAnomalies} ctx={ctx} onSelect={onSelect} />
+            <AnomalyList year={period} anomalies={yearAnomalies} ctx={ctx} onSelect={onSelect} />
           ) : (
             <section>
-              <h2>Anomali {year}</h2>
+              <h2>Anomali {period}</h2>
               <p className="muted small">Belum ada analisis InSAR untuk tahun ini.</p>
             </section>
           )}

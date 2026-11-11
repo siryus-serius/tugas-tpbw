@@ -1,9 +1,9 @@
 import { COLOR_MODES } from '../../config/constants';
-import { FS_CLASSES, SATURATION_SCENARIOS, SOIL_PARAM_FIELDS } from '../../utils/factorOfSafety';
+import { FS_CLASSES, SOIL_PARAM_FIELDS } from '../../utils/factorOfSafety';
 import RadioGroup from '../ui/RadioGroup';
 
 /**
- * Kontrol stabilitas & prediksi: mode warna titik, skenario kejenuhan, ringkasan kelas FK,
+ * Kontrol stabilitas & prediksi: mode warna titik, ringkasan kelas FK,
  * dan parameter tanah (FK dihitung ulang langsung).
  */
 export default function StabilityControls({ colorMode, setColorMode, visibleIds, stability }) {
@@ -24,14 +24,6 @@ export default function StabilityControls({ colorMode, setColorMode, visibleIds,
         <span className="muted small">Warna titik</span>
         <RadioGroup options={COLOR_MODES} value={colorMode} onChange={setColorMode} />
       </div>
-      <div className="row">
-        <span className="muted small">Skenario air tanah</span>
-        <RadioGroup
-          options={SATURATION_SCENARIOS}
-          value={String(params.saturation)}
-          onChange={(v) => updateParam('saturation', Number(v))}
-        />
-      </div>
 
       <div className="fs-summary">
         {FS_CLASSES.map((c) => (
@@ -46,7 +38,7 @@ export default function StabilityControls({ colorMode, setColorMode, visibleIds,
         </div>
       </div>
       <p className="muted small">
-        FK titik yang tampil untuk skenario terpilih. &quot;Jenuh&quot; = kondisi terburuk musim hujan.
+        FK titik yang tampil, dihitung dengan asumsi tanah lembap (rasio muka air m = {params.saturation}).
       </p>
 
       <details className="params">

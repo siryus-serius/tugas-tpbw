@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import SparkleToggle from '../ui/SparkleToggle';
+import { ALL_YEARS } from '../../utils/years';
 
 /**
- * Navbar "pill" menempel di atas: nama · menu pill (bagian halaman, aktif mengikuti scroll) · pemilih tahun.
+ * Navbar "pill" menempel di atas: nama · menu pill (bagian halaman, aktif mengikuti scroll) · pemilih tahun
+ * (`years` berisi tiap tahun + ALL_YEARS = semua tahun digabung).
  * Di HP: tombol ☰ membuka daftar menu.
  */
 export default function Navbar({ sections, active, onNavigate, years, year, setYear, validationBadge, theme, onToggleTheme, onHome }) {
@@ -37,10 +39,10 @@ export default function Navbar({ sections, active, onNavigate, years, year, setY
             <button onClick={() => setYear(years[i - 1])} disabled={i <= 0} aria-label="Tahun sebelumnya">
               ‹
             </button>
-            <select value={year ?? ''} onChange={(e) => setYear(Number(e.target.value))} aria-label="Pilih tahun">
+            <select value={year ?? ''} onChange={(e) => setYear(e.target.value === ALL_YEARS ? ALL_YEARS : Number(e.target.value))} aria-label="Pilih tahun">
               {years.map((y) => (
                 <option key={y} value={y}>
-                  {y}
+                  {y === ALL_YEARS ? 'Semua tahun' : y}
                 </option>
               ))}
             </select>

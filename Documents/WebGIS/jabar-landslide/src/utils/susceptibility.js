@@ -2,7 +2,7 @@
  * Indeks kerawanan longsor (prediksi kualitatif, 0–1) per titik pantau.
  *
  *   I = Σ wᵢ·sᵢ / Σ wᵢ   (hanya komponen yang datanya tersedia)
- *   s_FK     = (1,6 − FK) / 0,6, dibatasi 0–1 (FK ≤ 1,0 → 1; FK ≥ 1,6 → 0), skenario m terpilih   w = 0,5
+ *   s_FK     = (1,6 − FK) / 0,6, dibatasi 0–1 (FK ≤ 1,0 → 1; FK ≥ 1,6 → 0), m = 0,5   w = 0,5
  *   s_InSAR  = tingkat anomali (sedang 0,5 · tinggi 0,75 · sangat tinggi 1)
  *              × faktor konsistensi lereng (ya 1 · tak pasti 0,7 · tidak 0,4)        w = 0,3
  *              (titik kejadian: anomali tahun aktif terdekat ≤ 1,5 km)

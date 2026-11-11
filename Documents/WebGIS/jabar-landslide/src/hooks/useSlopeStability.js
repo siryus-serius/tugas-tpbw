@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import { DEFAULT_SOIL_PARAMS, classifyFS, factorOfSafety } from '../utils/factorOfSafety';
 
 /**
- * Faktor Keamanan per titik dari kemiringan lereng + parameter tanah + skenario kejenuhan (m).
- * Dihitung ulang seketika saat parameter/skenario diubah. Hasil per id: { slopeDeg, m, fs, cls }.
+ * Faktor Keamanan per titik dari kemiringan lereng + parameter tanah (m tetap = kondisi lembap).
+ * Dihitung ulang seketika saat parameter tanah diubah. Hasil per id: { slopeDeg, m, fs, cls }.
  */
 export default function useSlopeStability(points) {
   const [params, setParams] = useState(DEFAULT_SOIL_PARAMS);

@@ -1,9 +1,10 @@
 import { EVENT_COLOR, SEVERITY, UNKNOWN_COLOR } from '../config/constants';
+import { inYear } from './years';
 
 /**
  * Warna isi titik sesuai mode:
  *  kategori   → tahun kejadian / tingkat anomali
- *  stabilitas → kelas Faktor Keamanan (skenario air tanah terpilih)
+ *  stabilitas → kelas Faktor Keamanan lereng
  *  kerawanan  → kelas indeks kerawanan (prediksi)
  */
 function indicatorColor(id, { colorMode, stability, risk }) {
@@ -15,7 +16,7 @@ function indicatorColor(id, { colorMode, stability, risk }) {
 export function eventColor(feature, ctx) {
   return (
     indicatorColor(feature.id, ctx) ??
-    (feature.properties.tahun === ctx.year ? EVENT_COLOR.current : EVENT_COLOR.other)
+    (inYear(feature.properties.tahun, ctx.year) ? EVENT_COLOR.current : EVENT_COLOR.other)
   );
 }
 

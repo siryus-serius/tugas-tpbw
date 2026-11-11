@@ -97,3 +97,42 @@
 .tiles-themed.tiles-dark {
   filter: invert(0.92) hue-rotate(180deg) sepia(0.35) saturate(0.6) brightness(0.85) contrast(0.95);
 }
+
+/* ---------- Angka kejadian per kabupaten/kota (peta diperkecil) ---------- */
+.kab-count-icon {
+  background: none;
+  border: 0;
+}
+
+.kab-count {
+  display: grid;
+  place-items: center;
+  width: var(--s, 28px);
+  height: var(--s, 28px);
+  border-radius: 50%;
+  background: var(--c);
+  color: var(--ink);
+  border: 2px solid #fff;
+  box-shadow:
+    0 0 0 3px rgb(0 0 0 / 0.18),
+    0 4px 10px rgb(0 0 0 / 0.3);
+  font: 700 13px/1 var(--font-mono);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.kab-count:hover {
+  transform: scale(1.12);
+}
+
+.kab-count.static {
+  --s: 22px;
+  display: inline-grid;
+  font-size: 11px;
+  cursor: default;
+  box-shadow: none;
+}
+
+.heat-canvas {
+  pointer-events: none;
+}

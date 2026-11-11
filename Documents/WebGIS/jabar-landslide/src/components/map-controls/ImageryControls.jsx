@@ -6,7 +6,7 @@ const GROUPS = [...new Set(PRESETS.map((p) => p.group))];
 
 /** Pilihan produk citra Sentinel-1/2 dan periode (sepanjang tahun / bulan tertentu) untuk layer peta. */
 export default function ImageryControls({ filters, imagery }) {
-  const { layers, toggleLayer, year, imageryPreset, setImageryPreset, imageryMonth, setImageryMonth } = filters;
+  const { layers, toggleLayer, imageryYear: year, allYears, imageryPreset, setImageryPreset, imageryMonth, setImageryMonth } = filters;
   const preset = PRESET_BY_KEY[imageryPreset];
 
   return (
@@ -41,6 +41,7 @@ export default function ImageryControls({ filters, imagery }) {
           ))}
         </select>
       </label>
+      {allYears && <p className="muted small">Mode semua tahun: citra memakai tahun terbaru ({year}).</p>}
       <p className="muted small">
         {preset?.note}{' '}
         {layers.s2 && imagery.loading && 'Memuat mosaik…'}

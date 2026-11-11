@@ -3,7 +3,7 @@ import Checkbox from '../ui/Checkbox';
 import RadioGroup from '../ui/RadioGroup';
 
 export default function LayerControls({ filters }) {
-  const { layers, toggleLayer, year, orbit, orbitsAvailable, setOrbit, basemap, setBasemap } = filters;
+  const { layers, toggleLayer, year, allYears, orbit, orbitsAvailable, setOrbit, basemap, setBasemap } = filters;
   const basemapLabels = Object.fromEntries(Object.entries(BASEMAPS).map(([k, b]) => [k, b.label]));
 
   return (
@@ -21,9 +21,14 @@ export default function LayerControls({ filters }) {
           value={orbit}
           onChange={setOrbit}
           isDisabled={(o) => !orbitsAvailable.includes(o)}
-          disabledTitle={(o) => `Tidak ada data ${o} untuk ${year}`}
+          disabledTitle={(o) => (allYears ? 'Pilih satu tahun untuk peta warna InSAR' : `Tidak ada data ${o} untuk ${year}`)}
         />
       </div>
+      {allYears && (
+        <p className="muted small">
+          Mode semua tahun: peta warna InSAR (selisih per tahun) disembunyikan; pin anomali seluruh tahun ditampilkan.
+        </p>
+      )}
       <div className="row">
         <span className="muted small">Peta dasar</span>
         <RadioGroup options={basemapLabels} value={basemap} onChange={setBasemap} />

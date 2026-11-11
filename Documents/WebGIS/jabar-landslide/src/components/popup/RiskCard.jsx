@@ -1,7 +1,7 @@
 import { WEIGHTS } from '../../utils/susceptibility';
 
 const LABEL = {
-  fk: 'Faktor Keamanan lereng (skenario air tanah)',
+  fk: 'Faktor Keamanan lereng',
   insar: 'Anomali pergeseran InSAR',
   gempa: 'Guncangan gempa 30 hari',
 };
