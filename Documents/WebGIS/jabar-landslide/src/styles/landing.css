@@ -868,16 +868,19 @@
   opacity: 0;
 }
 
-/* Setelah kata terakhir: seluruh kalimat (awalan + semua kata) memudar hilang */
-.lp-words-inner {
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
+/* Portrait saja: setelah kata terakhir, seluruh kalimat (awalan + semua kata) memudar hilang.
+   Landscape tidak memudar — kalimat tersusun tetap tampil & ikut tergulir. */
+@media (orientation: portrait) {
+  .lp-words-inner {
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+  }
 
-.lp-words-inner.is-done {
-  opacity: 0;
-  transform: translateY(-0.25em);
+  .lp-words-inner.is-done {
+    opacity: 0;
+    transform: translateY(-0.25em);
+  }
 }
 
 .lp-words-list {
@@ -919,9 +922,11 @@
   color: var(--ink);
 }
 
-@media (max-width: 560px) {
+/* Layar tegak (portrait: HP/tablet tegak) → awalan di atas kata (kolom), kata lewat memudar.
+   Layar mendatar (landscape: desktop, HP/tablet dimiringkan) → berdampingan, tanpa memudar. */
+@media (orientation: portrait) {
   .lp-words {
-    --words-fs: clamp(1.7rem, 9.5vw, 2.6rem);
+    --words-fs: clamp(1.7rem, 9vw, 4.4rem);
   }
 
   .lp-words-inner {
