@@ -3,9 +3,10 @@
  * Hanya ID scene yang disimpan; gambar di-render on-the-fly oleh PC Data API di frontend.
  */
 import { geometryCoversBbox } from './geo.js';
-import { postJson } from './http.js';
+import { pool, postJson } from './http.js';
 
 const STAC_SEARCH = 'https://planetarycomputer.microsoft.com/api/stac/v1/search';
+const PC_STATS = 'https://planetarycomputer.microsoft.com/api/data/v1/item/statistics';
 export const DAY = 86400000;
 export const iso = (ms) => new Date(ms).toISOString().replace(/\.\d{3}Z$/, 'Z');
 export const bboxAround = (lng, lat, delta) => [lng - delta, lat - delta, lng + delta, lat + delta];
@@ -30,6 +31,78 @@ export async function bestSentinel2(bbox, startMs, endMs, maxCloud = 40, coverBb
   return item
     ? { id: item.id, datetime: item.properties.datetime, cloud: Math.round(item.properties['eo:cloud_cover'] * 10) / 10 }
     : null;
+}
+
+// Kelas Scene Classification (SCL) Sentinel-2 L2A yang dianggap "tertutup": bayangan awan, awan
+// probabilitas sedang/tinggi, cirrus tipis. 0 = tanpa data (di luar sapuan satelit).
+const SCL_CLOUD = new Set([3, 8, 9, 10]);
+const SCL_NODATA = 0;
+
+const bboxFeature = ([w, s, e, n]) => ({
+  type: 'Feature',
+  properties: {},
+  geometry: { type: 'Polygon', coordinates: [[[w, s], [e, s], [e, n], [w, n], [w, s]]] },
+});
+
+/**
+ * Persentase awan & tanpa-data TEPAT di area bbox, dari histogram band SCL (PC Data API).
+ * eo:cloud_cover adalah rata-rata satu petak ±110 km — bisa 5% padahal lokasi kejadian tertutup awan.
+ */
+export async function localCloud(itemId, bbox) {
+  const url = `${PC_STATS}?collection=sentinel-2-l2a&item=${itemId}&assets=SCL&categorical=true&max_size=256`;
+  const res = await postJson(url, bboxFeature(bbox));
+  const [counts, values] = res.properties.statistics.SCL_b1.histogram;
+  let total = 0;
+  let cloud = 0;
+  let nodata = 0;
+  values.forEach((v, i) => {
+    total += counts[i];
+    if (SCL_CLOUD.has(v)) cloud += counts[i];
+    if (v === SCL_NODATA) nodata += counts[i];
+  });
+  const pct = (x) => (total ? Math.round((x / total) * 1000) / 10 : 100);
+  return { cloud: pct(cloud), nodata: pct(nodata) };
+}
+
+/**
+ * Scene Sentinel-2 dengan awan LOKAL paling sedikit di area tampilan (coverBbox).
+ * Kandidat: scene yang menutupi area, diurutkan awan petak; `candidates` teratas diukur awan lokalnya.
+ * Scene yang praktis bersih (≤ clearPct) → dipilih yang paling dekat tanggal acuan `anchorMs`,
+ * agar perbandingan tetap mewakili kondisi sesaat sebelum/sesudah kejadian.
+ */
+export async function clearestSentinel2(bbox, startMs, endMs, { coverBbox = bbox, anchorMs, maxSceneCloud = 70, candidates = 10, clearPct = 1 } = {}) {
+  const items = (
+    await search({
+      collections: ['sentinel-2-l2a'],
+      bbox,
+      datetime: `${iso(startMs)}/${iso(endMs)}`,
+      query: { 'eo:cloud_cover': { lt: maxSceneCloud } },
+      sortby: [{ field: 'eo:cloud_cover', direction: 'asc' }],
+      limit: 100,
+    })
+  )
+    .filter((it) => geometryCoversBbox(it.geometry, coverBbox))
+    .slice(0, candidates);
+
+  const measured = (
+    await pool(items, 4, async (it) => {
+      const local = await localCloud(it.id, coverBbox).catch(() => null);
+      return local && local.nodata < 1 ? { it, local } : null;
+    })
+  ).filter(Boolean);
+  if (!measured.length) return null;
+
+  const dist = (x) => Math.abs(Date.parse(x.it.properties.datetime) - (anchorMs ?? 0));
+  const clear = measured.filter((x) => x.local.cloud <= clearPct);
+  const best = clear.length
+    ? clear.sort((a, b) => dist(a) - dist(b))[0]
+    : measured.sort((a, b) => a.local.cloud - b.local.cloud || dist(a) - dist(b))[0];
+  return {
+    id: best.it.id,
+    datetime: best.it.properties.datetime,
+    cloud: Math.round(best.it.properties['eo:cloud_cover'] * 10) / 10,
+    local_cloud: best.local.cloud,
+  };
 }
 
 /** Scene S2 terbaik untuk satu tahun: utamakan musim kemarau (Jun–Sep), lalu sepanjang tahun. */

@@ -8,13 +8,13 @@
 import fs from 'fs';
 import path from 'path';
 import { EVENTS, PATHS, ROOT } from '../config.js';
-import { DAY, bboxAround, bestSentinel2, sentinel1Pair } from '../lib/stac.js';
+import { DAY, bboxAround, clearestSentinel2, sentinel1Pair } from '../lib/stac.js';
 import { slopeAroundPoint } from '../lib/terrain.js';
 
 export async function runEvents({ log = console.log } = {}) {
   // Kejadian tanpa koordinat (hanya tingkat kabupaten) tidak bisa dicarikan citra/lereng
   const events = JSON.parse(fs.readFileSync(PATHS.events, 'utf-8')).features.filter((f) => f.geometry?.coordinates);
-  const { windowDays, maxCloud, searchDelta } = EVENTS;
+  const { windowDays, longWindowDays, clearTarget, maxCloud, searchDelta } = EVENTS;
   const out = { generated_at: new Date().toISOString(), window_days: windowDays, max_cloud: maxCloud, events: {} };
   // Kemiringan lereng statis → pakai ulang hasil sebelumnya, hemat kuota Elevation API
   const previous = fs.existsSync(PATHS.eventsOut) ? JSON.parse(fs.readFileSync(PATHS.eventsOut, 'utf-8')).events : {};
@@ -37,15 +37,24 @@ export async function runEvents({ log = console.log } = {}) {
     const bbox = bboxAround(lng, lat, searchDelta);
     const cover = bboxAround(lng, lat, 0.025); // area tampilan perbandingan besar (±0,024°)
     try {
+      // Pilih scene dengan awan LOKAL paling sedikit; bila jendela utama masih berawan (> clearTarget),
+      // perluas ke jendela panjang (musim hujan di Jabar sering menutup lokasi berbulan-bulan).
+      const clearest = async (from, to, longFrom, longTo) => {
+        const opts = { coverBbox: cover, anchorMs: eventMs };
+        const near = await clearestSentinel2(bbox, from, to, opts);
+        if (near && near.local_cloud <= clearTarget) return near;
+        const far = await clearestSentinel2(bbox, longFrom, longTo, opts);
+        return [near, far].filter(Boolean).sort((a, b) => a.local_cloud - b.local_cloud)[0] ?? null;
+      };
       const [pre, post, s1, terrain] = await Promise.all([
-        bestSentinel2(bbox, eventMs - windowDays * DAY, eventMs - DAY, maxCloud, cover),
-        bestSentinel2(bbox, eventMs + DAY, eventMs + windowDays * DAY, maxCloud, cover),
+        clearest(eventMs - windowDays * DAY, eventMs - DAY, eventMs - longWindowDays * DAY, eventMs - DAY),
+        clearest(eventMs + DAY, eventMs + windowDays * DAY, eventMs + DAY, eventMs + longWindowDays * DAY),
         sentinel1Pair(bbox, eventMs, windowDays),
         terrainFor(lng, lat, p.no),
       ]);
       out.events[p.no] = { s2: { pre, post }, s1, terrain };
       log(
-        `[+] #${p.no} ${p.kecamatan}: S2 ${pre?.cloud ?? '-'}%/${post?.cloud ?? '-'}%` +
+        `[+] #${p.no} ${p.kecamatan}: S2 awan lokal ${pre?.local_cloud ?? '-'}%/${post?.local_cloud ?? '-'}%` +
           ` | S1 ${s1 ? `${s1.gap_days} hari` : '-'} | lereng ${terrain?.slope_deg ?? '-'}° arah ${terrain?.aspect_deg ?? '-'}°`
       );
     } catch (err) {

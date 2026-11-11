@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T11:01:48.342Z",
+ "generated_at": "2026-11-11T11:42:54.611Z",
  "data_month": "2026-11",
  "totals": {
   "events": 42,
@@ -98,20 +98,20 @@
    "id": "ev-links",
    "group": "Kejadian longsor",
    "title": "Tautan sumber dapat diakses",
-   "status": "pass",
-   "detail": "Semua lolos",
-   "items": []
+   "status": "warn",
+   "detail": "2 temuan",
+   "items": [
+    "#23 Babakan Madang (2024-03-24): 404 https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
+    "#10 Banjarwangi (2024-04-25): 404 https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut"
+   ]
   },
   {
    "id": "sc-s2",
    "group": "Citra Sentinel",
-   "title": "Sentinel-2 sebelum & sesudah, awan ≤ 40%",
-   "status": "warn",
-   "detail": "2 temuan",
-   "items": [
-    "#26 Sagalaherang (2025-04-11): scene S2 sebelum tidak ada/tidak valid",
-    "#12 Rongga (2025-10-26): scene S2 sesudah tidak ada/tidak valid"
-   ]
+   "title": "Sentinel-2 sebelum & sesudah, awan di lokasi ≤ 40%",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
   },
   {
    "id": "sc-s1",

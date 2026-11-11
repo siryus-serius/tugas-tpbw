@@ -7,6 +7,16 @@ import PrePostImagery from './PrePostImagery';
 import RiskCard from './RiskCard';
 import StabilityCard from './StabilityCard';
 
+/** Keterangan scene S2: tanggal + awan di area lokasi (local_cloud) bila tersedia. */
+function s2Note({ pre, post }) {
+  const d = (s) => (s ? dateId(s.datetime, { day: 'numeric', month: 'short', year: 'numeric' }) : '–');
+  const c = (s) => (s?.local_cloud ?? s?.cloud ?? '–');
+  const local = pre?.local_cloud != null || post?.local_cloud != null;
+  return local
+    ? `Scene dengan awan paling sedikit tepat di area lokasi: sebelum ${d(pre)} (awan ${c(pre)}%), sesudah ${d(post)} (awan ${c(post)}%).`
+    : `Scene paling sedikit awan ±120 hari dari kejadian (awan ${c(pre)}% / ${c(post)}%).`;
+}
+
 export default function EventDetail({ feature, scenes, stability, risk, params, quakes }) {
   const p = feature.properties;
   const coord = feature.geometry.coordinates;
@@ -75,7 +85,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
             coord={coord}
             movement={movement}
             compare={compare}
-            note={`Scene paling sedikit awan ±120 hari dari kejadian (awan ${scenes.s2.pre?.cloud ?? '–'}% / ${scenes.s2.post?.cloud ?? '–'}%).`}
+            note={s2Note(scenes.s2)}
           />
           <PrePostImagery
             title="Sentinel-2 · NDVI"

@@ -20,7 +20,9 @@ export const JABAR_BBOX = [106.35, -7.85, 108.85, -5.9];
 // ---- Tahap "events": scene Sentinel per kejadian ----
 export const EVENTS = {
   windowDays: 120, // jendela pencarian sebelum/sesudah kejadian
-  maxCloud: 40, // % awan maksimum Sentinel-2
+  longWindowDays: 365, // jendela diperluas bila lokasi masih berawan di jendela utama
+  clearTarget: 5, // % awan LOKAL (di area tampilan) yang dianggap cukup bersih
+  maxCloud: 40, // % awan maksimum Sentinel-2 (validasi; pemilihan memakai awan lokal)
   searchDelta: 0.02, // ±~2 km (koordinat kejadian = pusat desa, perkiraan)
 };
 

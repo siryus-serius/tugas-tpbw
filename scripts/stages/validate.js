@@ -122,11 +122,11 @@ export async function runValidate({ log = console.log, checkLinks = true } = {})
     }
     if (!s.s2?.pre || Date.parse(s.s2.pre.datetime) >= t) sceneIssues.push(`${label(p)}: scene S2 sebelum tidak ada/tidak valid`);
     if (!s.s2?.post || Date.parse(s.s2.post.datetime) < t) sceneIssues.push(`${label(p)}: scene S2 sesudah tidak ada/tidak valid`);
-    for (const k of ['pre', 'post']) if (s.s2?.[k] && s.s2[k].cloud > EVENTS.maxCloud) sceneIssues.push(`${label(p)}: awan S2 ${k} ${s.s2[k].cloud}%`);
+    for (const k of ['pre', 'post']) if (s.s2?.[k] && (s.s2[k].local_cloud ?? s.s2[k].cloud) > EVENTS.maxCloud) sceneIssues.push(`${label(p)}: awan S2 ${k} di lokasi ${s.s2[k].local_cloud ?? s.s2[k].cloud}%`);
     if (!s.s1 || Date.parse(s.s1.pre.datetime) >= t || Date.parse(s.s1.post.datetime) < t) s1Issues.push(label(p));
     if (s.terrain?.slope_deg == null || s.terrain?.aspect_deg == null) terrainIssues.push(label(p));
   }
-  checks.push(check('sc-s2', 'Citra Sentinel', `Sentinel-2 sebelum & sesudah, awan ≤ ${EVENTS.maxCloud}%`, sceneIssues, { failLevel: 'warn' }));
+  checks.push(check('sc-s2', 'Citra Sentinel', `Sentinel-2 sebelum & sesudah, awan di lokasi ≤ ${EVENTS.maxCloud}%`, sceneIssues, { failLevel: 'warn' }));
   checks.push(check('sc-s1', 'Citra Sentinel', 'Pasangan Sentinel-1 orbit sama mengapit tanggal kejadian', s1Issues, { failLevel: 'warn' }));
   checks.push(check('sc-terrain', 'Citra Sentinel', 'Kemiringan & arah lereng tersedia', terrainIssues, { failLevel: 'warn' }));
 
