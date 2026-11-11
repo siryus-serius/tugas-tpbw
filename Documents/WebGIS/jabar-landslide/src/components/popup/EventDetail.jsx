@@ -2,6 +2,7 @@ import { compassName, movementInfo } from '../../utils/direction';
 import { dateId } from '../../utils/format';
 import { TRIGGER, possibleTriggers } from '../../utils/seismic';
 import CompareButton from './CompareButton';
+import ImpactCard from './ImpactCard';
 import PrePostImagery from './PrePostImagery';
 import RiskCard from './RiskCard';
 import StabilityCard from './StabilityCard';
@@ -31,8 +32,6 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
       <dl>
         <dt>Tanggal</dt>
         <dd>{dateId(p.tanggal)}</dd>
-        <dt>Korban meninggal</dt>
-        <dd>{p.korban_meninggal}</dd>
         <dt>Lokasi</dt>
         <dd>
           {p.desa} · <span className="muted">{p.jenis_koordinat}</span>
@@ -61,6 +60,7 @@ export default function EventDetail({ feature, scenes, stability, risk, params, 
         </dd>
       </dl>
 
+      <ImpactCard dampak={p.dampak} deaths={p.korban_meninggal} />
       <CompareButton title={`${p.kecamatan}, ${p.tanggal}`} coord={coord} compare={compare} movement={movement} />
       <RiskCard risk={risk} />
       <StabilityCard result={stability} params={params} slopeSource="P90 ±400 m, DEM Copernicus 90 m" />

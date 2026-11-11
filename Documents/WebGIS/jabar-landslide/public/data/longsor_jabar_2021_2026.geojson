@@ -29,7 +29,85 @@
           "https://www.cnnindonesia.com/nasional/20210203131442-20-601730/longsor-sumedang-40-orang-tewas-1126-jiwa-terdampak",
           "https://news.detik.com/berita-jawa-barat/d-5339465/longsor-sumedang-40-korban-tewas-ratusan-rumah-akan-direlokasi"
         ],
-        "status_verifikasi": "Terverifikasi (4 sumber)"
+        "status_verifikasi": "Terverifikasi (4 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 40,
+            "luka_berat": 3,
+            "luka_ringan": 22,
+            "terdampak_jiwa": 1126,
+            "terdampak_kk": 314
+          },
+          "rumah": {
+            "rusak_berat": 26,
+            "rusak_sedang": 3,
+            "terancam": 103
+          },
+          "fasilitas_umum": [
+            {
+              "jenis": "masjid",
+              "jumlah": 1,
+              "kondisi": "rusak sedang",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [
+            "PVMBG: 224 rumah masuk zona merah, 132 rumah berada di atas lokasi longsor"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.cnnindonesia.com/nasional/20210203131442-20-601730/longsor-sumedang-40-orang-tewas-1126-jiwa-terdampak",
+              "kutipan": "Korban jiwa sudah ditemukan semua, total 40 orang, luka berat 3, dan luka ringan 22,"
+            },
+            {
+              "field": "korban.luka_berat",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "Dani mengatakan korban bencana longsor saat ini terdapat 40 meninggal, 3 korban dengan luka berat,"
+            },
+            {
+              "field": "korban.luka_ringan",
+              "url": "https://www.cnnindonesia.com/nasional/20210203131442-20-601730/longsor-sumedang-40-orang-tewas-1126-jiwa-terdampak",
+              "kutipan": "Selain korban tewas sebanyak 40 orang, juga ada 3 orang luka berat dan 22 orang luka ringan."
+            },
+            {
+              "field": "korban.terdampak_jiwa",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "Sementara total orang yang terkena dampak bencana adalah sebanyak 1.126 jiwa atau 314 KK yang tersebar di 3 RW."
+            },
+            {
+              "field": "korban.terdampak_kk",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "sebanyak 1.126 jiwa atau 314 KK yang tersebar di 3 RW."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "26 unit rumah yang mengalami rusak berat, 3 unit rusak sedang dan 103 unit dalam keadaan terancam"
+            },
+            {
+              "field": "rumah.rusak_sedang",
+              "url": "https://www.cnnindonesia.com/nasional/20210203131442-20-601730/longsor-sumedang-40-orang-tewas-1126-jiwa-terdampak",
+              "kutipan": "Untuk kerugian material, Dani mencatat sebanyak 26 unit rumah rusak berat, 3 unit rumah rusak sedang,"
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "26 unit rumah yang mengalami rusak berat, 3 unit rusak sedang dan 103 unit dalam keadaan terancam"
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://jabar.antaranews.com/berita/239391/bpbd-jabar-tanggap-darurat-masih-fokus-pada-dampak-longsor-di-sumedang",
+              "kutipan": "Selain rumah, bencana longsor juga menyebabkan 1 unit masjid mengalami rusak sedang."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5339465/longsor-sumedang-40-korban-tewas-ratusan-rumah-akan-direlokasi",
+              "kutipan": "224 rumah telah masuk zona merah, yakni 132 rumah berada di atas lokasi longsor."
+            }
+          ],
+          "catatan": "Sumber BPBD Jabar per 3 Feb 2021. Link BNPB (bnpb.go.id/berita/longsor-kembali-terjadi-...) 404. ANTARA menyebut pengungsi (data 19 Jan) tersebar di tiga lokasi (513, 148, 465 jiwa); total pengungsi tidak dinyatakan eksplisit sebagai satu angka sehingga mengungsi_jiwa dibiarkan null. Keterangan foto CNN (10/1/2021) memuat data awal 12 meninggal dan 14 bangunan rusak berat."
+        }
       }
     },
     {
@@ -58,7 +136,23 @@
           "https://news.detik.com/berita-jawa-barat/d-5528917/satu-orang-tewas-tertimbun-longsor-di-ibun-bandung",
           "https://regional.kompas.com/read/2021/04/13/112844578/seorang-petani-tewas-tertimbun-longsor-saat-tandur-di-sawah"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5528917/satu-orang-tewas-tertimbun-longsor-di-ibun-bandung",
+              "kutipan": "Satu orang tewas akibat tertimbun longsor di Kecamatan Ibun, Kabupaten Bandung."
+            }
+          ],
+          "catatan": "Longsor terjadi di area sawah; tidak ada angka kerusakan. Angka rumah rusak di artikel detik (Solokan Jeruk, Cimenyan, Rancaekek) adalah kejadian angin kencang terpisah, tidak dimasukkan. Nama korban berbeda: detik 'Eroh', kompas 'Iroh'."
+        }
       }
     },
     {
@@ -88,7 +182,67 @@
           "https://megapolitan.antaranews.com/berita/138242/longsor-timbun-tiga-warga-sukabumi-satu-meninggal",
           "https://www.liputan6.com/news/read/4547412/longsor-di-sukabumi-satu-orang-meninggal-dunia"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "luka_berat": 1,
+            "luka_ringan": 1,
+            "terdampak_jiwa": 9,
+            "terdampak_kk": 3
+          },
+          "rumah": {
+            "rusak_berat": 2,
+            "terancam": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "10 petak sawah tertimbun longsoran"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "Tanah longsor di Desa Ginanjar mengakibatkan satu balita meninggal dunia."
+            },
+            {
+              "field": "korban.luka_berat",
+              "url": "https://www.liputan6.com/news/read/4547412/longsor-di-sukabumi-satu-orang-meninggal-dunia",
+              "kutipan": "Maman (40 tahun) mengalami luka ringan dan Atik (35 tahun) mengalami luka berat."
+            },
+            {
+              "field": "korban.luka_ringan",
+              "url": "https://www.liputan6.com/news/read/4547412/longsor-di-sukabumi-satu-orang-meninggal-dunia",
+              "kutipan": "Satu orang meninggal dunia dan 2 orang luka-luka atas peristiwa ini."
+            },
+            {
+              "field": "korban.terdampak_jiwa",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "2 warga luka-luka dan 3 KK (9 jiwa) terdampak akibat peristiwa ini."
+            },
+            {
+              "field": "korban.terdampak_kk",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "2 warga luka-luka dan 3 KK (9 jiwa) terdampak akibat peristiwa ini."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "2 rumah warga rusak berat dan 1 lainnya terancam."
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "2 rumah warga rusak berat dan 1 lainnya terancam."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+              "kutipan": "longsoran juga menimbun 10 petak sawah dan peternakan bebek milik warga setempat."
+            }
+          ],
+          "catatan": "Rincian luka (1 berat: Atik; 1 ringan: Maman) dari Liputan6, konsisten dengan ANTARA ('M (40) mengalami luka ringan'; satu korban 'mengalami luka berat'). BNPB hanya menyebut '2 warga luka-luka'. Peternakan bebek tertimbun tanpa angka. ANTARA menyebut warga diungsikan tanpa jumlah."
+        }
       }
     },
     {
@@ -117,7 +271,30 @@
           "https://news.detik.com/berita-jawa-barat/d-5563593/longsor-di-bandung-barat-seorang-pria-tewas-tertimbun",
           "https://www.cnnindonesia.com/nasional/20210509122214-20-640562/longsor-terjang-rumah-di-bandung-barat-1-orang-meninggal"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {
+            "rusak_tidak_rinci": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.cnnindonesia.com/nasional/20210509122214-20-640562/longsor-terjang-rumah-di-bandung-barat-1-orang-meninggal",
+              "kutipan": "Satu orang tertimbun atas nama Rudi (35) yang merupakan adik pemilik rumah"
+            },
+            {
+              "field": "rumah.rusak_tidak_rinci",
+              "url": "https://www.cnnindonesia.com/nasional/20210509122214-20-640562/longsor-terjang-rumah-di-bandung-barat-1-orang-meninggal",
+              "kutipan": "Satu unit rumah tertimpa longsoran yang dihuni empat orang."
+            }
+          ],
+          "catatan": "Rumah disebut 'tertimpa longsoran' tanpa tingkat kerusakan, dicatat sebagai rusak_tidak_rinci. detik: korban Rudi (35) tewas tertimbun."
+        }
       }
     },
     {
@@ -146,7 +323,42 @@
           "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
           "https://news.detik.com/berita-jawa-barat/d-5830558/tertimbun-longsor-balita-di-pasirjambu-bandung-meninggal-dunia"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "hilang": 0,
+            "luka_ringan": 2
+          },
+          "rumah": {
+            "rusak_berat": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+              "kutipan": "terdapat satu orang meninggal dunia dan dua warga tersebut mengalami luka ringan"
+            },
+            {
+              "field": "korban.luka_ringan",
+              "url": "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+              "kutipan": "terdapat satu orang meninggal dunia dan dua warga tersebut mengalami luka ringan"
+            },
+            {
+              "field": "korban.hilang",
+              "url": "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+              "kutipan": "Proses pencarian dihentikan setelah diinformasikan tidak ada warga dinyatakan hilang."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+              "kutipan": "Terdapat satu rumah warga dilaporkan rusak berat akibat tertimpa material longsor."
+            }
+          ],
+          "catatan": "Detik menyebut 3 penghuni: 2 selamat, 1 anak meninggal; rumah semi permanen 'sudah hancur lebur'. BNPB: kejadian ~21.15 WIB, detik ~22.00 WIB."
+        }
       }
     },
     {
@@ -175,7 +387,47 @@
           "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
           "https://www.liputan6.com/regional/read/4861304/longsor-di-giriawas-pangalengan-bandung-1-orang-meninggal-dunia"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "luka_berat": 1,
+            "luka_ringan": 6
+          },
+          "rumah": {
+            "rusak_tidak_rinci": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
+              "kutipan": "mengakibatkan satu orang meninggal dunia dan tujuh orang mengalami luka-luka."
+            },
+            {
+              "field": "korban.luka_berat",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
+              "kutipan": "6 orang luka ringan dan 1 orang luka berat."
+            },
+            {
+              "field": "korban.luka_ringan",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
+              "kutipan": "6 orang luka ringan dan 1 orang luka berat."
+            },
+            {
+              "field": "rumah.rusak_tidak_rinci",
+              "url": "https://news.detik.com/berita-jawa-barat/d-5899785/longsor-timpa-rumah-di-pangalengan-satu-warga-tewas",
+              "kutipan": "mengakibatkan satu rumah tertimpa longsor"
+            },
+            {
+              "field": "rumah.rusak_tidak_rinci",
+              "url": "https://www.liputan6.com/regional/read/4861304/longsor-di-giriawas-pangalengan-bandung-1-orang-meninggal-dunia",
+              "kutipan": "hanya satu rumah yang terdampak."
+            }
+          ],
+          "catatan": "Liputan6: longsor 'menjebol dinding bagian belakang sampai merobohkannya' (rumah milik Roni), tetapi tingkat kerusakan resmi tidak disebut, sehingga dicatat sebagai rusak_tidak_rinci. Liputan6 juga menyebut 'Satu di antaranya luka berat' dari tujuh luka (konsisten)."
+        }
       }
     },
     {
@@ -204,7 +456,43 @@
           "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
           "https://bandung.kompas.com/read/2022/02/06/122122978/longsor-di-cianjur-kakak-adik-tewas-orangtua-luka-parah"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {
+            "rusak_berat": 1,
+            "terancam": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "tembok pembatas setinggi 4 meter ambruk menimpa rumah"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
+              "kutipan": "Tanah longsor yang terjadi di Kabupaten Cianjur, Jawa Barat, mengakibatkan dua warga meninggal dunia."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
+              "kutipan": "Selain satu rumah rusak berat, longsor juga berdampak pada terancamnya satu unit rumah lainnya."
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
+              "kutipan": "Selain satu rumah rusak berat, longsor juga berdampak pada terancamnya satu unit rumah lainnya."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.liputan6.com/regional/read/4879462/detik-detik-tanah-longsor-di-cianjur-akibatkan-2-orang-meninggal-dunia",
+              "kutipan": "Adapun tembok pembatas dengan ketinggian empat meter ambruk dan menimpa rumah Yayan."
+            }
+          ],
+          "catatan": "Kedua orang tua (Eti Ernalawati dan Yayan) disebut luka patah pinggul dan kaki / 'luka parah', tetapi hanya disebut nama, tidak dinyatakan sebagai angka; luka dibiarkan null. Nama anak: liputan6 'Nurvitasari (11)', Kompas 'Murpita (11)'."
+        }
       }
     },
     {
@@ -233,7 +521,36 @@
           "https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
           "https://jabar.antaranews.com/berita/382505/4-warga-tertimbun-longsor-di-pasir-pogor-bogor"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 4,
+            "mengungsi_jiwa": 5
+          },
+          "rumah": {
+            "rusak_berat": 2
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
+              "kutipan": "empat warga yang meninggal itu adalah D (40), U (70), E (30) dan N (4)"
+            },
+            {
+              "field": "korban.mengungsi_jiwa",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
+              "kutipan": "lima orang anggota keluarga yang terpaksa mengungsi di rumah saudara"
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
+              "kutipan": "dua unit rumah milik korban dan tetangganya mengalami rusak berat"
+            }
+          ],
+          "catatan": "ANTARA Jabar (21 Mei malam) menyebut longsor 'merobohkan dua rumah', 9 penghuni, 5 selamat, 4 tertimbun; konsisten dengan BNPB."
+        }
       }
     },
     {
@@ -262,7 +579,79 @@
           "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
           "https://www.liputan6.com/news/read/4995343/satu-jasad-korban-tertimbun-longsor-di-cibunian-bogor-ditemukan"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2,
+            "hilang": 0,
+            "luka": 3,
+            "mengungsi_jiwa": 172,
+            "terdampak_kk": 20
+          },
+          "rumah": {
+            "rusak_berat": 18,
+            "rusak_ringan": 2
+          },
+          "fasilitas_umum": [
+            {
+              "jenis": "jembatan",
+              "jumlah": 4,
+              "kondisi": "putus",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [
+            "52 KK mengungsi"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.liputan6.com/news/read/4995343/satu-jasad-korban-tertimbun-longsor-di-cibunian-bogor-ditemukan",
+              "kutipan": "Jasad perempuan atas nama Aam (42) ditemukan dibawah lumpur dan bangunan rumahnya yang ambruk"
+            },
+            {
+              "field": "korban.hilang",
+              "url": "https://www.liputan6.com/news/read/4995343/satu-jasad-korban-tertimbun-longsor-di-cibunian-bogor-ditemukan",
+              "kutipan": "Mengingat seluruh korban sudah ditemukan, langkah selanjutnya"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://www.liputan6.com/news/read/4995343/satu-jasad-korban-tertimbun-longsor-di-cibunian-bogor-ditemukan",
+              "kutipan": "Sedangkan tiga orang dua di antaranya seorang ibu dan bayi berusia 1 tahun ditemukan selamat. Ketiganya mengalami luka-luka."
+            },
+            {
+              "field": "korban.mengungsi_jiwa",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "BPBD Kabupaten Bogor mencatat, sedikitnya ada 20 KK terdampak dan 52 KK/172 jiwa terpaksa harus mengungsi."
+            },
+            {
+              "field": "korban.terdampak_kk",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "BPBD Kabupaten Bogor mencatat, sedikitnya ada 20 KK terdampak dan 52 KK/172 jiwa terpaksa harus mengungsi."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "18 unit rumah rusak berat, 2 unit rumah rusak ringan dan 4 jembatan putus."
+            },
+            {
+              "field": "rumah.rusak_ringan",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "18 unit rumah rusak berat, 2 unit rumah rusak ringan dan 4 jembatan putus."
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "18 unit rumah rusak berat, 2 unit rumah rusak ringan dan 4 jembatan putus."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+              "kutipan": "sedikitnya ada 20 KK terdampak dan 52 KK/172 jiwa terpaksa harus mengungsi."
+            }
+          ],
+          "catatan": "Meninggal 2 dari liputan6 (25 Jun 2022): korban Umar (42) dan Aam (42), seluruh korban ditemukan; BNPB (23 Jun 2022, lebih awal) masih 1 meninggal, 1 hilang. Liputan6 menyebut '2 unit rumah rusak sedang' dan '52 KK/175 jiwa mengungsi', BNPB menyebut 2 rusak ringan dan 172 jiwa — dipakai BNPB. Liputan6 juga menyebut jalur rel kereta Sukabumi–Bogor longsor (KA Pangrango tidak beroperasi), tetapi lokasinya tidak dinyatakan sama dengan Cibunian sehingga tidak dicatat sebagai fasilitas."
+        }
       }
     },
     {
@@ -291,7 +680,40 @@
           "https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem",
           "https://www.detik.com/jabar/berita/d-6286186/detik-detik-kakak-beradik-di-ciamis-tewas-tertimbun-longsor"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2,
+            "terdampak_jiwa": 88,
+            "terdampak_kk": 28
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem",
+              "kutipan": "Dua warga ditemukan dalam kondisi meninggal dunia setelah tertimbun tanah longsor"
+            },
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.detik.com/jabar/berita/d-6286186/detik-detik-kakak-beradik-di-ciamis-tewas-tertimbun-longsor",
+              "kutipan": "Dua bocah Dini (12) dan Dea (4) di Ciamis, tewas tertimbun longsor tebing setinggi sekitar 10 meter."
+            },
+            {
+              "field": "korban.terdampak_kk",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem",
+              "kutipan": "Sebanyak 28 KK/88 jiwa di Desa Sukahurip dan Desa Sukamaju, Kecamatan Cihaurbeuti terdampak bencana itu."
+            },
+            {
+              "field": "korban.terdampak_jiwa",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem",
+              "kutipan": "Sebanyak 28 KK/88 jiwa di Desa Sukahurip dan Desa Sukamaju, Kecamatan Cihaurbeuti terdampak bencana itu."
+            }
+          ],
+          "catatan": "Angka terdampak BNPB (28 KK/88 jiwa) mencakup dua desa (Sukahurip dan Sukamaju). Tidak ada angka kerusakan rumah/fasilitas di kedua sumber. Detik menyebut kejadian ~19.00 WIB, BNPB ~20.00 WIB."
+        }
       }
     },
     {
@@ -320,7 +742,36 @@
           "https://www.cnnindonesia.com/nasional/20220924135604-20-852117/longsor-terjang-garut-satu-warga-tewas-usai-rumah-tertimpa-pohon",
           "https://www.detik.com/jabar/berita/d-6308061/longsor-terjang-cisompet-garut-satu-orang-tewas"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "luka": 1
+          },
+          "rumah": {
+            "rusak_tidak_rinci": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.cnnindonesia.com/nasional/20220924135604-20-852117/longsor-terjang-garut-satu-warga-tewas-usai-rumah-tertimpa-pohon",
+              "kutipan": "Kemudian ada satu korban yang meninggal dunia, satu lagi dirawat di rumah sakit,"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://www.cnnindonesia.com/nasional/20220924135604-20-852117/longsor-terjang-garut-satu-warga-tewas-usai-rumah-tertimpa-pohon",
+              "kutipan": "Korban meninggal dunia bernama Iyom (64), sedangkan suaminya Pardi (70) mengalami luka-luka."
+            },
+            {
+              "field": "rumah.rusak_tidak_rinci",
+              "url": "https://www.cnnindonesia.com/nasional/20220924135604-20-852117/longsor-terjang-garut-satu-warga-tewas-usai-rumah-tertimpa-pohon",
+              "kutipan": "Nah, ini untuk yang longsor ada rumah satu yang hancur."
+            }
+          ],
+          "catatan": "Rumah disebut 'hancur' oleh Wakil Bupati (bukan klasifikasi resmi BPBD), dicatat sebagai rusak_tidak_rinci. CNN menyebut rumah, sekolah, jembatan dan jalan terdampak tanpa angka. Angka '40 rumah yang mengungsi' di CNN terkait banjir Pameungpeuk (bukan longsor ini) sehingga tidak dipakai. Detik menyebut warga terdampak 'diperkirakan ... ratusan orang' (perkiraan, tidak dipakai). Angka BNPB tingkat kabupaten (banjir+longsor Garut 22/9/2022) tidak dipakai karena bukan khusus kejadian ini."
+        }
       }
     },
     {
@@ -349,7 +800,35 @@
           "https://www.antaranews.com/berita/3178657/tim-sar-kembali-temukan-korban-longsor-kebon-kelapa-bogor",
           "https://megapolitan.kompas.com/read/2022/10/18/19081301/144-warga-gang-barjo-bogor-diungsikan-bantuan-makanan-hingga-obat-obatan"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 4,
+            "mengungsi_jiwa": 144,
+            "terdampak_jiwa": 166
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://megapolitan.kompas.com/read/2022/10/18/19081301/144-warga-gang-barjo-bogor-diungsikan-bantuan-makanan-hingga-obat-obatan",
+              "kutipan": "empat orang lainnya meninggal dunia"
+            },
+            {
+              "field": "korban.mengungsi_jiwa",
+              "url": "https://megapolitan.kompas.com/read/2022/10/18/19081301/144-warga-gang-barjo-bogor-diungsikan-bantuan-makanan-hingga-obat-obatan",
+              "kutipan": "Tercatat ada 144 warga Gang Barjo yang diungsikan"
+            },
+            {
+              "field": "korban.terdampak_jiwa",
+              "url": "https://megapolitan.antaranews.com/berita/328446/pemkot-bogor-ubah-lahan-bekas-longsor-di-gang-barjo-jadi-ruang-publik",
+              "kutipan": "Akibat peristiwa tersebut, 166 warga terdampak dan delapan orang tertimbun."
+            }
+          ],
+          "catatan": "Tidak ditemukan angka rumah rusak. Pengungsi berbeda antar sumber: Medcom (12 Okt, awal) 'Sebanyak 41 kepala keluarga (KK) atau sekitar 106 jiwa diungsikan'; kompas 18 Okt 144 warga (dipakai, terbaru). Artikel ANTARA 3178657 (14 Okt) masih menyebut 2 orang hilang, namun kompas 18 Okt menyatakan 4 selamat & 4 meninggal dari 8 tertimbun, sehingga hilang final null."
+        }
       }
     },
     {
@@ -379,7 +858,43 @@
           "https://bandung.kompas.com/read/2022/10/25/220616378/dampak-tanah-longsor-di-sukabumi-5-rumah-rusak-berat-3-warga-meninggal-dunia",
           "https://megapolitan.antaranews.com/berita/217553/relawan-evakuasi-jasad-terakhir-korban-tertimbun-longsor-di-sukabumi"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 3
+          },
+          "rumah": {
+            "rusak_berat": 5,
+            "terancam": 4
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "1 ruko terdampak"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bandung.kompas.com/read/2022/10/25/220616378/dampak-tanah-longsor-di-sukabumi-5-rumah-rusak-berat-3-warga-meninggal-dunia",
+              "kutipan": "menelan korban jiwa sebanyak 3 orang akibat tertimbun material tanah longsor."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-telan-tiga-korban-di-sukabumi",
+              "kutipan": "ada sebanyak 5 rumah yang mengalami rusak berat, 4 rumah lainnya terancam"
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://bnpb.go.id/berita/tanah-longsor-telan-tiga-korban-di-sukabumi",
+              "kutipan": "ada sebanyak 5 rumah yang mengalami rusak berat, 4 rumah lainnya terancam"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://bandung.kompas.com/read/2022/10/25/220616378/dampak-tanah-longsor-di-sukabumi-5-rumah-rusak-berat-3-warga-meninggal-dunia",
+              "kutipan": "ada sebanyak 5 rumah yang mengalami rusak berat, 4 rumah lainnya terancam, dan 1 ruko turut terdampak"
+            }
+          ],
+          "catatan": "ANTARA (25 Okt 2022, 05.48 WIB, lebih awal) menyebut longsor 'merusak dua rumah' (satu tertimbun seluruhnya, satu sebagian); dipakai angka kaji cepat BNPB (5 rusak berat, 4 terancam)."
+        }
       }
     },
     {
@@ -408,7 +923,47 @@
           "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
           "https://news.detik.com/berita/d-6636613/korban-tewas-longsor-empang-bogor-bertambah-jadi-7-orang"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {},
+          "rumah": {
+            "rusak_tidak_rinci": 5
+          },
+          "fasilitas_umum": [
+            {
+              "jenis": "tembok penahan tanah (TPT) rel kereta api",
+              "jumlah": null,
+              "kondisi": "longsor",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [
+            "6 orang tertimbun (laporan awal ANTARA), 11 orang lain selamat"
+          ],
+          "bukti": [
+            {
+              "field": "rumah.rusak_tidak_rinci",
+              "url": "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
+              "kutipan": "Longsor tebing penahan tanah (TPT) menimpa lima rumah di RT07/RW04 Kampung Sirna Sari Kelurahan Empang,"
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
+              "kutipan": "Longsor tebing penahan tanah (TPT) menimpa lima rumah di RT07/RW04 Kampung Sirna Sari"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
+              "kutipan": "telah menemukan dua korban meninggal dunia dari enam orang yang tertimbun."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.antaranews.com/berita/3441420/dua-orang-tewas-akibat-longsor-tpt-rel-kereta-api-di-empang-bogor",
+              "kutipan": "Sementara 11 orang lain selamat."
+            }
+          ],
+          "catatan": "BPBD Jabar (17 Mar 2023): 6 meninggal. detik (24 Mar 2023) melaporkan bertambah menjadi 7 setelah seorang korban luka meninggal di rumah sakit."
+        }
       }
     },
     {
@@ -437,7 +992,30 @@
           "https://www.bnpb.go.id/berita/dua-warga-tasikmalaya-meninggal-akibat-tanah-longsor",
           "https://20.detik.com/detikupdate/20230609-230609095/penampakan-longsor-yang-tewaskan-pasutri-di-tasikmalaya"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {
+            "rusak_berat": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bnpb.go.id/berita/dua-warga-tasikmalaya-meninggal-akibat-tanah-longsor",
+              "kutipan": "Tanah longsor mengakibatkan dua warga Kabupaten Tasikmalaya meninggal dunia."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://bnpb.go.id/berita/dua-warga-tasikmalaya-meninggal-akibat-tanah-longsor",
+              "kutipan": "Selain korban jiwa, longsor mengakibatkan satu unit rumah panggung rusak berat."
+            }
+          ],
+          "catatan": "URL di data (https://www.bnpb.go.id/...) mengembalikan 404; versi tanpa 'www' (https://bnpb.go.id/...) dapat diakses dan dipakai sebagai bukti. Detik 20.detik.com hanya menyebut dua korban (pasutri), tanpa angka kerusakan."
+        }
       }
     },
     {
@@ -467,7 +1045,30 @@
           "https://megapolitan.antaranews.com/berita/269892/bupati-bogor-serahkan-bantuan-untuk-keluarga-korban-meninggal-akibat-longsor-dramaga",
           "https://news.detik.com/berita/d-7060493/fakta-fakta-longsor-di-desa-petir-bogor-yang-tewaskan-2-orang"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "rumah korban rusak sedang (jumlah tidak dinyatakan sebagai angka)"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://news.detik.com/berita/d-7060493/fakta-fakta-longsor-di-desa-petir-bogor-yang-tewaskan-2-orang",
+              "kutipan": "Longsor menimpa bagian kamar tidur yang menyebabkan 2 orang korban jiwa"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://megapolitan.antaranews.com/berita/269892/bupati-bogor-serahkan-bantuan-untuk-keluarga-korban-meninggal-akibat-longsor-dramaga",
+              "kutipan": "Rumahnya rusak sedang."
+            }
+          ],
+          "catatan": "ANTARA menulis tanggal kejadian 'Minggu (27/11)', detik menyebut Minggu 26 November 2023 pukul 16.30; 26/11/2023 adalah hari Minggu. Rumah rusak sedang tidak diberi angka, sehingga rumah.rusak_sedang dibiarkan null."
+        }
       }
     },
     {
@@ -496,7 +1097,23 @@
           "https://www.detik.com/jabar/berita/d-7067204/jabar-hari-ini-pilu-nenek-dan-cucu-tewas-tertimbun-longsor",
           "https://bandung.kompas.com/image/2023/12/01/130244478/hendak-mengungsi-nenek-dan-cucu-malah-tewas-tertimbun-longsor-di-ciamis"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.metrotvnews.com/read/NrWC5PV6-seorang-nenek-dan-cucu-di-ciamis-tertimbun-longsor",
+              "kutipan": "telah menyebabkan dua orang meninggal tertimbun material longsor"
+            }
+          ],
+          "catatan": "Sumber di data (Detik, Kompas) menyebut dua korban (Ai Sumiati dan Dikry Fadlan Mutakin) dan tembok penahan tanah longsor, tanpa angka kerusakan; Kompas hanya menyebut 'dua warga tertimbun longsor'. Kutipan angka meninggal diambil dari metrotvnews (hasil pencarian, kejadian sama 1/12/2023 Desa Sukamaju). Tidak ditemukan angka rumah rusak."
+        }
       }
     },
     {
@@ -525,7 +1142,36 @@
           "https://www.antaranews.com/berita/3855513/longsor-di-sukabumi-timbun-dua-warga",
           "https://www.detik.com/jabar/berita/d-7070486/encop-tewas-terhimpit-tiang-beton-saat-rumahnya-ambruk"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "rumah korban terbawa longsoran hingga bantaran Sungai Cicatih (jumlah tidak disebut sebagai angka)",
+            "tembok penahan tanah ambruk"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.antaranews.com/berita/3855513/longsor-di-sukabumi-timbun-dua-warga",
+              "kutipan": "satu korban meninggal dunia."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.antaranews.com/berita/3855513/longsor-di-sukabumi-timbun-dua-warga",
+              "kutipan": "Dampak dari tanah longsor itu rumah korban ikut terbawa longsoran hingga sampai ke bantaran Sungai Cicatih."
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.antaranews.com/berita/3855513/longsor-di-sukabumi-timbun-dua-warga",
+              "kutipan": "mengakibatkan tembok penahan tanah ambruk."
+            }
+          ],
+          "catatan": "Korban selamat Eva (20) sempat tertimbun dan dirawat, tetapi tidak dinyatakan sebagai angka luka. Usia korban meninggal Encop: ANTARA 51 tahun, detik 58 tahun."
+        }
       }
     },
     {
@@ -555,7 +1201,72 @@
           "https://www.detik.com/jabar/berita/d-7130029/tim-sar-kembali-temukan-korban-tewas-longsor-subang",
           "https://www.cnnindonesia.com/nasional/20240108141057-22-1046732/foto-longsor-terjang-objek-wisata-mata-air-cipondok-subang-2-tewas"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2,
+            "luka": 11,
+            "mengungsi_jiwa": 80
+          },
+          "rumah": {
+            "terancam": 40
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "5 warung milik warga terdampak",
+            "3 jalur kolam ikan tertimbun longsor",
+            "2 hektare sawah tertimbun longsor",
+            "2 unit sepeda motor tertimbun longsor"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "Bencana tanah longsor menewaskan dua warga di Kampung Cipondok, Desa Pesanggrahan"
+            },
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.detik.com/jabar/berita/d-7130029/tim-sar-kembali-temukan-korban-tewas-longsor-subang",
+              "kutipan": "Sampai dengan saat ini korban meninggal dunia sudah ada dua warga"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "ada sebanyak 11 orang yang mengalami luka-luka"
+            },
+            {
+              "field": "korban.mengungsi_jiwa",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "80 warga mengungsi hingga Senin (8/1/2024) petang"
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "40 rumah terancam pergerakan tanah"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "lima warung milik warga terdampak"
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "tiga jalur kolam ikan dan 2 hektare sawah tertimbun longsor"
+            },
+            {
+              "field": "lainnya.2",
+              "url": "https://www.inews.id/regional/jabar/tanah-longsor-di-subang-bnpb-2-orang-tewas-11-luka-luka-dan-80-jiwa-mengungsi",
+              "kutipan": "tiga jalur kolam ikan dan 2 hektare sawah tertimbun longsor"
+            },
+            {
+              "field": "lainnya.3",
+              "url": "https://www.detik.com/jabar/berita/d-7130029/tim-sar-kembali-temukan-korban-tewas-longsor-subang",
+              "kutipan": "dua unit sepeda motor yang sudah tertimbun tanah longsor"
+            }
+          ],
+          "catatan": "Tautan BNPB asli (update-tanah-longsor-subang-...) HTTP 404; angka BNPB diambil dari iNews.id (9/1/2024) yang mengutip Abdul Muhari/Pusdalops BNPB (hasil kaji cepat sementara). CNN Indonesia menyebut 9 luka-luka ('menewaskan 2 warga dan 9 luka-luka'); dipakai 11 versi BNPB. Angka pengungsi berbeda antar sumber/waktu (hasil pencarian juga menyebut ~300 dan 140, tidak diverifikasi); dipakai 80 versi BNPB."
+        }
       }
     },
     {
@@ -587,7 +1298,47 @@
           "https://www.detik.com/jabar/berita/d-7271298/pelukan-ibu-anak-hingga-akhir-hayat-kala-longsor-terjang-cipongkor",
           "https://www.antaranews.com/video/4037187/tim-sar-gabungan-hentikan-operasi-pencarian-korban-longsor-cipongkor"
         ],
-        "status_verifikasi": "Terverifikasi (5 sumber)"
+        "status_verifikasi": "Terverifikasi (5 sumber)",
+        "dampak": {
+          "korban": {},
+          "rumah": {
+            "rusak_berat": 47,
+            "rusak_sedang": 3,
+            "rusak_ringan": 46
+          },
+          "fasilitas_umum": [
+            {
+              "jenis": "fasilitas pendidikan",
+              "jumlah": 1,
+              "kondisi": "rusak berat",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "rumah.rusak_ringan",
+              "url": "https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+              "kutipan": "46 rumah rusak ringan, tiga rumah rusak sedang, 47 rumah rusak berat"
+            },
+            {
+              "field": "rumah.rusak_sedang",
+              "url": "https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+              "kutipan": "46 rumah rusak ringan, tiga rumah rusak sedang, 47 rumah rusak berat"
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+              "kutipan": "46 rumah rusak ringan, tiga rumah rusak sedang, 47 rumah rusak berat"
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+              "kutipan": "satu fasilitas pendidikan rusak berat."
+            }
+          ],
+          "catatan": "BNPB (data 28 Mar 2024): 7 meninggal, 3 masih dicari. Laporan DVI Polri (Metro TV, 3 Apr 2024): 8 jenazah teridentifikasi, 2 belum ditemukan. Angka kerusakan rumah adalah rekap BNPB untuk wilayah terdampak di Kec. Cipongkor."
+        }
       }
     },
     {
@@ -616,7 +1367,23 @@
           "https://megapolitan.kompas.com/read/2024/03/25/08042661/2-orang-tewas-akibat-longsor-di-sempur-bogor",
           "https://news.detik.com/berita/d-7259567/korban-longsor-di-sempur-bogor-bertambah-total-2-orang-meninggal"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://megapolitan.kompas.com/read/2024/03/25/08042661/2-orang-tewas-akibat-longsor-di-sempur-bogor",
+              "kutipan": "\"Dua orang dinyatakan meninggal dunia,\" ujar Kepala Pelaksana BPBD Kota Bogor Hidayatulloh."
+            }
+          ],
+          "catatan": "Kedua sumber (Kompas, Detik) tidak memuat angka rumah rusak; klaim 'lima rumah' pada keterangan data TIDAK terverifikasi. Kompas TV melaporkan korban longsor Kota Bogor 'bertambah menjadi tiga orang', tetapi korban ketiga berada di Kelurahan Cibuluh, Bogor Utara (kejadian berbeda), jadi tidak mengubah angka Sempur. Artikel JPNN '2 rumah ambruk di Lebak Kantin' adalah kejadian 2014, tidak dipakai."
+        }
       }
     },
     {
@@ -645,7 +1412,41 @@
           "https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
           "https://news.detik.com/berita/d-7268730/lansia-korban-longsor-di-sentul-ditemukan-tewas-di-sungai-cikeas"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "luka": 1
+          },
+          "rumah": {
+            "tertimbun_hanyut": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
+              "kutipan": "Satu orang dilaporkan tertimbun pasca longsor melanda Kabupaten Bogor, Jawa Barat pada Minggu (24/3) pukul 18.00 WIB."
+            },
+            {
+              "field": "korban.meninggal",
+              "url": "https://news.detik.com/berita/d-7268730/lansia-korban-longsor-di-sentul-ditemukan-tewas-di-sungai-cikeas",
+              "kutipan": "Kondisi saat ini korban diketemukan dalam keadaan meninggal dunia"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
+              "kutipan": "longsor juga menyebabkan satu orang lainnya luka sedang dan sudah dalam penanganan rumah sakit."
+            },
+            {
+              "field": "rumah.tertimbun_hanyut",
+              "url": "https://news.detik.com/berita/d-7268730/lansia-korban-longsor-di-sentul-ditemukan-tewas-di-sungai-cikeas",
+              "kutipan": "1 unit rumah warga tertimbun dan terbawa longsor"
+            }
+          ],
+          "catatan": "Korban tertimbun (BNPB) kemudian ditemukan meninggal di Sungai Cikeas (detik: 'korban diketemukan dalam keadaan meninggal dunia', BPBD Kab. Bogor). Luka 'sedang' dicatat di field luka (bukan berat/ringan); detik menyebut korban Ajil (42) 'berhasil dievakuasi dan alami luka'. Angka banjir di artikel BNPB yang sama (959 rumah terendam, 5 rusak ringan, 219 mengungsi) adalah kejadian banjir lain, tidak dimasukkan. Usia korban berbeda antar laporan (65 vs 70)."
+        }
       }
     },
     {
@@ -675,7 +1476,55 @@
           "https://www.antaranews.com/berita/4077000/tim-sar-temukan-tiga-korban-longsor-di-banjarwangi-garut",
           "https://www.liputan6.com/regional/read/5582588/cerita-tim-sar-evakuasi-jenazah-ibu-dan-2-anak-korban-longsor-di-banjarwangi-garut"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 3
+          },
+          "rumah": {
+            "rusak_berat": 1
+          },
+          "fasilitas_umum": [
+            {
+              "jenis": "tempat ibadah",
+              "jumlah": 1,
+              "kondisi": "rusak berat",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [
+            "2 kendaraan roda empat tertimbun",
+            "3 kendaraan roda dua tertimbun"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+              "kutipan": "Ketiga korban tersebut ditemukan dalam keadaan meninggal dunia, pada Jumat (26/4)."
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+              "kutipan": "Satu unit rumah alami rusak berat dan satu unit fasilitas peribadahan rusak berat."
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+              "kutipan": "Satu unit rumah alami rusak berat dan satu unit fasilitas peribadahan rusak berat."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+              "kutipan": "dua unit kendaraan roda empat dan tiga unit kendaraan roda dua turut tertimbun material longsor."
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut",
+              "kutipan": "dua unit kendaraan roda empat dan tiga unit kendaraan roda dua turut tertimbun material longsor."
+            }
+          ],
+          "catatan": "ANTARA dan Liputan6 konsisten 3 meninggal (ibu dan dua anak). Usia korban ibu berbeda: ANTARA 'Lilis (28)', Liputan6 'Lilis (35)'."
+        }
       }
     },
     {
@@ -704,7 +1553,29 @@
           "https://bnpb.go.id/berita/dua-orang-meninggal-tertimbun-longsor-di-cianjur",
           "https://regional.kompas.com/read/2024/12/03/134540878/longsor-cianjur-ibu-dan-anak-tewas-tertimbun"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2,
+            "luka": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bnpb.go.id/berita/dua-orang-meninggal-tertimbun-longsor-di-cianjur",
+              "kutipan": "dua orang ditemukan meninggal dunia dalam keadaan tertimbun longsor"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://bnpb.go.id/berita/dua-orang-meninggal-tertimbun-longsor-di-cianjur",
+              "kutipan": "satu orang atas nama Hilman alami luka"
+            }
+          ],
+          "catatan": "Tidak ada angka kerusakan rumah/fasilitas di BNPB maupun Kompas (rumah yang tertimbun tidak disebut jumlahnya)."
+        }
       }
     },
     {
@@ -733,7 +1604,37 @@
           "https://www.antaranews.com/berita/4515573/satu-keluarga-di-simpenan-tertimbun-longsor-dua-korban-ditemukan",
           "https://news.detik.com/foto-news/d-7675770/5-orang-tewas-tertimbun-longsor-di-kampung-cisarakan-sukabumi"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 5
+          },
+          "rumah": {
+            "tertimbun_hanyut": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "akses jalan Jalan Raya Bagbagan hingga Kiaradua tidak bisa dilalui kendaraan akibat longsoran"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://news.detik.com/foto-news/d-7675770/5-orang-tewas-tertimbun-longsor-di-kampung-cisarakan-sukabumi",
+              "kutipan": "menyebabkan lima korban jiwa tertimbun longsor, dan kelimanya telah ditemukan"
+            },
+            {
+              "field": "rumah.tertimbun_hanyut",
+              "url": "https://www.antaranews.com/berita/4515573/satu-keluarga-di-simpenan-tertimbun-longsor-dua-korban-ditemukan",
+              "kutipan": "longsor yang terjadi di Desa Loji menimbun sebuah rumah yang dihuni lima jiwa, empat di antaranya merupakan anak-anak."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.antaranews.com/berita/4515573/satu-keluarga-di-simpenan-tertimbun-longsor-dua-korban-ditemukan",
+              "kutipan": "akses jalan menuju lokasi dari Jalan Raya Bagbagan hingga Kiaradua tidak bisa dilalui kendaraan akibat longsoran."
+            }
+          ],
+          "catatan": "ANTARA (6 Des 2024) masih 2 meninggal, 2 dalam pencarian; detik (7 Des 2024) lima tewas dan kelimanya ditemukan. Penutupan jalan mungkin akibat longsor lain dalam bencana Sukabumi yang lebih luas."
+        }
       }
     },
     {
@@ -762,7 +1663,23 @@
           "https://www.antaranews.com/berita/4769505/bnpb-seorang-warga-subang-hilang-tertimbun-longsor-saat-perbaiki-pipa",
           "https://bandung.kompas.com/read/2025/04/17/174702078/tim-gabungan-evakuasi-petugas-pengairan-yang-tewas-tertimbun-longsor-di"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bandung.kompas.com/read/2025/04/17/174702078/tim-gabungan-evakuasi-petugas-pengairan-yang-tewas-tertimbun-longsor-di",
+              "kutipan": "Tim sAR gabungan temuka Rafik (43) dalam kondisi meninggal dunia."
+            }
+          ],
+          "catatan": "BNPB (via ANTARA 14/4/2025) mencatat 1 orang hilang ('korban hilang adalah seorang pria yang bernama Rafik (55)'); korban ditemukan meninggal 17/4/2025 (Kompas), sehingga hilang null (status akhir). Usia korban tidak konsisten: 55 (ANTARA & badan berita Kompas) vs 43 (keterangan foto Kompas). Tidak ada angka kerusakan rumah/fasum; dimensi longsoran (200-250 m, lebar 20-40 m) bukan data dampak."
+        }
       }
     },
     {
@@ -793,7 +1710,42 @@
           "https://www.detik.com/jabar/cirebon-raya/d-7942895/korban-longsor-tambang-gunung-kuda-bertambah-total-19-orang-tewas",
           "https://nasional.kontan.co.id/news/bnpb-sebut-longsor-tambang-gunung-kuda-cirebon-tewaskan-10-orang"
         ],
-        "status_verifikasi": "Terverifikasi (4 sumber)"
+        "status_verifikasi": "Terverifikasi (4 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 21,
+            "hilang": 4,
+            "luka": 7
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "3 unit ekskavator dan 6 truk tertimbun"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.antaranews.com/berita/4881593/pemkab-cirebon-resmi-hentikan-pencarian-korban-di-gunung-kuda",
+              "kutipan": "mengevakuasi 21 jenazah korban"
+            },
+            {
+              "field": "korban.hilang",
+              "url": "https://www.antaranews.com/berita/4881593/pemkab-cirebon-resmi-hentikan-pencarian-korban-di-gunung-kuda",
+              "kutipan": "Total ada empat korban yang belum berhasil ditemukan,"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://www.detik.com/jabar/cirebon-raya/d-7942895/korban-longsor-tambang-gunung-kuda-bertambah-total-19-orang-tewas",
+              "kutipan": "Dengan penemuan ini, total korban meninggal dunia menjadi 19 orang, 7 orang luka-luka"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://nasional.kontan.co.id/news/bnpb-sebut-longsor-tambang-gunung-kuda-cirebon-tewaskan-10-orang",
+              "kutipan": "Longsor itu menimbun 3 unit ekskavator dan 6 truk."
+            }
+          ],
+          "catatan": "Angka meninggal/hilang final dari ANTARA 5 Juni 2025 (pencarian dihentikan). Angka interim: BNPB via kontan 30 Mei: 10 meninggal, 6 luka ('ada 6 orang lainnya yang mengalami luka'); detik 1 Juni: 19 meninggal, 7 luka, 6 hilang; ANTARA 2 Juni: 20 meninggal, 5 belum ditemukan. Luka 7 (detik, narasi penulis, terbaru) dipakai; BNPB awal 6."
+        }
       }
     },
     {
@@ -822,7 +1774,36 @@
           "https://www.liputan6.com/regional/read/6090805/longsor-di-cisewu-garut-4-orang-ditemukan-meninggal-dunia",
           "https://www.detik.com/jabar/berita/d-7984037/fakta-fakta-longsor-di-garut-tewaskan-sekeluarga"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 4,
+            "terdampak_jiwa": 4
+          },
+          "rumah": {
+            "rusak_berat": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.liputan6.com/regional/read/6090805/longsor-di-cisewu-garut-4-orang-ditemukan-meninggal-dunia",
+              "kutipan": "Terdampak empat orang seluruhnya meninggal atas nama Ibu Mar'ah, Mardi, Linda dan Fajar,"
+            },
+            {
+              "field": "korban.terdampak_jiwa",
+              "url": "https://www.liputan6.com/regional/read/6090805/longsor-di-cisewu-garut-4-orang-ditemukan-meninggal-dunia",
+              "kutipan": "Satu rumah rusak berat. Terdampak empat orang seluruhnya meninggal"
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://www.liputan6.com/regional/read/6090805/longsor-di-cisewu-garut-4-orang-ditemukan-meninggal-dunia",
+              "kutipan": "Satu rumah rusak berat."
+            }
+          ],
+          "catatan": "detik juga: 'Kondisi rumah yang tertimbun rusak berat.' dan 'Empat anggota satu keluarga tewas'."
+        }
       }
     },
     {
@@ -851,7 +1832,47 @@
           "https://www.antaranews.com/berita/4939113/tim-sar-masih-terus-cari-dua-petani-korban-longsor-di-tasikmalaya",
           "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "hilang": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "Tebing setinggi 25 meter ambruk menutupi lahan persawahan (luas tidak disebut)",
+            "Panjang material longsoran diperkirakan 700 meter",
+            "2 orang lain di lokasi selamat"
+          ],
+          "bukti": [
+            {
+              "field": "korban.hilang",
+              "url": "https://www.antaranews.com/berita/4939113/tim-sar-masih-terus-cari-dua-petani-korban-longsor-di-tasikmalaya",
+              "kutipan": "Masih belum membuahkan hasil dalam pencarian dua korban yang tertimbun longsoran,"
+            },
+            {
+              "field": "korban.hilang",
+              "url": "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya",
+              "kutipan": "Dua orang petani yang sedang mencangkul sawah hilang tertimbun longsor"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya",
+              "kutipan": "tanah tebing setinggi 25 meter ambruk dan menutupi lahan persawahan milik warga"
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya",
+              "kutipan": "panjang material longsoran diperkirakan sepanjang 700 meter."
+            },
+            {
+              "field": "lainnya.2",
+              "url": "https://www.detik.com/jabar/berita/d-7987822/longsor-timbun-2-petani-di-salawu-tasikmalaya",
+              "kutipan": "Sebetulnya ada empat orang, dua lagi selamat karena sedang ke atas,"
+            }
+          ],
+          "catatan": "Kedua petani berstatus hilang (tertimbun, belum ditemukan) per laporan terakhir."
+        }
       }
     },
     {
@@ -880,7 +1901,37 @@
           "https://www.bnpb.go.id/berita/perkembangan-situasi-dan-penanganan-bencana-6-juli-2025",
           "https://www.detik.com/jabar/berita/d-7998278/nahas-nasib-pemuda-lembang-tertimbun-longsor-saat-sedang-tidur"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {
+            "terancam": 3
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "1 rumah terdampak longsor"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.detik.com/jabar/berita/d-7998278/nahas-nasib-pemuda-lembang-tertimbun-longsor-saat-sedang-tidur",
+              "kutipan": "Ia tewas tertimbun longsor yang menerjang rumahnya."
+            },
+            {
+              "field": "rumah.terancam",
+              "url": "https://www.detik.com/jabar/berita/d-7998278/nahas-nasib-pemuda-lembang-tertimbun-longsor-saat-sedang-tidur",
+              "kutipan": "Ada 1 rumah terdampak longsor semalam dan 3 rumah lainnya terancam longsor susulan."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.detik.com/jabar/berita/d-7998278/nahas-nasib-pemuda-lembang-tertimbun-longsor-saat-sedang-tidur",
+              "kutipan": "Ada 1 rumah terdampak longsor semalam dan 3 rumah lainnya terancam longsor susulan."
+            }
+          ],
+          "catatan": "Tautan situasi BNPB 6 Juli 2025 sudah tidak aktif; rincian hanya dari detikJabar."
+        }
       }
     },
     {
@@ -909,7 +1960,30 @@
           "https://www.liputan6.com/news/read/6097719/vila-di-puncak-bogor-diterjang-tanah-longsor-dua-orang-tewas-dan-tiga-selamat",
           "https://bandung.kompas.com/read/2025/07/06/134621778/longsor-di-kawasan-puncak-bogor-7-orang-tertimbun-3-tewas-dan-4-selamat"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "5 orang tertimbun, 3 di antaranya selamat"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.liputan6.com/news/read/6097719/vila-di-puncak-bogor-diterjang-tanah-longsor-dua-orang-tewas-dan-tiga-selamat",
+              "kutipan": "Dua orang tewas, tiga orang selamat dalam kejadian tersebut."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.liputan6.com/news/read/6097719/vila-di-puncak-bogor-diterjang-tanah-longsor-dua-orang-tewas-dan-tiga-selamat",
+              "kutipan": "Dari lima korban, tiga selamat dan dua lainnya meninggal dunia."
+            }
+          ],
+          "catatan": "Kompas (judul '7 orang tertimbun, 3 tewas') menggabungkan longsor Cisarua (5 korban: 2 meninggal, 3 selamat) dan Megamendung (2 korban: 1 meninggal); untuk Desa Tugu Utara tetap 2 meninggal. Tidak ada angka kerusakan bangunan vila."
+        }
       }
     },
     {
@@ -938,7 +2012,48 @@
           "https://www.antaranews.com/berita/5013817/longsor-tasikmalaya-seorang-anak-tewas-tertimbun-dan-enam-luka-luka",
           "https://bandung.kompas.com/read/2025/08/04/124109678/longsor-dan-banjir-terjang-tasikmalaya-seorang-anak-tewas-dan-2-warga-luka"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "luka": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [
+            {
+              "jenis": "jalan",
+              "jumlah": null,
+              "kondisi": "akses jalan Desa Cidugaleun dan Desa Parentas tertutup longsor",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [
+            "2 rumah warga tertimpa longsoran (salah satunya rumah korban meninggal)"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.antaranews.com/berita/5013817/longsor-tasikmalaya-seorang-anak-tewas-tertimbun-dan-enam-luka-luka",
+              "kutipan": "seorang anak berusia delapan tahun meninggal tertimbun longsor"
+            },
+            {
+              "field": "korban.luka",
+              "url": "https://bandung.kompas.com/read/2025/08/04/124109678/longsor-dan-banjir-terjang-tasikmalaya-seorang-anak-tewas-dan-2-warga-luka",
+              "kutipan": "dua warga lainnya mengalami luka-luka yang langsung dibawa ke rumah sakit."
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://bandung.kompas.com/read/2025/08/04/124109678/longsor-dan-banjir-terjang-tasikmalaya-seorang-anak-tewas-dan-2-warga-luka",
+              "kutipan": "Longsor pun menutup akses jalan Desa Cidugaleun dan Desa Parentas"
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://bandung.kompas.com/read/2025/08/04/124109678/longsor-dan-banjir-terjang-tasikmalaya-seorang-anak-tewas-dan-2-warga-luka",
+              "kutipan": "longsoran tanah menimpa dua rumah warga, salah satunya adalah korban meninggal."
+            }
+          ],
+          "catatan": "ANTARA: 'Satu orang meninggal dunia, dua orang dirujuk ke rumah sakit di Cidugaleun, Cigalontang, dan empat orang luka-luka' — 4 luka tersebut di Desa Neglasari, Salawu (kejadian lain), tidak dihitung. Usia korban: ANTARA 8 tahun, Kompas 9 tahun."
+        }
       }
     },
     {
@@ -967,7 +2082,36 @@
           "https://jabar.antaranews.com/berita/633129/korban-longsor-banjarwangi-garut-dapat-bantuan-dari-bpbd",
           "https://www.detik.com/jabar/berita/d-8044081/malang-bocah-10-tahun-di-garut-tewas-tertimbun-longsor-saat-tidur"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1,
+            "terdampak_kk": 5
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "5 rumah terdampak longsor (tingkat kerusakan tidak dirinci)"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.detik.com/jabar/berita/d-8044081/malang-bocah-10-tahun-di-garut-tewas-tertimbun-longsor-saat-tidur",
+              "kutipan": "Seorang anak perempuan berusia 10 tahun tewas dalam insiden longsor yang terjadi di Garut."
+            },
+            {
+              "field": "korban.terdampak_kk",
+              "url": "https://jabar.antaranews.com/berita/633129/korban-longsor-banjarwangi-garut-dapat-bantuan-dari-bpbd",
+              "kutipan": "lima kepala keluarga atau yang tinggal di lima rumah terdampak bencana alam tanah longsor."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://jabar.antaranews.com/berita/633129/korban-longsor-banjarwangi-garut-dapat-bantuan-dari-bpbd",
+              "kutipan": "lima kepala keluarga atau yang tinggal di lima rumah terdampak bencana alam tanah longsor."
+            }
+          ],
+          "catatan": "'Terdampak' bukan 'rusak', sehingga 5 rumah dicatat di lainnya, bukan di rumah.rusak_*. Detik menyebut longsor menimpa 'sebuah rumah' tanpa tingkat kerusakan. Penutupan jalan di Kampung Lawang Angin (Detik) adalah titik longsor terpisah, tidak dicatat. Waktu: ANTARA menyebut Minggu malam 3/8/2025, Detik Senin dini hari 4/8/2025."
+        }
       }
     },
     {
@@ -997,7 +2141,40 @@
           "https://www.antaranews.com/berita/5201209/cuaca-ekstrem-pesantren-di-bandung-barat-roboh-dan-satu-meninggal",
           "https://regional.kompas.com/read/2025/10/26/224527578/longsor-terjang-ponpes-di-bandung-barat-santriwati-tewas-tertimpa-bangunan"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [
+            {
+              "jenis": "pondok pesantren",
+              "jumlah": null,
+              "kondisi": "rusak berat",
+              "satuan": "unit"
+            }
+          ],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.antaranews.com/berita/5201209/cuaca-ekstrem-pesantren-di-bandung-barat-roboh-dan-satu-meninggal",
+              "kutipan": "sehingga roboh dan mengakibatkan satu orang meninggal dunia."
+            },
+            {
+              "field": "korban.meninggal",
+              "url": "https://regional.kompas.com/read/2025/10/26/224527578/longsor-terjang-ponpes-di-bandung-barat-santriwati-tewas-tertimpa-bangunan",
+              "kutipan": "Satu santriwati meninggal dunia tertimpa reruntuhan,"
+            },
+            {
+              "field": "fasilitas_umum.0",
+              "url": "https://regional.kompas.com/read/2025/10/26/224527578/longsor-terjang-ponpes-di-bandung-barat-santriwati-tewas-tertimpa-bangunan",
+              "kutipan": "Bangunan pesantren yang juga difungsikan sebagai ruang belajar rusak berat"
+            }
+          ],
+          "catatan": "Jumlah unit bangunan pesantren yang rusak tidak disebut (jumlah null). Saluran irigasi Cimarinjung jebol dan 11 KK dievakuasi di artikel Koran Jakarta/ANTARA adalah kejadian terpisah di Cisolok, Sukabumi, sehingga tidak dimasukkan."
+        }
       }
     },
     {
@@ -1026,7 +2203,23 @@
           "https://www.detik.com/jabar/berita/d-8281430/korban-tertimbun-longsor-di-purwakarta-ditemukan",
           "https://regional.kompas.com/read/2025/12/28/230101578/tebing-perumahan-di-jatiluhur-purwakarta-longsor-seorang-warga-meninggal"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://regional.kompas.com/read/2025/12/28/230101578/tebing-perumahan-di-jatiluhur-purwakarta-longsor-seorang-warga-meninggal",
+              "kutipan": "mengakibatkan satu orang meninggal dunia"
+            }
+          ],
+          "catatan": "Tidak ada angka kerusakan rumah/fasilitas di kedua sumber maupun hasil pencarian tambahan. Longsoran: TPT beton setinggi sekitar lima meter, lebar enam meter. Usia korban berbeda (detik 50, kompas 53)."
+        }
       }
     },
     {
@@ -1055,7 +2248,29 @@
           "https://en.wikipedia.org/wiki/2026_West_Bandung_landslide",
           "https://jabar.idntimes.com/news/jawa-barat/79-warga-jabar-meninggal-dalam-peristiwa-longsor-di-januari-2026-00-nqtvm-67td2n"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {},
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "53 rumah tertimbun dan terancam (data sementara Pemkab Bandung Barat, 2 Feb 2026; tidak dirinci)",
+            "BNPB (28 Jan 2026): 48 rumah terdampak langsung yang harus dibangun kembali (data sementara)"
+          ],
+          "bukti": [
+            {
+              "field": "lainnya.0",
+              "url": "https://www.cnnindonesia.com/nasional/20260203070351-20-1323868/total-53-rumah-warga-terdampak-longsor-cisarua-bandung-barat",
+              "kutipan": "Data sementara ada 53 rumah yang tertimbun dan terancam."
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.metrotvnews.com/read/koGCaor9-bnpb-48-rumah-terdampak-longsor-cisarua-direlokasi",
+              "kutipan": "Data sementara rumah yang terdampak langsung ada 48 unit, yang harus dibangun kembali."
+            }
+          ],
+          "catatan": "Angka meninggal 80 hanya dari Wikipedia (bahasa Inggris, mengutip Kompas.tv 10 Feb 2026 '80 Jenazah Teridentifikasi, 15 Kantong Jenazah Masih Diperiksa'); belum terverifikasi dari sumber Indonesia primer. Wikipedia juga menyebut pencarian ditutup 14 Feb 'with an estimated 20 people still missing' (perkiraan, sehingga hilang dibiarkan null) dan 101 bodypack terkumpul; CNN 2 Feb: 83 body pack dievakuasi. Wikipedia: 'More than 400 people were displaced' (tidak eksak, null). IDN Times (2 Feb) hanya menyebut data awal 80 orang hilang; angka rumah di artikel itu (71 RB, 60 RS, 82 RR, 250 jiwa mengungsi) adalah rekap provinsi Januari 2026, bukan khusus Cisarua. Angka 53 rumah gabungan tertimbun+terancam sehingga tidak dimasukkan ke field rumah; CNN: 'Puluhan rumah tersebut tercatat mengalami rusak berat'. Data awal BPBD KBB (dari hasil pencarian, tidak di-fetch): 30 rumah tertimbun, 34 KK/113 jiwa terdampak — tidak dicatat."
+        }
       }
     },
     {
@@ -1085,7 +2300,43 @@
           "https://www.detik.com/jabar/berita/d-8335781/longsor-di-pangalengan-renggut-nyawa-bayi-3-bulan-dan-kakaknya",
           "https://www.cnnindonesia.com/nasional/20260201201020-20-1323433/longsor-di-pangalengan-bandung-2-anak-dilaporkan-tewas"
         ],
-        "status_verifikasi": "Terverifikasi (3 sumber)"
+        "status_verifikasi": "Terverifikasi (3 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {
+            "rusak_berat": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "1 unit rumah kontrakan ikut terdampak",
+            "sekitar 6 rumah di titik rawan diminta mengungsi"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://jabar.antaranews.com/berita/675006/longsor-pangalengan-tewaskan-dua-balita-kakak-adik",
+              "kutipan": "dua korban meninggal dunia dalam peristiwa tersebut"
+            },
+            {
+              "field": "rumah.rusak_berat",
+              "url": "https://jabar.antaranews.com/berita/675006/longsor-pangalengan-tewaskan-dua-balita-kakak-adik",
+              "kutipan": "satu rumah milik Ato dengan satu kepala keluarga berjumlah empat jiwa dilaporkan mengalami kerusakan berat."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://jabar.antaranews.com/berita/675006/longsor-pangalengan-tewaskan-dua-balita-kakak-adik",
+              "kutipan": "satu unit rumah kontrakan milik Dasep yang dihuni satu jiwa juga terdampak."
+            },
+            {
+              "field": "lainnya.1",
+              "url": "https://www.detik.com/jabar/berita/d-8335781/longsor-di-pangalengan-renggut-nyawa-bayi-3-bulan-dan-kakaknya",
+              "kutipan": "Ada sekitar enam rumah di titik rawan yang kami minta penghuninya untuk mengungsi terlebih dahulu."
+            }
+          ],
+          "catatan": "Detik juga menyebut 'tiga rumah di depannya akan diperbaiki melalui program Rutilahu' (tidak jelas apakah rusak akibat longsor, tidak dimasukkan). CNN menulis tanggal 'Minggu (2/1)', kemungkinan salah ketik untuk 1/2/2026."
+        }
       }
     },
     {
@@ -1114,7 +2365,30 @@
           "https://www.detik.com/jabar/berita/d-8338324/lansia-di-ciamis-tewas-tertimbun-longsor-tebing-kolam-ikan",
           "https://www.cnnindonesia.com/nasional/20260203150804-20-1324114/lansia-di-ciamis-tewas-tertimbun-longsor-saat-hujan-deras"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [
+            "rumah korban tertimbun material longsor (lebar ±25 m, tinggi ±10 m); kolam ikan jebol"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.cnnindonesia.com/nasional/20260203150804-20-1324114/lansia-di-ciamis-tewas-tertimbun-longsor-saat-hujan-deras",
+              "kutipan": "Peristiwa tersebut menyebabkan satu orang lanjut usia (lansia) meninggal dunia setelah tertimbun material longsoran."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.cnnindonesia.com/nasional/20260203150804-20-1324114/lansia-di-ciamis-tewas-tertimbun-longsor-saat-hujan-deras",
+              "kutipan": "Rumah korban tertimbun material longsor dengan lebar sekitar 25 meter dan tinggi kurang lebih 10 meter,"
+            }
+          ],
+          "catatan": "KONFLIK LUKA: CNN (narasi) 'dua anggota keluarga korban lainnya, Jemaludin (35) dan Viqi Alvarez (18), mengalami luka-luka'; detik (mengutip Kepala BPBD Ciamis) 'Lima anggota keluarga lainnya selamat tanpa luka' / 'Yang lain aman, tidak ada luka' — luka dibiarkan null. Waktu kejadian: detik ±00.30 WIB 3/2, CNN Senin 2/2 ±23.45 WIB."
+        }
       }
     },
     {
@@ -1143,7 +2417,37 @@
           "https://www.detik.com/jabar/berita/d-8447805/longsor-timbun-2-rumah-di-sukabumi-satu-wanita-tewas",
           "https://bandung.kompas.com/read/2026/04/16/211833678/longsor-di-sukabumi-rumah-warga-tertimbun-tebing-8-meter-dan-1-korban-tewas"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {
+            "tertimbun_hanyut": 1
+          },
+          "fasilitas_umum": [],
+          "lainnya": [
+            "1 keluarga terdampak mengungsi"
+          ],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://bandung.kompas.com/read/2026/04/16/211833678/longsor-di-sukabumi-rumah-warga-tertimbun-tebing-8-meter-dan-1-korban-tewas",
+              "kutipan": "Korban 1 orang meninggal dunia"
+            },
+            {
+              "field": "rumah.tertimbun_hanyut",
+              "url": "https://bandung.kompas.com/read/2026/04/16/211833678/longsor-di-sukabumi-rumah-warga-tertimbun-tebing-8-meter-dan-1-korban-tewas",
+              "kutipan": "1 rumah warga tertimbun, dan menyebabkan satu korban terkubur tanah hingga dikabarkan meninggal dunia."
+            },
+            {
+              "field": "lainnya.0",
+              "url": "https://www.detik.com/jabar/berita/d-8447805/longsor-timbun-2-rumah-di-sukabumi-satu-wanita-tewas",
+              "kutipan": "Satu keluarga terdampak terpaksa mengungsi"
+            }
+          ],
+          "catatan": "KONFLIK RUMAH: detik (narasi reporter, tanpa atribusi) 'material tanah setinggi sekitar delapan meter ambruk dan menimbun dua rumah'; Kompas mengutip Kalak BPBD Kab. Sukabumi Eki Radiana: 1 rumah tertimbun — dipakai angka BPBD. Nama/usia korban: detik Apni Novianti (29), Kompas AN (30)."
+        }
       }
     },
     {
@@ -1172,7 +2476,23 @@
           "https://www.antaranews.com/berita/5556776/bnpb-dua-korban-longsor-di-kabupaten-bogor-dan-cianjur-ditemukan",
           "https://koran-jakarta.com/2026-05-06/bpbd-bogor-longsor-di-dramaga-sebabkan-satu-warga-meninggal/amp"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 1
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://koran-jakarta.com/2026-05-06/bpbd-bogor-longsor-di-dramaga-sebabkan-satu-warga-meninggal/amp",
+              "kutipan": "menyebabkan satu warga meninggal dunia setelah tertimbun material longsoran"
+            }
+          ],
+          "catatan": "BNPB (via ANTARA) awalnya melaporkan 'satu orang hilang', lalu korban ditemukan meninggal hari yang sama pukul 17.25 WIB; hilang dicatat null (status akhir). Tidak ada angka kerusakan rumah/fasum di sumber maupun hasil pencarian tambahan (metrotvnews). Dimensi longsor 30 m x 30 m x 6 m (Koran Jakarta) bukan data dampak."
+        }
       }
     },
     {
@@ -1201,7 +2521,23 @@
           "https://www.antaranews.com/berita/5569653/dua-korban-tanah-longsor-di-subang-ditemukan-meninggal-dunia",
           "https://www.detik.com/jabar/berita/d-8491209/2-korban-longsor-curug-cileat-subang-ditemukan-tewas-berdekatan"
         ],
-        "status_verifikasi": "Terverifikasi (2 sumber)"
+        "status_verifikasi": "Terverifikasi (2 sumber)",
+        "dampak": {
+          "korban": {
+            "meninggal": 2
+          },
+          "rumah": {},
+          "fasilitas_umum": [],
+          "lainnya": [],
+          "bukti": [
+            {
+              "field": "korban.meninggal",
+              "url": "https://www.antaranews.com/berita/5569653/dua-korban-tanah-longsor-di-subang-ditemukan-meninggal-dunia",
+              "kutipan": "dua korban bencana tanah longsor yang sebelumnya dilaporkan hilang ... berhasil ditemukan dalam kondisi meninggal dunia"
+            }
+          ],
+          "catatan": "Kedua korban awalnya dilaporkan hilang, ditemukan meninggal 16/5/2026; hilang null (status akhir). Tidak ada angka kerusakan di kedua sumber."
+        }
       }
     }
   ]
