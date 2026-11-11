@@ -856,15 +856,18 @@
   font: inherit;
   white-space: nowrap;
   color: var(--ink);
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
 }
 
-/* Setelah kata terakhir: awalan memudar hilang, tidak ikut tergulir */
-.lp-words-lead.is-done {
+/* Setelah kata terakhir: seluruh kalimat (awalan + semua kata) memudar hilang */
+.lp-words-inner {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.lp-words-inner.is-done {
   opacity: 0;
-  transform: translateY(-0.2em);
+  transform: translateY(-0.25em);
 }
 
 .lp-words-list {
