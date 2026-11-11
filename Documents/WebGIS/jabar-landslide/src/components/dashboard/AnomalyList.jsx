@@ -1,7 +1,9 @@
 import { signed } from '../../utils/format';
 import { anomalyColor } from '../../utils/markerColors';
+import { usePager } from '../ui/Pager';
 
 export default function AnomalyList({ year, anomalies, ctx, onSelect }) {
+  const { pageItems, pager } = usePager(anomalies);
   return (
     <section>
       <h2>Anomali {year}</h2>
@@ -9,7 +11,7 @@ export default function AnomalyList({ year, anomalies, ctx, onSelect }) {
         <p className="muted small">Tidak ada anomali signifikan di area lereng.</p>
       ) : (
         <ul className="list">
-          {anomalies.map((f) => (
+          {pageItems.map((f) => (
             <li key={f.id}>
               <button onClick={() => onSelect({ type: 'anomaly', feature: f })}>
                 <span className="anomaly-pin static" style={{ '--c': anomalyColor(f, ctx) }} />
@@ -23,6 +25,7 @@ export default function AnomalyList({ year, anomalies, ctx, onSelect }) {
           ))}
         </ul>
       )}
+      {pager}
     </section>
   );
 }

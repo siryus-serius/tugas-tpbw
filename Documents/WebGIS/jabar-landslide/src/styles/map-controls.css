@@ -341,3 +341,28 @@
   text-decoration: none;
   color: var(--link);
 }
+
+/* ---------- Paginasi daftar dashboard ---------- */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.pager button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.pager button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

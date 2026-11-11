@@ -1,4 +1,5 @@
 import { RISK_CLASSES } from '../../utils/susceptibility';
+import { usePager } from '../ui/Pager';
 
 /** Daftar titik dengan indeks kerawanan tertinggi (prediksi kualitatif) di antara titik yang tampil. */
 export default function PredictionList({ data, filters, risk, onSelect }) {
@@ -10,6 +11,7 @@ export default function PredictionList({ data, filters, risk, onSelect }) {
     .filter((x) => x.r)
     .sort((a, b) => b.r.index - a.r.index);
 
+  const { pageItems, pager } = usePager(points);
   const counts = Object.fromEntries(RISK_CLASSES.map((c) => [c.key, points.filter((x) => x.r.cls.key === c.key).length]));
 
   return (
@@ -24,7 +26,7 @@ export default function PredictionList({ data, filters, risk, onSelect }) {
         ))}
       </div>
       <ul className="list">
-        {points.slice(0, 6).map(({ f, type, name, r }) => (
+        {pageItems.map(({ f, type, name, r }) => (
           <li key={f.id}>
             <button onClick={() => onSelect({ type, feature: f })}>
               <span className="dot" style={{ background: r.cls.color }} />
@@ -34,6 +36,7 @@ export default function PredictionList({ data, filters, risk, onSelect }) {
           </li>
         ))}
       </ul>
+      {pager}
       <p className="muted small">Gabungan FK lereng, anomali InSAR, dan guncangan gempa terkini.</p>
     </section>
   );
