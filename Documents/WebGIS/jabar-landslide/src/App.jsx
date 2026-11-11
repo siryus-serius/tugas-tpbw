@@ -5,7 +5,7 @@ import useWebgisData from './hooks/useWebgisData';
 import LandingPage from './pages/LandingPage';
 import MapPage from './pages/MapPage';
 
-const APP_SECTIONS = ['peta', 'dashboard', 'kejadian', 'validasi'];
+const APP_SECTIONS = ['peta', 'dashboard', 'kejadian', 'validasi', 'metodologi'];
 const hashSection = () => {
   const h = window.location.hash.slice(1);
   return APP_SECTIONS.includes(h) ? h : null;

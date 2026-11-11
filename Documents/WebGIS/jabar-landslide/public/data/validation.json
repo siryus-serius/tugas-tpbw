@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T13:34:50.685Z",
+ "generated_at": "2026-11-11T14:49:12.576Z",
  "data_month": "2026-11",
  "totals": {
   "events": 42,
@@ -99,14 +99,11 @@
    "group": "Kejadian longsor",
    "title": "Tautan sumber dapat diakses",
    "status": "warn",
-   "detail": "6 temuan",
+   "detail": "3 temuan",
    "items": [
-    "#1 Cimanggung (2021-01-09): 521 https://www.bnpb.go.id/berita/longsor-kembali-terjadi-sebanyak-11-warga-sumedang-meninggal-dunia",
-    "#2 Ciambar (2021-05-01): 521 https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
-    "#36 Pasirjambu (2021-11-27): 521 https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
-    "#3 Cijeruk (2022-05-21): 521 https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
-    "#17 Pamijahan (2022-06-22): 521 https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
-    "#4 Cihaurbeuti (2022-09-11): 521 https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem"
+    "#36 Pasirjambu (2021-11-27): 404 https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+    "#9 Cipongkor (2024-03-24): 404 https://www.bnpb.go.id/berita/update-3-warga-masih-dalam-pencarian-di-kejadian-longsor-cipongkor-bandung-barat",
+    "#10 Banjarwangi (2024-04-25): 404 https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut"
    ]
   },
   {

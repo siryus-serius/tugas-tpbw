@@ -22,6 +22,7 @@ import { runGeeCheck } from './stages/geeCheck.js';
 import { runIngest } from './stages/ingest.js';
 import { runInsar } from './stages/insar.js';
 import { runQuakes } from './stages/quakes.js';
+import { runRefineCoords } from './stages/refineCoords.js';
 import { currentMonth, runValidate } from './stages/validate.js';
 
 const args = process.argv.slice(2);
@@ -57,9 +58,10 @@ const STAGES = {
   galura: () => runGalura(),
   validate: () => runValidate({ checkLinks: !has('no-links') }),
   ingest: () => runIngest(),
+  'refine-coords': () => runRefineCoords({ dry: has('dry') }),
   'gee-check': () => runGeeCheck(),
 };
-const ALL = ['events', 'insar', 'quakes', 'galura', 'validate']; // ingest & gee-check dijalankan eksplisit
+const ALL = ['events', 'insar', 'quakes', 'galura', 'validate']; // ingest, refine-coords & gee-check dijalankan eksplisit
 
 const selected = stage === 'all' ? ALL : [stage];
 if (!selected.every((s) => STAGES[s])) {

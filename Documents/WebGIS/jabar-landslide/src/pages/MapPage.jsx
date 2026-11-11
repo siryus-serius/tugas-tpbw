@@ -4,6 +4,7 @@ import LayerControls from '../components/map-controls/LayerControls';
 import MapLegend from '../components/map-controls/MapLegend';
 import StabilityControls from '../components/map-controls/StabilityControls';
 import ValidationReport from '../components/validation/ValidationReport';
+import Methodology from '../components/validation/Methodology';
 import Dashboard from '../components/dashboard/Dashboard';
 import EventTable from '../components/dashboard/EventTable';
 import Navbar from '../components/layout/Navbar';
@@ -28,6 +29,7 @@ const SECTIONS = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'kejadian', label: 'Kejadian' },
   { id: 'validasi', label: 'Validasi' },
+  { id: 'metodologi', label: 'Metodologi' },
 ];
 const SECTION_IDS = SECTIONS.map((s) => s.id);
 
@@ -185,10 +187,18 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
           </div>
         </section>
 
+        <section id="metodologi" className="content-section">
+          <div className="section-head">
+            <h2>Metodologi</h2>
+            <p className="muted">Cara pengambilan setiap data, penentuan koordinat, pembaruan, dan keterbatasannya.</p>
+          </div>
+          <Methodology events={data.allEvents} />
+        </section>
+
         <footer className="page-footer muted small">
           Data: BNPB/BPBD &amp; media (kejadian), BMKG (gempa terkini — Data Terbuka BMKG), USGS (riwayat gempa),
           COMET-LiCSAR (InSAR Sentinel-1), Microsoft Planetary Computer (Sentinel-1/2), Esri Wayback (citra resolusi
-          tinggi), Open-Meteo (DEM Copernicus), OpenStreetMap (peta dasar).
+          tinggi), Open-Meteo (DEM Copernicus), Galura Data Jabar (DPMD), OpenStreetMap (peta dasar & geocoding), geoBoundaries (batas wilayah).
           {data.validation && ` Data bulan ${data.validation.data_month}.`}
         </footer>
       </main>

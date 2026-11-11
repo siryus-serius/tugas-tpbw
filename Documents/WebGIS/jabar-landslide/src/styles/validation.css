@@ -144,3 +144,61 @@
   font-size: 12px;
   margin-top: 3px;
 }
+
+/* ---------- Metodologi ---------- */
+.method-card + .method-card {
+  margin-top: 14px;
+}
+
+.method-card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.method-wrap {
+  max-height: none;
+}
+
+.method-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.method-table th,
+.method-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.method-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.method-table tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.method-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.method-table .nowrap {
+  white-space: nowrap;
+}
+
+.method-table tbody tr:hover {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}

@@ -1880,8 +1880,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          107.66031,
-          -6.79657
+          107.65872,
+          -6.80354
         ]
       },
       "properties": {
@@ -1894,7 +1894,7 @@
         "tahun": 2025,
         "korban_meninggal": 1,
         "keterangan": "1 rumah rusak berat, 3 terancam; 11 jiwa terdampak",
-        "jenis_koordinat": "Pusat desa (perkiraan)",
+        "jenis_koordinat": "Pusat kampung/dusun (OSM, nama dari berita); OSM way/682953226",
         "kode_wilayah": "32.17.01.2004",
         "sumber": "BNPB",
         "tautan_sumber": [
@@ -1931,6 +1931,13 @@
             }
           ],
           "catatan": "Tautan situasi BNPB 6 Juli 2025 sudah tidak aktif; rincian hanya dari detikJabar."
+        },
+        "koordinat_awal": {
+          "koordinat": [
+            107.66031,
+            -6.79657
+          ],
+          "jenis": "Pusat desa (perkiraan)"
         }
       }
     },
