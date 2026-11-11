@@ -11,7 +11,7 @@ import { HEAT_GRADIENT } from '../../config/constants';
  */
 
 const PANE = 'heatPane';
-const RADIUS_M = 6000;
+const RADIUS_M = 9000;
 const SATURATE_AT = 3; // jumlah kejadian bertumpuk yang dianggap "sangat padat"
 
 function buildPalette() {
@@ -26,17 +26,21 @@ function buildPalette() {
   return ctx.getImageData(0, 0, 1, 256).data;
 }
 
-function buildStamp(r, blur) {
+/**
+ * Titik lembut berbentuk kurva Gauss (gradien radial bertingkat) — memudar mulus sampai nol
+ * di tepi, sehingga tumpukan antar-titik menyatu tanpa pinggiran tegas.
+ */
+function buildStamp(r2) {
   const c = document.createElement('canvas');
-  const r2 = r + blur;
   c.width = c.height = r2 * 2;
   const ctx = c.getContext('2d');
-  ctx.shadowOffsetX = ctx.shadowOffsetY = r2 * 2;
-  ctx.shadowBlur = blur;
-  ctx.shadowColor = 'black';
-  ctx.beginPath();
-  ctx.arc(-r2, -r2, r, 0, Math.PI * 2);
-  ctx.fill();
+  const g = ctx.createRadialGradient(r2, r2, 0, r2, r2, r2);
+  for (let i = 0; i <= 10; i++) {
+    const t = i / 10;
+    g.addColorStop(t, `rgba(0,0,0,${Math.exp(-4.5 * t * t).toFixed(3)})`); // e^(-x²/2σ²), σ ≈ r/3
+  }
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, r2 * 2, r2 * 2);
   return c;
 }
 
@@ -76,7 +80,7 @@ const HeatCanvas = L.Layer.extend({
     const map = this._map;
     const lat = map.getCenter().lat;
     const metersPerPx = (40075016.686 * Math.cos((lat * Math.PI) / 180)) / 2 ** (map.getZoom() + 8);
-    return Math.round(Math.min(80, Math.max(24, RADIUS_M / metersPerPx)));
+    return Math.round(Math.min(110, Math.max(34, RADIUS_M / metersPerPx)));
   },
 
   _redraw() {
@@ -86,9 +90,8 @@ const HeatCanvas = L.Layer.extend({
     if (!this._points.length || !canvas.width || !canvas.height) return;
 
     const r = this._radius();
-    const blur = Math.round(r * 0.9);
-    const r2 = r + blur;
-    const stamp = buildStamp(r, blur);
+    const r2 = r;
+    const stamp = buildStamp(r2);
 
     for (const [lat, lng, w = 1] of this._points) {
       const p = this._map.latLngToContainerPoint([lat, lng]);
@@ -107,7 +110,7 @@ const HeatCanvas = L.Layer.extend({
       px[i - 3] = pal[j];
       px[i - 2] = pal[j + 1];
       px[i - 1] = pal[j + 2];
-      px[i] = Math.min(235, 60 + a * 1.8); // sedikit transparan agar peta dasar tetap terbaca
+      px[i] = Math.round(215 * Math.sqrt(a / 255)); // memudar mulus ke 0 di tepi, maks ±85% agar peta dasar tetap terbaca
     }
     ctx.globalAlpha = 1;
     ctx.putImageData(img, 0, 0);

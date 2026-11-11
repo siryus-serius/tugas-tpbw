@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { PRESET_BY_KEY, cropUrl, sceneDate } from '../../utils/sentinelImagery';
 import CompareViewer from '../compare/CompareViewer';
-import DirectionOverlay from './DirectionOverlay';
 
 function SceneThumb({ src, label, sub, onOpen, children }) {
   const [failed, setFailed] = useState(false);
@@ -25,14 +24,13 @@ function SceneThumb({ src, label, sub, onOpen, children }) {
 
 /**
  * Thumbnail sebelum/sesudah. Klik → penampil perbandingan (geser/zoom, Wayback resolusi tinggi,
- * semua produk Sentinel, sorotan kehilangan vegetasi, panah arah).
+ * semua produk Sentinel, sorotan kehilangan vegetasi).
  * compare: { scenes: {s2, s1}, period: {before, after} }
  */
 export default function PrePostImagery({ title, preset, pre, post, coord, delta = 0.015, note, movement, compare }) {
   const [open, setOpen] = useState(false);
   const preId = pre?.id ?? pre;
   const postId = post?.id ?? post;
-  const arrows = <DirectionOverlay movement={movement} />;
 
   return (
     <div className="prepost">
@@ -41,10 +39,8 @@ export default function PrePostImagery({ title, preset, pre, post, coord, delta 
       </h3>
       <div className="pair">
         <SceneThumb src={cropUrl(preset, preId, coord, delta)} label="Sebelum" sub={sceneDate(preId)} onOpen={() => setOpen(true)}>
-          {arrows}
         </SceneThumb>
         <SceneThumb src={cropUrl(preset, postId, coord, delta)} label="Sesudah" sub={sceneDate(postId)} onOpen={() => setOpen(true)}>
-          {arrows}
         </SceneThumb>
       </div>
       {note && <p className="muted small">{note}</p>}

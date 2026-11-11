@@ -119,7 +119,7 @@ export default function TopoBackground() {
     const ro = new ResizeObserver(redraw);
     ro.observe(canvas);
     // Tema berganti (atribut data-theme pada <html>) → warna garis ikut berganti
-    const mo = new MutationObserver(redraw);
+    const mo = new MutationObserver(() => draw(canvas)); // langsung, agar ikut terekam di transisi tema
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     return () => {
       cancelAnimationFrame(raf);

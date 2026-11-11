@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import GalaxyButton from '../ui/GalaxyButton';
-import SkyToggle from '../ui/SkyToggle';
+import SparkleToggle from '../ui/SparkleToggle';
 import { ALL_YEARS } from '../../utils/years';
 
 /**
@@ -20,7 +20,7 @@ export default function Navbar({ sections, active, onNavigate, years, year, setY
     <header className="navbar">
       <div className="navbar-inner">
         <GalaxyButton className="brand-btn" onClick={onHome ?? (() => go(sections[0].id))} title="Kembali ke halaman pembuka">
-          Longsor Jabar
+          Kembali
         </GalaxyButton>
 
         <nav className="pill-nav" aria-label="Bagian halaman">
@@ -33,7 +33,9 @@ export default function Navbar({ sections, active, onNavigate, years, year, setY
         </nav>
 
         <div className="navbar-right">
-          <SkyToggle dark={theme === 'dark'} onToggle={onToggleTheme} />
+          <span className="theme-toggle" title={theme === 'dark' ? 'Mode gelap (klik untuk terang)' : 'Mode terang (klik untuk gelap)'}>
+            <SparkleToggle checked={theme === 'dark'} onChange={onToggleTheme} label="Mode gelap" />
+          </span>
           <div className="year-pill" role="group" aria-label="Tahun">
             <button onClick={() => setYear(years[i - 1])} disabled={i <= 0} aria-label="Tahun sebelumnya">
               ‹

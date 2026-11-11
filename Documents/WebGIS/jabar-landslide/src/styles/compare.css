@@ -36,14 +36,6 @@ select {
   outline: 2px solid var(--accent);
 }
 
-.direction-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
 .modal-backdrop {
   position: fixed;
   inset: 0;

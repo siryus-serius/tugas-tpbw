@@ -4,7 +4,7 @@ import RetroGlobe from '../components/landing/RetroGlobe';
 import { JABAR } from '../config/constants';
 import GalaxyButton from '../components/ui/GalaxyButton';
 import ScrollWords from '../components/landing/ScrollWords';
-import SkyToggle from '../components/ui/SkyToggle';
+import SparkleToggle from '../components/ui/SparkleToggle';
 import usePageScroll from '../hooks/usePageScroll';
 
 /**
@@ -71,7 +71,9 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
           <button onClick={() => enter('dashboard')}>Dashboard</button>
         </nav>
         <div className="lp-header-right">
-          <SkyToggle dark={theme === 'dark'} onToggle={onToggleTheme} />
+          <span className="theme-toggle">
+            <SparkleToggle checked={theme === 'dark'} onChange={onToggleTheme} label="Mode gelap" />
+          </span>
           <button className="lp-nav-cta" onClick={() => enter('peta')}>
             Jelajahi <ArrowIcon />
           </button>

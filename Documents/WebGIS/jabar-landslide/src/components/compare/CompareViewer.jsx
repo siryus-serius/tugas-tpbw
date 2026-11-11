@@ -5,7 +5,7 @@ import { computeVegetationLoss } from '../../services/changeApi';
 import { waybackPair } from '../../services/waybackApi';
 import { PRESET_BY_KEY, itemTileUrl, presetsFor, rawTifUrl, sceneDate } from '../../utils/sentinelImagery';
 import Checkbox from '../ui/Checkbox';
-import { DirectionMarker, SwipeClip, SyncView } from './mapParts';
+import { SwipeClip, SyncView } from './mapParts';
 
 const WAYBACK = 'wayback';
 const LOSS_DELTA = 0.025; // area analisis kehilangan vegetasi ±0,025° (±2,8 km)
@@ -29,17 +29,16 @@ function useSources(scenes) {
 /**
  * Penampil perbandingan sebelum/sesudah yang bisa digeser & di-zoom:
  * Esri Wayback resolusi tinggi atau Sentinel-1/2 (semua preset), mode geser/berdampingan,
- * sorotan kehilangan vegetasi (dNDVI Sentinel-2), dan panah arah lereng.
+ * dan sorotan kehilangan vegetasi (dNDVI Sentinel-2).
  *
  * scenes: { s2: {pre, post}, s1: {pre, post} } (objek scene {id} atau string ID)
  * period: { before, after } tanggal acuan YYYY-MM-DD untuk memilih rilis Wayback
  */
-export default function CompareViewer({ title, coord, scenes, period, movement, initialSource, onClose }) {
+export default function CompareViewer({ title, coord, scenes, period, initialSource, onClose }) {
   const sources = useSources(scenes);
   const [source, setSource] = useState(initialSource ?? WAYBACK);
   const [mode, setMode] = useState('swipe');
   const [split, setSplit] = useState(50);
-  const [showArrows, setShowArrows] = useState(true);
   const [showLoss, setShowLoss] = useState(false);
   const [wayback, setWayback] = useState(null);
   const [loss, setLoss] = useState({ status: 'idle' });
@@ -91,7 +90,6 @@ export default function CompareViewer({ title, coord, scenes, period, movement, 
           <ImageOverlay url={loss.data.dataUrl} bounds={loss.data.bounds} className="pixelated" />
         </Pane>
       )}
-      {showArrows && movement && <DirectionMarker coord={coord} movement={movement} />}
     </>
   );
 
@@ -144,11 +142,6 @@ export default function CompareViewer({ title, coord, scenes, period, movement, 
               Berdampingan
             </button>
           </div>
-          {movement && (
-            <Checkbox checked={showArrows} onChange={() => setShowArrows((v) => !v)}>
-              Panah arah
-            </Checkbox>
-          )}
           {s2pre && s2post && (
             <Checkbox checked={showLoss} onChange={toggleLoss}>
               Sorot kehilangan vegetasi
@@ -226,12 +219,6 @@ export default function CompareViewer({ title, coord, scenes, period, movement, 
                   lahan.
                 </>
               )}
-            </p>
-          )}
-          {movement && (
-            <p>
-              <strong>{movement.headline}.</strong> {movement.detail}
-              {movement.look != null && ' Panah biru putus-putus = arah pandang satelit Sentinel-1.'}
             </p>
           )}
           {preset?.rawBand && (
