@@ -185,7 +185,7 @@ function clusterToFeature(px, { frame, grid, Y, years, delta, z, base, terrain, 
 
 export async function runInsar({ frames: frameIds, yearFrom, yearTo, maxPairs = 0, log = console.log } = {}) {
   const adm = JSON.parse(fs.readFileSync(PATHS.adm, 'utf-8'));
-  const events = JSON.parse(fs.readFileSync(PATHS.events, 'utf-8')).features;
+  const events = JSON.parse(fs.readFileSync(PATHS.events, 'utf-8')).features.filter((f) => f.geometry?.coordinates);
   const frames = frameIds ? LICSAR.frames.filter((f) => frameIds.includes(f.id)) : LICSAR.frames;
   yearFrom ??= INSAR.baselineStartYear;
   yearTo ??= new Date().getUTCFullYear();

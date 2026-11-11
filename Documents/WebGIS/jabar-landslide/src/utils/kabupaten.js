@@ -78,7 +78,7 @@ export function buildKabupatenIndex(adm) {
 
 /**
  * Hitung kejadian per kabupaten/kota. Mengembalikan daftar terurut (terbanyak dulu):
- * { key, name, count, deaths, label, bounds }.
+ * { key, name, count, deaths, label, bounds, events, noCoord }. Kejadian tanpa koordinat ikut dihitung.
  */
 export function countByKabupaten(events, index) {
   const groups = new Map();
@@ -91,8 +91,9 @@ export function countByKabupaten(events, index) {
   return [...groups.values()]
     .map(({ name, key, list }) => {
       const adm = index.get(key);
-      const mean = (k) => list.reduce((s, f) => s + f.geometry.coordinates[k], 0) / list.length;
-      const label = adm?.label ?? [mean(1), mean(0)];
+      const located = list.filter((f) => f.geometry?.coordinates);
+      const mean = (k) => located.reduce((s, f) => s + f.geometry.coordinates[k], 0) / located.length;
+      const label = adm?.label ?? (located.length ? [mean(1), mean(0)] : null);
       return {
         key,
         name,
@@ -100,7 +101,10 @@ export function countByKabupaten(events, index) {
         deaths: list.reduce((s, f) => s + (f.properties.korban_meninggal ?? 0), 0),
         label,
         bounds: adm?.bounds ?? [label, label],
+        events: [...list].sort((a, b) => b.properties.tanggal.localeCompare(a.properties.tanggal)),
+        noCoord: list.length - located.length,
       };
     })
+    .filter((g) => g.label)
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }

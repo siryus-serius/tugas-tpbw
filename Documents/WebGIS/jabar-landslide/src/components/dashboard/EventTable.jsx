@@ -51,7 +51,7 @@ export default function EventTable({ events, stability, risk, onSelect }) {
       <div className="section-head">
         <h2>Daftar kejadian</h2>
         <p className="muted">
-          Setiap kejadian minimal 2 sumber dan diperiksa otomatis setiap bulan. Klik baris untuk membukanya di peta.
+          Setiap kejadian minimal 2 sumber dan diperiksa otomatis setiap bulan. Klik baris untuk membukanya di peta; kejadian tanpa koordinat hanya dihitung di tingkat kabupaten/kota.
         </p>
       </div>
 
@@ -106,12 +106,16 @@ export default function EventTable({ events, stability, risk, onSelect }) {
               const p = f.properties;
               const st = stability.get(f.id);
               const r = risk.get(f.id);
+              const onMap = Boolean(f.geometry?.coordinates);
+              const open = () => onMap && onSelect({ type: 'event', feature: f });
               return (
                 <tr
                   key={f.id}
-                  onClick={() => onSelect({ type: 'event', feature: f })}
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === 'Enter' && onSelect({ type: 'event', feature: f })}
+                  className={onMap ? undefined : 'no-coord'}
+                  onClick={open}
+                  tabIndex={onMap ? 0 : undefined}
+                  onKeyDown={(e) => e.key === 'Enter' && open()}
+                  title={onMap ? undefined : 'Kejadian tanpa koordinat — hanya tercatat di tingkat kabupaten/kota'}
                 >
                   <td className="nowrap">{dateId(p.tanggal, { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                   <td>
@@ -121,6 +125,7 @@ export default function EventTable({ events, stability, risk, onSelect }) {
                       · {p.desa !== '-' ? `${p.desa}, ` : ''}
                       {shortKab(p.kabupaten)}
                     </span>
+                    {!onMap && <span className="tag no-coord-tag">tanpa koordinat</span>}
                   </td>
                   <td className="num">{p.korban_meninggal}</td>
                   <td className="desc">{p.keterangan}</td>

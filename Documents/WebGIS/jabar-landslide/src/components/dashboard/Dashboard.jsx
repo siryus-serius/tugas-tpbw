@@ -18,7 +18,7 @@ function Stat({ value, label, note }) {
 
 /** Dashboard data kejadian: angka utama, grafik, prediksi, anomali, dan gempa terkini. */
 export default function Dashboard({ data, filters, ctx, risk, quakes, onSelect }) {
-  const s = useMemo(() => eventStats(data.events), [data.events]);
+  const s = useMemo(() => eventStats(data.allEvents), [data.allEvents]);
   const { year, years, yearAnomalies } = filters;
   const all = isAllYears(year);
   const period = yearLabel(year, years);

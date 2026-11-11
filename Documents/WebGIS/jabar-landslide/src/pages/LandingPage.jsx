@@ -25,7 +25,7 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
   const { scrollTo } = usePageScroll(SECTIONS, { offset: 0 });
   const [target, setTarget] = useState(null);
   const [leaving, setLeaving] = useState(false);
-  const deaths = data.events.reduce((s, f) => s + (f.properties.korban_meninggal ?? 0), 0);
+  const deaths = data.allEvents.reduce((s, f) => s + (f.properties.korban_meninggal ?? 0), 0);
   const year = new Date().getFullYear();
 
   const enter = (section) => {
@@ -42,7 +42,7 @@ export default function LandingPage({ data, theme, onToggleTheme, onEnter }) {
     {
       number: '01',
       title: 'Kejadian nyata',
-      text: `${data.events.length || 41} kejadian longsor 2021–2026 dari BNPB, BPBD & media — tiap kejadian minimal dua sumber dan diperiksa otomatis setiap bulan.`,
+      text: `${data.allEvents.length || 41} kejadian longsor 2021–2026 dari BNPB, BPBD & media — tiap kejadian minimal dua sumber dan diperiksa otomatis setiap bulan.`,
     },
     {
       number: '02',

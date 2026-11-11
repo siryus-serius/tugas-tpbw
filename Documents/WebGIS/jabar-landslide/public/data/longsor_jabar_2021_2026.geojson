@@ -1988,6 +1988,29 @@
     },
     {
       "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "no": 42,
+        "kabupaten": "Kabupaten Sukabumi",
+        "kecamatan": "Bojonggenteng",
+        "desa": "Desa Bojonggenteng",
+        "kampung": "-",
+        "tanggal": "2025-07-09",
+        "tahun": 2025,
+        "korban_meninggal": 1,
+        "keterangan": "Longsor dini hari setelah hujan deras melanda dua kampung; seorang remaja tewas tertimbun saat tidur, dua anak lain luka.",
+        "jenis_koordinat": "Tanpa koordinat (tingkat kabupaten/kota)",
+        "kode_wilayah": "-",
+        "sumber": "liputan6.com (mengutip BPBD Kab. Sukabumi); kompas.com (mengutip BPBD Kab. Sukabumi)",
+        "tautan_sumber": [
+          "https://www.liputan6.com/regional/read/6100828/longsor-di-bojonggenteng-sukabumi-3-orang-tertimbun-1-ditemukan-tewas",
+          "https://bandung.kompas.com/read/2025/07/09/101046078/longsor-sukabumi-landa-2-kampung-1-orang-tewas"
+        ],
+        "status_verifikasi": "Terverifikasi (2 sumber)"
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [

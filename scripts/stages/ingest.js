@@ -5,7 +5,8 @@
  *  data/candidates/perbaikan_kejadian_lama.json → tautan tambahan/pengganti & korban final
  *
  * Koordinat: geocoding Nominatim (OSM) "desa, kecamatan, kabupaten"; bila desa tak ditemukan → pusat
- * kecamatan. Hasil WAJIB jatuh di poligon kabupaten yang sama, jika tidak kandidat ditolak.
+ * kecamatan. Hasil WAJIB jatuh di poligon kabupaten yang sama; bila tidak ditemukan, kejadian tetap
+ * dimasukkan TANPA koordinat (geometry null) dan hanya dihitung/didaftar di tingkat kabupaten/kota.
  * Setelah ingest jalankan `validate`.
  */
 import fs from 'fs';
@@ -59,7 +60,7 @@ export async function runIngest({ log = console.log } = {}) {
   const key = (p) => `${p.tanggal}|${normKab(p.kabupaten)}|${clean(p.kecamatan).toLowerCase()}`;
   const existing = new Set(geo.features.map((f) => key(f.properties)));
   let nextNo = Math.max(...geo.features.map((f) => f.properties.no)) + 1;
-  const report = { added: [], rejected: [], fixed: [] };
+  const report = { added: [], rejected: [], fixed: [], noCoord: [] };
 
   // ---- Perbaikan kejadian lama ----
   const fixPath = path.join(CAND_DIR, 'perbaikan_kejadian_lama.json');
@@ -91,13 +92,10 @@ export async function runIngest({ log = console.log } = {}) {
       continue;
     }
     const loc = await locate(adm, c).catch((err) => (log(`    [-] geocoding ${name}: ${err.message}`), null));
-    if (!loc) {
-      report.rejected.push(`${name}: lokasi tidak ditemukan di kabupaten tersebut`);
-      continue;
-    }
+    if (!loc) report.noCoord.push(name);
     geo.features.push({
       type: 'Feature',
-      geometry: { type: 'Point', coordinates: loc.coord },
+      geometry: loc ? { type: 'Point', coordinates: loc.coord } : null,
       properties: {
         no: nextNo++,
         kabupaten: c.kabupaten,
@@ -108,7 +106,7 @@ export async function runIngest({ log = console.log } = {}) {
         tahun: Number(c.tanggal.slice(0, 4)),
         korban_meninggal: c.korban_meninggal ?? 0,
         keterangan: c.keterangan,
-        jenis_koordinat: `${loc.jenis}; geocoding OSM`,
+        jenis_koordinat: loc ? `${loc.jenis}; geocoding OSM` : 'Tanpa koordinat (tingkat kabupaten/kota)',
         kode_wilayah: '-',
         sumber: c.sumber,
         tautan_sumber: c.tautan_sumber,
@@ -117,12 +115,12 @@ export async function runIngest({ log = console.log } = {}) {
     });
     existing.add(key(c));
     report.added.push(name);
-    log(`[+] ${name} → ${loc.jenis}`);
+    log(`[+] ${name} → ${loc ? loc.jenis : 'tanpa koordinat'}`);
   }
 
   geo.features.sort((a, b) => a.properties.tanggal.localeCompare(b.properties.tanggal));
   fs.writeFileSync(PATHS.events, JSON.stringify(geo, null, 2));
-  log(`[✔] Ditambah ${report.added.length}, diperbaiki ${report.fixed.length}, ditolak ${report.rejected.length}`);
+  log(`[✔] Ditambah ${report.added.length} (${report.noCoord.length} tanpa koordinat), diperbaiki ${report.fixed.length}, ditolak ${report.rejected.length}`);
   report.rejected.forEach((r) => log(`    ditolak: ${r}`));
   return report;
 }

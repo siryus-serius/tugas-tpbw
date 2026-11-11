@@ -81,3 +81,80 @@
   width: 100%;
   border-radius: 6px;
 }
+
+/* ---------- Daftar kejadian per kabupaten/kota (klik angka saat peta diperkecil) ---------- */
+.kab-popup .leaflet-popup-content {
+  max-height: min(60vh, 460px);
+  overflow-y: auto;
+}
+
+.kab-popup-title {
+  margin: 0 0 2px;
+  font-size: 16px;
+}
+
+.kab-event-list {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.kab-event {
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.kab-event-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  font-size: 12.5px;
+}
+
+.kab-event-loc {
+  color: var(--muted);
+}
+
+.kab-event-desc {
+  margin: 3px 0 4px;
+  font-size: 12px;
+}
+
+.kab-event-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-size: 11.5px;
+}
+
+.kab-event-links a {
+  color: var(--link);
+}
+
+.no-coord-tag {
+  padding: 1px 6px;
+  border: 1px dashed var(--muted);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.event-table tr.no-coord {
+  cursor: default;
+}
+
+.event-table .no-coord-tag {
+  margin-left: 6px;
+}
+
+.btn-zoom {
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  font-size: 12.5px;
+}

@@ -59,7 +59,13 @@ export async function runValidate({ log = console.log, checkLinks = true } = {})
     }).map(label))
   );
   checks.push(
-    check('ev-inside', 'Kejadian longsor', 'Koordinat berada di dalam Jawa Barat', P.filter((p) => !p.coord || !findRegion(adm, ...p.coord)).map(label))
+    check('ev-inside', 'Kejadian longsor', 'Koordinat berada di dalam Jawa Barat', P.filter((p) => p.coord && !findRegion(adm, ...p.coord)).map(label))
+  );
+  // Kejadian tanpa koordinat sah (dicantumkan di tingkat kabupaten/kota) → hanya peringatan agar bisa dilengkapi
+  checks.push(
+    check('ev-nocoord', 'Kejadian longsor', 'Kejadian memiliki koordinat', P.filter((p) => !p.coord).map((p) => `${label(p)}: hanya tingkat kabupaten/kota`), {
+      failLevel: 'warn',
+    })
   );
   checks.push(
     check(
@@ -107,7 +113,7 @@ export async function runValidate({ log = console.log, checkLinks = true } = {})
   const sceneIssues = [];
   const s1Issues = [];
   const terrainIssues = [];
-  for (const p of P) {
+  for (const p of P.filter((x) => x.coord)) {
     const s = scenes[p.no];
     const t = Date.parse(`${p.tanggal}T00:00:00+07:00`);
     if (!s) {

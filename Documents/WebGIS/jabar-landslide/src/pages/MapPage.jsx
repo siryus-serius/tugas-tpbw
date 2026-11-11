@@ -152,7 +152,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
         </section>
 
         <section id="kejadian" className="content-section">
-          <EventTable events={data.events} stability={stability.byId} risk={risk} onSelect={selectOnMap} />
+          <EventTable events={data.allEvents} stability={stability.byId} risk={risk} onSelect={selectOnMap} />
         </section>
 
         <section id="validasi" className="content-section">

@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-11-10T10:11:40.751Z",
+ "generated_at": "2026-11-11T11:01:48.342Z",
  "data_month": "2026-11",
  "totals": {
-  "events": 41,
+  "events": 42,
   "anomalies": 63,
   "quakes": 257
  },
  "summary": {
-  "pass": 11,
+  "pass": 12,
   "warn": 4,
   "fail": 0,
   "info": 1
@@ -38,6 +38,16 @@
    "items": []
   },
   {
+   "id": "ev-nocoord",
+   "group": "Kejadian longsor",
+   "title": "Kejadian memiliki koordinat",
+   "status": "warn",
+   "detail": "1 temuan",
+   "items": [
+    "#42 Bojonggenteng (2025-07-09): hanya tingkat kabupaten/kota"
+   ]
+  },
+  {
    "id": "ev-kab",
    "group": "Kejadian longsor",
    "title": "Koordinat jatuh di kabupaten/kota yang tercatat",
@@ -66,7 +76,7 @@
    "group": "Kejadian longsor",
    "title": "Ada sumber resmi (BNPB/BPBD/pemerintah/ANTARA)",
    "status": "warn",
-   "detail": "13 temuan",
+   "detail": "14 temuan",
    "items": [
     "#35 Ibun (2021-04-11)",
     "#15 Parongpong (2021-05-08)",
@@ -77,6 +87,7 @@
     "#22 Bogor Tengah (2024-03-24)",
     "#27 Cisewu (2025-06-25)",
     "#28 Cisarua (2025-07-05)",
+    "#42 Bojonggenteng (2025-07-09)",
     "#31 Jatiluhur (2025-12-28)",
     "#13 Cisarua (2026-01-24)",
     "#33 Sindangkasih (2026-02-03)",
@@ -87,11 +98,9 @@
    "id": "ev-links",
    "group": "Kejadian longsor",
    "title": "Tautan sumber dapat diakses",
-   "status": "warn",
-   "detail": "1 temuan",
-   "items": [
-    "#23 Babakan Madang (2024-03-24): 404 https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor"
-   ]
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
   },
   {
    "id": "sc-s2",

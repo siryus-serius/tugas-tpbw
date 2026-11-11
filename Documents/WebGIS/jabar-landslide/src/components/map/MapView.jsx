@@ -23,10 +23,11 @@ export default function MapView({ data, filters, imagery, stability, risk, quake
 
   // Kejadian pada periode terpilih (satu tahun atau seluruh tahun) → peta panas & angka per kabupaten
   const kabIndex = useMemo(() => buildKabupatenIndex(data.adm), [data.adm]);
-  const periodEvents = useMemo(() => data.events.filter((f) => inYear(f.properties.tahun, year)), [data.events, year]);
+  // Termasuk kejadian tanpa koordinat: tetap dihitung & didaftar di kabupaten/kotanya
+  const periodEvents = useMemo(() => data.allEvents.filter((f) => inYear(f.properties.tahun, year)), [data.allEvents, year]);
   const kabGroups = useMemo(() => countByKabupaten(periodEvents, kabIndex), [periodEvents, kabIndex]);
   const heatPoints = useMemo(
-    () => periodEvents.map((f) => [f.geometry.coordinates[1], f.geometry.coordinates[0], 1]),
+    () => periodEvents.filter((f) => f.geometry?.coordinates).map((f) => [f.geometry.coordinates[1], f.geometry.coordinates[0], 1]),
     [periodEvents]
   );
 

@@ -12,7 +12,8 @@ import { DAY, bboxAround, bestSentinel2, sentinel1Pair } from '../lib/stac.js';
 import { slopeAroundPoint } from '../lib/terrain.js';
 
 export async function runEvents({ log = console.log } = {}) {
-  const events = JSON.parse(fs.readFileSync(PATHS.events, 'utf-8')).features;
+  // Kejadian tanpa koordinat (hanya tingkat kabupaten) tidak bisa dicarikan citra/lereng
+  const events = JSON.parse(fs.readFileSync(PATHS.events, 'utf-8')).features.filter((f) => f.geometry?.coordinates);
   const { windowDays, maxCloud, searchDelta } = EVENTS;
   const out = { generated_at: new Date().toISOString(), window_days: windowDays, max_cloud: maxCloud, events: {} };
   // Kemiringan lereng statis → pakai ulang hasil sebelumnya, hemat kuota Elevation API
