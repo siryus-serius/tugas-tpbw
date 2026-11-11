@@ -1,6 +1,5 @@
 import {
   AGGREGATE_MAX_ZOOM,
-  COUNT_CLASSES,
   EVENT_COLOR,
   HEAT_GRADIENT,
   QUAKE_COLOR,
@@ -49,7 +48,9 @@ const Row = ({ symbol, children }) => (
  * Keterangan peta bergaya kartografis formal: judul peta, periode, kelompok simbol bernomor,
  * serta catatan sistem referensi & sumber data.
  */
-export default function MapLegend({ colorMode, layers, period }) {
+export default function MapLegend({ colorMode, layers, period, region, galura }) {
+  const isGalura = region?.source === 'galura';
+  const sampleN = (c, i, all) => (c.max === Infinity ? (all[i - 1]?.max ?? 0) + 1 : c.max);
   const fsRange = { labil: 'FK < 1,07', kritis: '1,07 ≤ FK ≤ 1,25', stabil: 'FK > 1,25' };
 
   return (
@@ -88,11 +89,20 @@ export default function MapLegend({ colorMode, layers, period }) {
       </Group>
 
       <Group no="II" title={`Jumlah kejadian per kabupaten/kota (zoom ≤ ${AGGREGATE_MAX_ZOOM})`} inactive={!layers.events}>
-        {COUNT_CLASSES.map((c, i) => (
-          <Row key={c.label} symbol={<Count c={c} n={[1, 2, 4, 6][i]} />}>
+        {(region?.classes ?? []).map((c, i, all) => (
+          <Row key={c.label} symbol={<Count c={c} n={sampleN(c, i, all).toLocaleString('id-ID')} />}>
             {c.label}
           </Row>
         ))}
+        <tr>
+          <td colSpan={2} className="muted small">
+            Angka & warna wilayah:{' '}
+            {isGalura
+              ? `kejadian tercatat desa ${region.galuraLabel}, Galura Data Jabar (DPMD). Kota berbasis kelurahan tidak tercakup (simbol putih = hanya kejadian terverifikasi).`
+              : 'kejadian terverifikasi berita pada periode terpilih.'}
+            {region?.note && ` ${region.note}`}
+          </td>
+        </tr>
       </Group>
 
       <Group no="III" title="Kepadatan kejadian (peta panas)" inactive={!layers.heat}>
@@ -136,7 +146,7 @@ export default function MapLegend({ colorMode, layers, period }) {
 
       <footer className="lg-foot">
         Sistem referensi: WGS 84 (EPSG:4326). Klasifikasi FK menurut Bowles (1989). Sumber: BNPB/BPBD, BMKG, USGS,
-        COMET-LiCSAR, Copernicus Sentinel.
+        COMET-LiCSAR, Copernicus Sentinel{galura ? ', Galura Data Jabar (DPMD)' : ''}.
       </footer>
     </section>
   );

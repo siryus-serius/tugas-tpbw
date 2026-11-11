@@ -136,3 +136,9 @@
 .heat-canvas {
   pointer-events: none;
 }
+
+/* Kab/kota tanpa data Galura (kota berbasis kelurahan): simbol netral bergaris putus-putus */
+.kab-count.is-verified-only {
+  border: 2px dashed var(--muted);
+  box-shadow: none;
+}

@@ -12,6 +12,7 @@ export default function useMapFilters({ events, anomalies, insar }) {
   const [basemap, setBasemap] = useState('osm');
   const [layers, setLayers] = useState(DEFAULT_LAYERS);
   const [colorMode, setColorMode] = useState('kategori');
+  const [regionSource, setRegionSource] = useState('galura'); // angka & warna wilayah saat peta diperkecil
   const [imageryPreset, setImageryPreset] = useState('s2_true');
   const [imageryMonth, setImageryMonth] = useState(0); // 0 = sepanjang tahun
 
@@ -66,6 +67,8 @@ export default function useMapFilters({ events, anomalies, insar }) {
     toggleLayer,
     colorMode,
     setColorMode,
+    regionSource,
+    setRegionSource,
     imageryPreset,
     setImageryPreset,
     imageryMonth,

@@ -111,3 +111,50 @@
     grid-template-columns: 90px 1fr;
   }
 }
+
+/* ---------- HP: aset rata tengah otomatis (kecuali navbar paling atas) ---------- */
+@media (max-width: 520px) {
+  .map-toolbar {
+    left: 50%;
+    right: auto;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    align-items: center;
+    transform: translateX(-50%);
+  }
+
+  .toolbar-pills {
+    justify-content: center;
+  }
+
+  .map-toolbar .popover {
+    align-self: center;
+  }
+
+  .section-head,
+  .stat,
+  .page-footer,
+  .lp-hero-bottom,
+  .lp-words-outro {
+    text-align: center;
+  }
+
+  .stat {
+    align-items: center;
+  }
+
+  .table-filters,
+  .pager,
+  .lp-hero-bottom {
+    justify-content: center;
+  }
+
+  .lp-hero-bottom .galaxy-button {
+    justify-self: center;
+    margin-inline: auto;
+  }
+
+  .lp-words-outro {
+    margin-inline: auto;
+  }
+}

@@ -158,3 +158,40 @@
   font-weight: 600;
   font-size: 12.5px;
 }
+
+/* Rekap Galura (DPMD) di popup kabupaten */
+.kab-galura {
+  margin: 8px 0 10px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: var(--panel-2);
+}
+
+.kab-galura p {
+  margin: 0 0 4px;
+  font-size: 12.5px;
+}
+
+.kab-galura-top {
+  margin: 4px 0 6px;
+  padding-left: 18px;
+  font-size: 12px;
+}
+
+.kab-galura-top li span {
+  display: inline-block;
+  min-width: 70%;
+}
+
+.kab-galura-top strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.kab-popup-sub {
+  margin: 10px 0 2px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}

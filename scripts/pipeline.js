@@ -2,7 +2,7 @@
 /**
  * Entrypoint tunggal pipeline data WebGIS Longsor Jabar.
  *
- *   node scripts/pipeline.js [events|insar|quakes|validate|ingest|gee-check|all] [opsi]
+ *   node scripts/pipeline.js [events|insar|quakes|galura|validate|ingest|gee-check|all] [opsi]
  *     --monthly                        gerbang bulanan: lewati semua bila bulan (WIB) belum berganti
  *     --force                          abaikan gerbang bulanan
  *     --no-links                       validasi tanpa cek tautan sumber (offline)
@@ -10,13 +10,14 @@
  *     --years 2023-2025                rentang tahun (tahap insar)
  *     --max-pairs 6                    batasi interferogram per tahun (uji cepat)
  *
- * "all" = events → insar → quakes → validate. Validasi gagal → exit 1 → workflow tidak commit.
+ * "all" = events → insar → quakes → galura → validate. Validasi gagal → exit 1 → workflow tidak commit.
  * Gempa terkini BMKG diambil langsung oleh browser; riwayat gempa USGS diproses di tahap quakes.
  */
 import fs from 'fs';
 import path from 'path';
 import { PUBLIC_DATA } from './config.js';
 import { runEvents } from './stages/events.js';
+import { runGalura } from './stages/galura.js';
 import { runGeeCheck } from './stages/geeCheck.js';
 import { runIngest } from './stages/ingest.js';
 import { runInsar } from './stages/insar.js';
@@ -53,11 +54,12 @@ const STAGES = {
   events: () => runEvents(),
   insar: () => runInsar({ frames: opt('frames')?.split(','), yearFrom, yearTo, maxPairs: Number(opt('max-pairs') ?? 0) }),
   quakes: () => runQuakes(),
+  galura: () => runGalura(),
   validate: () => runValidate({ checkLinks: !has('no-links') }),
   ingest: () => runIngest(),
   'gee-check': () => runGeeCheck(),
 };
-const ALL = ['events', 'insar', 'quakes', 'validate']; // ingest & gee-check dijalankan eksplisit
+const ALL = ['events', 'insar', 'quakes', 'galura', 'validate']; // ingest & gee-check dijalankan eksplisit
 
 const selected = stage === 'all' ? ALL : [stage];
 if (!selected.every((s) => STAGES[s])) {

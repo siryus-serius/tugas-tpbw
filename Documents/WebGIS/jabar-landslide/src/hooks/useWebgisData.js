@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { loadJson } from '../services/dataApi';
 
-const EMPTY = { adm: null, events: [], allEvents: [], sentinel: {}, insar: null, anomalies: [], quakes: [], validation: null };
+const EMPTY = { adm: null, galura: null, events: [], allEvents: [], sentinel: {}, insar: null, anomalies: [], quakes: [], validation: null };
 
 /**
  * Memuat seluruh data statis sekali. Setiap fitur diberi `id` stabil (dipakai sebagai kunci
@@ -24,7 +24,8 @@ export default function useWebgisData() {
       loadJson('insar/anomalies.geojson'),
       loadJson('gempa_usgs.geojson'),
       loadJson('validation.json'),
-    ]).then(([adm, ev, sentinel, summary, anomalies, quakes, validation]) => {
+      loadJson('galura_longsor.json'),
+    ]).then(([adm, ev, sentinel, summary, anomalies, quakes, validation, galura]) => {
       if (!alive) return;
       const val = (r, fallback) => (r.status === 'fulfilled' ? r.value : fallback);
       const required = [adm, ev].filter((r) => r.status === 'rejected');
@@ -41,6 +42,7 @@ export default function useWebgisData() {
         })),
         quakes: val(quakes, { features: [] }).features.map((f) => ({ ...f, id: f.properties.id })),
         validation: val(validation, null),
+        galura: val(galura, null),
       });
       setStatus({ loading: false, error: required.length ? required.map((r) => r.reason.message).join('; ') : null });
     });

@@ -16,6 +16,7 @@ import usePageScroll from '../hooks/usePageScroll';
 import useSentinelMosaic from '../hooks/useSentinelMosaic';
 import useSlopeStability from '../hooks/useSlopeStability';
 import useSusceptibility from '../hooks/useSusceptibility';
+import useRegionGroups from '../hooks/useRegionGroups';
 import { yearLabel } from '../utils/years';
 
 const SECTIONS = [
@@ -46,6 +47,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
     year: filters.imageryYear,
     month: filters.imageryMonth,
   });
+  const region = useRegionGroups(data, filters);
   const { active, scrollTo } = usePageScroll(SECTION_IDS);
   const [selected, setSelected] = useState(null); // { type: 'event' | 'anomaly' | 'quake', feature }
 
@@ -86,7 +88,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
       label: 'Lapisan & citra',
       content: (
         <>
-          <LayerControls filters={filters} />
+          <LayerControls filters={filters} region={region} />
           <ImageryControls filters={filters} imagery={imagery} />
         </>
       ),
@@ -106,7 +108,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
     {
       key: 'keterangan',
       label: 'Keterangan peta',
-      content: <MapLegend colorMode={filters.colorMode} layers={filters.layers} period={yearLabel(filters.year, filters.years)} />,
+      content: <MapLegend colorMode={filters.colorMode} layers={filters.layers} period={yearLabel(filters.year, filters.years)} region={region} galura={data.galura} />,
     },
   ];
 
@@ -140,6 +142,7 @@ export default function MapPage({ data, theme, onToggleTheme, initialSection = '
             stability={stability}
             risk={risk}
             quakes={quakes}
+            region={region}
             selected={selected}
             onSelect={setSelected}
             theme={theme}

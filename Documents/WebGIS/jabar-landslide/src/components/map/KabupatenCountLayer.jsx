@@ -1,14 +1,18 @@
 import L from 'leaflet';
 import { Marker, Popup, Tooltip, useMap } from 'react-leaflet';
-import { AGGREGATE_MAX_ZOOM, countClass } from '../../config/constants';
+import { AGGREGATE_MAX_ZOOM } from '../../config/constants';
 import { dateId, shortKab } from '../../utils/format';
+import { classOf } from '../../utils/regionCounts';
 
-const iconFor = (count) => {
-  const c = countClass(count);
-  const size = Math.round(24 + 8 * Math.sqrt(count));
+const fmt = (n) => n.toLocaleString('id-ID');
+
+/** Simbol angka; ukuran skala log agar 1 dan 2.000 tetap proporsional di layar. */
+const iconFor = (n, classes, onlyVerified) => {
+  const c = onlyVerified ? { color: 'var(--panel)', ink: 'var(--text)' } : classOf(n, classes);
+  const size = Math.round(26 + 10 * Math.log10(n + 1));
   return L.divIcon({
     className: 'kab-count-icon',
-    html: `<span class="kab-count" style="--c:${c.color};--ink:${c.ink};--s:${size}px">${count}</span>`,
+    html: `<span class="kab-count${onlyVerified ? ' is-verified-only' : ''}" style="--c:${c.color};--ink:${c.ink};--s:${size}px">${fmt(n)}</span>`,
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
   });
@@ -62,7 +66,9 @@ function EventItem({ f, onSelect }) {
  * Klik simbol → daftar seluruh kejadian di wilayah itu (termasuk yang tanpa koordinat) beserta
  * tautan beritanya, dan tombol untuk memperbesar ke wilayah tersebut.
  */
-export default function KabupatenCountLayer({ groups, periodLabel, onSelect }) {
+export default function KabupatenCountLayer({ region, periodLabel, onSelect }) {
+  const { groups, classes, source, galuraLabel, galuraUrl } = region;
+  const isGalura = source === 'galura';
   const map = useMap();
 
   const zoomTo = (bounds) => {
@@ -71,20 +77,52 @@ export default function KabupatenCountLayer({ groups, periodLabel, onSelect }) {
     map.flyTo(L.latLngBounds(bounds).getCenter(), z, { duration: 0.8 });
   };
 
-  return groups.map((g) => (
-    <Marker key={g.key} position={g.label} icon={iconFor(g.count)} keyboard title={`${shortKab(g.name)}: ${g.count} kejadian`}>
+  return groups.map((g) => {
+    const n = g.onlyVerified ? g.events.length : g.count;
+    const per = isGalura && !g.onlyVerified ? galuraLabel : periodLabel;
+    return (
+    <Marker key={g.key} position={g.label} icon={iconFor(n, classes, g.onlyVerified)} keyboard title={`${shortKab(g.name)}: ${fmt(n)} kejadian`}>
       <Tooltip direction="top" offset={[0, -12]}>
         <strong>{shortKab(g.name)}</strong>
         <br />
-        {g.count} kejadian longsor · {g.deaths} korban meninggal
+        {g.onlyVerified
+          ? `${n} kejadian terverifikasi (tidak tercakup data Galura)`
+          : isGalura
+            ? `${fmt(n)} kejadian longsor tercatat desa (Galura/DPMD)`
+            : `${n} kejadian longsor · ${g.deaths} korban meninggal`}
         <br />
-        <span className="muted">Periode {periodLabel} · klik untuk melihat daftar</span>
+        <span className="muted">Periode {per} · klik untuk detail</span>
       </Tooltip>
       <Popup className="info-popup kab-popup" maxWidth={340} minWidth={280} autoPanPadding={[24, 80]}>
         <p className="eyebrow">Kejadian longsor · {periodLabel}</p>
         <h3 className="kab-popup-title">{shortKab(g.name)}</h3>
+        {g.galura && (
+          <div className="kab-galura">
+            <p>
+              <strong>{fmt(g.galura.count)}</strong> kejadian tercatat desa di {g.galura.kecamatanCount} kecamatan
+              <span className="muted small"> · {galuraLabel}</span>
+            </p>
+            {g.galura.top.length > 0 && (
+              <ol className="kab-galura-top">
+                {g.galura.top.map((c) => (
+                  <li key={c.nama}>
+                    <span>Kec. {c.nama}</span>
+                    <strong>{fmt(c.count)}</strong>
+                  </li>
+                ))}
+              </ol>
+            )}
+            <p className="muted small">
+              Sumber:{' '}
+              <a href={galuraUrl} target="_blank" rel="noreferrer">
+                Galura Data Jabar (DPMD)
+              </a>
+            </p>
+          </div>
+        )}
+        <h4 className="kab-popup-sub">Kejadian terverifikasi berita · {periodLabel}</h4>
         <p className="muted small">
-          {g.count} kejadian · {g.deaths} korban meninggal
+          {g.events.length ? `${g.events.length} kejadian · ${g.deaths} korban meninggal` : 'Belum ada kejadian terverifikasi pada periode ini.'}
           {g.noCoord > 0 && ` · ${g.noCoord} tanpa koordinat`}
         </p>
         <ul className="kab-event-list">
@@ -97,5 +135,6 @@ export default function KabupatenCountLayer({ groups, periodLabel, onSelect }) {
         </button>
       </Popup>
     </Marker>
-  ));
+    );
+  });
 }

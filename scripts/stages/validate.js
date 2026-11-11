@@ -8,6 +8,7 @@ import path from 'path';
 import { EVENTS, INSAR, PATHS, PUBLIC_DATA } from '../config.js';
 import { findRegion } from '../lib/geo.js';
 import { pool } from '../lib/http.js';
+import { GALURA } from './galura.js';
 
 const OFFICIAL = /(bnpb\.go\.id|bpbd|jabarprov\.go\.id|\.go\.id|antaranews\.com)/i;
 const REQUIRED = ['no', 'kabupaten', 'kecamatan', 'tanggal', 'tahun', 'korban_meninggal', 'sumber', 'tautan_sumber', 'jenis_koordinat'];
@@ -129,6 +130,22 @@ export async function runValidate({ log = console.log, checkLinks = true } = {})
   checks.push(check('sc-s2', 'Citra Sentinel', `Sentinel-2 sebelum & sesudah, awan di lokasi ≤ ${EVENTS.maxCloud}%`, sceneIssues, { failLevel: 'warn' }));
   checks.push(check('sc-s1', 'Citra Sentinel', 'Pasangan Sentinel-1 orbit sama mengapit tanggal kejadian', s1Issues, { failLevel: 'warn' }));
   checks.push(check('sc-terrain', 'Citra Sentinel', 'Kemiringan & arah lereng tersedia', terrainIssues, { failLevel: 'warn' }));
+
+  // ---------- Rekap Galura (DPMD) ----------
+  const galura = readJson(GALURA.out, null);
+  const galuraIssues = [];
+  if (!galura) galuraIssues.push('galura_longsor.json belum ada (jalankan tahap galura)');
+  else {
+    const shapes = new Set(adm.features.map((f) => f.properties.shapeName));
+    for (const [key, k] of Object.entries(galura.kabupaten)) {
+      if (!shapes.has(key)) galuraIssues.push(`${key}: tidak cocok dengan batas wilayah`);
+      for (const [y, n] of Object.entries(k.tahun)) {
+        const kec = Object.values(k.kecamatan).reduce((s, c) => s + (c.tahun[y] ?? 0), 0);
+        if (kec !== n) galuraIssues.push(`${key} ${y}: jumlah kecamatan ${kec} ≠ kabupaten ${n}`);
+      }
+    }
+  }
+  checks.push(check('ga-sum', 'Rekap Galura', 'Wilayah cocok & jumlah kecamatan = jumlah kabupaten', galuraIssues, { failLevel: 'warn' }));
 
   // ---------- C. InSAR ----------
   const missingPng = (summary?.overlays || []).filter((o) => !fs.existsSync(path.join(PUBLIC_DATA, o.url.replace(/^data\//, '')))).map((o) => o.url);

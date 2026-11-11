@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 import { GeoJSON, MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BASEMAPS, MAP_CENTER } from '../../config/constants';
-import { buildKabupatenIndex, countByKabupaten } from '../../utils/kabupaten';
-import { inYear, yearLabel } from '../../utils/years';
+import { yearLabel } from '../../utils/years';
 import AnomalyLayer from './AnomalyLayer';
 import EventsByZoom from './EventsByZoom';
 import FlyToSelected from './FlyToSelected';
@@ -15,17 +14,14 @@ import SelectedPopup from './SelectedPopup';
 
 const ADM_STYLE = { color: '#64748b', weight: 1, fillOpacity: 0, interactive: false };
 
-export default function MapView({ data, filters, imagery, stability, risk, quakes, selected, onSelect, theme }) {
+export default function MapView({ data, filters, imagery, stability, risk, quakes, region, selected, onSelect, theme }) {
   const { basemap, layers, year, years, overlays, yearAnomalies, colorMode } = filters;
   const bm = BASEMAPS[basemap];
   const selectedId = selected?.feature.id;
   const ctx = useMemo(() => ({ year, colorMode, stability: stability.byId, risk }), [year, colorMode, stability.byId, risk]);
 
-  // Kejadian pada periode terpilih (satu tahun atau seluruh tahun) → peta panas & angka per kabupaten
-  const kabIndex = useMemo(() => buildKabupatenIndex(data.adm), [data.adm]);
-  // Termasuk kejadian tanpa koordinat: tetap dihitung & didaftar di kabupaten/kotanya
-  const periodEvents = useMemo(() => data.allEvents.filter((f) => inYear(f.properties.tahun, year)), [data.allEvents, year]);
-  const kabGroups = useMemo(() => countByKabupaten(periodEvents, kabIndex), [periodEvents, kabIndex]);
+  // Peta panas: kejadian terverifikasi berkoordinat pada periode terpilih
+  const { periodEvents } = region;
   const heatPoints = useMemo(
     () => periodEvents.filter((f) => f.geometry?.coordinates).map((f) => [f.geometry.coordinates[1], f.geometry.coordinates[0], 1]),
     [periodEvents]
@@ -58,7 +54,8 @@ export default function MapView({ data, filters, imagery, stability, risk, quake
       {layers.events && (
         <EventsByZoom
           events={data.events}
-          groups={kabGroups}
+          region={region}
+          adm={data.adm}
           periodLabel={yearLabel(year, years)}
           ctx={ctx}
           selectedId={selectedId}

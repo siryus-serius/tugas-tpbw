@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T11:42:54.611Z",
+ "generated_at": "2026-11-11T13:34:50.685Z",
  "data_month": "2026-11",
  "totals": {
   "events": 42,
@@ -7,7 +7,7 @@
   "quakes": 257
  },
  "summary": {
-  "pass": 12,
+  "pass": 13,
   "warn": 4,
   "fail": 0,
   "info": 1
@@ -99,10 +99,14 @@
    "group": "Kejadian longsor",
    "title": "Tautan sumber dapat diakses",
    "status": "warn",
-   "detail": "2 temuan",
+   "detail": "6 temuan",
    "items": [
-    "#23 Babakan Madang (2024-03-24): 404 https://www.bnpb.go.id/berita/satu-orang-tertimbun-longsor-di-kabupaten-bogor",
-    "#10 Banjarwangi (2024-04-25): 404 https://www.bnpb.go.id/berita/tiga-orang-ditemukan-meninggal-akibat-tertimbun-longsor-di-kabupaten-garut"
+    "#1 Cimanggung (2021-01-09): 521 https://www.bnpb.go.id/berita/longsor-kembali-terjadi-sebanyak-11-warga-sumedang-meninggal-dunia",
+    "#2 Ciambar (2021-05-01): 521 https://bnpb.go.id/berita/tanah-longsor-akibatkan-satu-warga-sukabumi-meninggal-dunia-",
+    "#36 Pasirjambu (2021-11-27): 521 https://www.bnpb.go.id/index.php/berita/selamat-dari-tanah-longsor-dua-warga-kabupaten-bandung-dirujuk-ke-rs-soreang-",
+    "#3 Cijeruk (2022-05-21): 521 https://bnpb.go.id/berita/tanah-longsor-di-bogor-empat-warga-meninggal-dunia",
+    "#17 Pamijahan (2022-06-22): 521 https://www.bnpb.go.id/berita/banjir-bandang-dan-tanah-longsor-di-bogor-telan-satu-korban-jiwa",
+    "#4 Cihaurbeuti (2022-09-11): 521 https://bnpb.go.id/berita/tanah-longsor-telan-korban-dua-warga-di-ciamis-waspada-cuaca-ekstrem"
    ]
   },
   {
@@ -125,6 +129,14 @@
    "id": "sc-terrain",
    "group": "Citra Sentinel",
    "title": "Kemiringan & arah lereng tersedia",
+   "status": "pass",
+   "detail": "Semua lolos",
+   "items": []
+  },
+  {
+   "id": "ga-sum",
+   "group": "Rekap Galura",
+   "title": "Wilayah cocok & jumlah kecamatan = jumlah kabupaten",
    "status": "pass",
    "detail": "Semua lolos",
    "items": []
